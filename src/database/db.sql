@@ -1,0 +1,224 @@
+-- Active: 1697733910034@@localhost@3307@sysfac
+DROP DATABASE IF EXISTS sysfac;
+
+
+CREATE DATABASE sysfac;
+
+
+use sysfac;
+
+
+-- ? USERS
+DROP TABLE
+  IF EXISTS USERS;
+
+
+CREATE TABLE
+  USERS (
+    -- user data
+    userId INT NOT NULL AUTO_INCREMENT,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password VARCHAR(20) NOT NULL,
+    type ENUM('Admin', 'SuperAdmin', 'Vendedor') NOT NULL DEFAULT 'Admin',
+    state ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+    -- personal data
+    names VARCHAR(50),
+    lastnames VARCHAR(50),
+    email VARCHAR(40),
+    phone VARCHAR(10),
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(userId)
+  );
+
+
+-- ? CATEGORIES
+DROP TABLE
+  IF EXISTS CATEGORIES;
+
+
+CREATE TABLE
+  CATEGORIES (
+    categoryId INT NOT NULL AUTO_INCREMENT,
+    -- category data
+    slug VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    image VARCHAR(1000),
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(categoryId)
+  );
+
+
+-- ? PRODUCTS
+DROP TABLE
+  IF EXISTS PRODUCTS;
+
+
+CREATE TABLE
+  PRODUCTS (
+    productId INT NOT NULL AUTO_INCREMENT,
+    -- product data
+    name VARCHAR(100) NOT NULL UNIQUE,
+    image VARCHAR(1000) NOT NULL,
+    inventaryMin SMALLINT NOT NULL,
+    priceSale DECIMAL(6, 2) NOT NULL,
+    unit VARCHAR(50) NOT NULL,
+    saleFor ENUM('Cantidad', 'Unidad/NS') NOT NULL DEFAULT 'Cantidad',
+    isActive BIT NOT NULL DEFAULT 1,
+    -- relations
+    categoryId INT NOT NULL,
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(productId),
+    FOREIGN KEY(categoryId) REFERENCES categories(categoryId)
+  );
+
+
+-- ? LOCATIONS
+DROP TABLE
+  IF EXISTS LOCATIONS;
+
+
+CREATE TABLE
+  LOCATIONS (
+    localId INT NOT NULL AUTO_INCREMENT,
+    -- locaction data
+    name VARCHAR(100) NOT NULL UNIQUE,
+    address VARCHAR(100) NOT NULL,
+    type ENUM('Almacén', 'Tienda') DEFAULT 'Tienda',
+    canStoreMore BIT DEFAULT 1,
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(localId)
+  );
+
+
+-- ? SUPPLIERS
+DROP TABLE
+  IF EXISTS SUPPLIERS;
+
+
+CREATE TABLE
+  SUPPLIERS (
+    supplierId INT NOT NULL AUTO_INCREMENT,
+    -- supplier data
+    RUC VARCHAR(13) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    phone VARCHAR(10),
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(supplierId)
+  );
+
+
+-- ? CLIENTS
+DROP TABLE
+  IF EXISTS CLIENTS;
+
+
+CREATE TABLE
+  CLIENTS (
+    clientId INT NOT NULL AUTO_INCREMENT,
+    -- client data
+    RUC VARCHAR(13),
+    dni VARCHAR(8),
+    names VARCHAR(100) NOT NULL,
+    lastnames VARCHAR(100) NOT NULL,
+    address VARCHAR(100),
+    phone VARCHAR(10),
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(clientId)
+  );
+
+
+-- ? INVENTARY
+DROP TABLE
+  IF EXISTS INVENTARY;
+
+
+CREATE TABLE
+  INVENTARY (
+    unitId INT NOT NULL AUTO_INCREMENT,
+    -- item data
+    serialNumber VARCHAR(100) NOT NULL,
+    state ENUM('En stock', 'Vendido', 'Dañado') NOT NULL DEFAULT 'En stock',
+    -- relations
+    productId INT NOT NULL,
+    localId INT NOT NULL,
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+    -- definitions
+    PRIMARY KEY(unitId),
+    FOREIGN KEY(productId) REFERENCES PRODUCTS(productId),
+    FOREIGN KEY(localId) REFERENCES LOCATIONS(localId)
+  );
+
+
+-- ? TRANSACTIONS
+DROP TABLE
+  IF EXISTS TRANSACTIONS;
+
+
+CREATE TABLE
+  TRANSACTIONS (
+    transactionId INT NOT NULL AUTO_INCREMENT,
+    -- transaction data
+    operationType ENUM('Compra', 'Venta') NOT NULL DEFAULT 'Venta',
+    proofType ENUM('Factura', 'Boleta de venta') NOT NULL,
+    proofCode VARCHAR(50) NOT NULL,
+    totalImport DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    discount DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    totalPay DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    comments VARCHAR(1000),
+    -- relations
+    supplierId INT NOT NULL,
+    clientId INT NOT NULL,
+    userId INT NOT NULL,
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    -- definitions
+    PRIMARY KEY(transactionId),
+    FOREIGN KEY(supplierId) REFERENCES SUPPLIERS(supplierId),
+    FOREIGN KEY(clientId) REFERENCES CLIENTS(clientId),
+    FOREIGN KEY(userId) REFERENCES USERS(userId)
+  );
+
+
+-- ? OPERATIONS
+DROP TABLE
+  IF EXISTS OPERATIONS;
+
+
+CREATE TABLE
+  OPERATIONS (
+    operationId INT NOT NULL AUTO_INCREMENT,
+    -- operation data
+    serialNumber VARCHAR(100),
+    priceSale DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    quantity SMALLINT NOT NULL,
+    importSale DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    details VARCHAR(100),
+    -- relations
+    transactionId INT NOT NULL,
+    -- date
+    createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+    -- definitions
+    PRIMARY KEY(operationId),
+    FOREIGN KEY(transactionId) REFERENCES TRANSACTIONS(transactionId)
+  )
