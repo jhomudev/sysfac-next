@@ -1,15 +1,16 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
-import TableOperationsPerSale from '@/features/TableOperationsPerSale'
-import { getFormatedDate } from '@/libs/utils/date'
-import { EOperationType, EProofType } from '@/types/enumDB'
-import { TOperation, TTransaction } from '@/types/types'
+import { MyBreadcrumbs, Yesicon } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { CLASS_ICONS } from '@/components/Yesicon'
+import { formatDate } from '@/libs'
+import { EOperationType, EProofType, Transaction } from '@/models'
+import { Operation } from '@/pages/Transactions/models'
+import { TableOperationsPerSale } from '@/pages/Transactions/components'
 import { Button, Divider, Link } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
-const data: TTransaction = {
-  transactionId: 1,
+const data: Transaction = {
+  id: 1,
   operationType: EOperationType.sell,
   proofCode: 'P-00002023',
   proofType: EProofType.invoice,
@@ -36,9 +37,9 @@ const data: TTransaction = {
   createdAt: '2023-11-16 09:07:12'
 }
 
-const operations:TOperation[] = [
+const operations:Operation[] = [
   {
-    operationId: 1,
+    id: 1,
     serialNumber: 'sdfgw4536sdfg',
     description: 'Laptop HP Lenovo I5',
     details: '',
@@ -49,7 +50,7 @@ const operations:TOperation[] = [
     transactionId: 1
   },
   {
-    operationId: 2,
+    id: 2,
     serialNumber: 'sdfgw4536sdfg',
     description: 'Laptop HP Lenovo I5',
     details: '',
@@ -60,7 +61,7 @@ const operations:TOperation[] = [
     transactionId: 1
   },
   {
-    operationId: 3,
+    id: 3,
     serialNumber: 'sdfgw4536sdfg',
     description: 'Laptop HP Lenovo I5',
     details: '',
@@ -71,7 +72,7 @@ const operations:TOperation[] = [
     transactionId: 1
   },
   {
-    operationId: 4,
+    id: 4,
     serialNumber: 'sdfgw4536sdfg',
     description: 'Laptop HP Lenovo I5',
     details: '',
@@ -126,7 +127,7 @@ function SalePage ({ params }: Props) {
             <dt className='title mb-0'>Total pagado:</dt>
             <dd className='text mb-2'>S/{data.totalPay}</dd>
             <dt className='title mb-0'>Fecha:</dt>
-            <dd className='text mb-2'>{getFormatedDate(data.createdAt).dateLetter}</dd>
+            <dd className='text mb-2'>{formatDate(data.createdAt).dateLetter}</dd>
           </dl>
         </div>
         <Button startContent={<Yesicon icon={CLASS_ICONS.ticket} />} as={Link} href={`${ROUTES.transactions}/sales/${transactionId}`} target='_blank' color='secondary' variant='flat'>Ver comprobante</Button>

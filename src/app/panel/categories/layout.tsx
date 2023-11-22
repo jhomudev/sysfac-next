@@ -1,7 +1,8 @@
-import ROUTES from '@/app/routes'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
-import { Button, Divider, Link } from '@nextui-org/react'
 import React from 'react'
+import ROUTES from '@/app/routes'
+import { Button, Divider, Link } from '@nextui-org/react'
+import { Yesicon } from '@/components'
+import { CLASS_ICONS } from '@/components/Yesicon'
 
 type Props={
   children: React.ReactNode
@@ -22,7 +23,7 @@ function CategoriesLayout ({ children }:Props) {
       <br />
       {
           children
-        }
+      }
     </>
   // </div>
   )

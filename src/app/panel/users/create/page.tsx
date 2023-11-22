@@ -1,12 +1,9 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormUserCreate from '@/features/FormUserCreate'
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
+import { MyBreadcrumbs } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { FormUserCreate } from '@/pages/Users/components'
 
-type Props = {
-  params: Params
-}
-function CreateUserPage ({ params }:Props) {
+function CreateUserPage () {
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
     {
       label: 'Home',

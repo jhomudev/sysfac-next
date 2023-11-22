@@ -1,8 +1,11 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormPurchaseAddProducts from '@/features/FormPurchaseAddProducts'
-import FormPurchaseConfirm from '@/features/FormPurchaseConfirm'
-import TablePurchaseProducts, { TablePurchaseProductsItem } from '@/features/TablePurchaseProducts'
+import { MyBreadcrumbs } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { ESaleFor } from '@/models'
+import { Product } from '@/pages/Productos/models'
+import { Supplier } from '@/pages/Suppliers/models'
+import { FormPurchaseAddProducts, FormPurchaseConfirm, TablePurchaseProducts } from '@/pages/Transactions/components'
+import { TablePurchaseProductsItem } from '@/pages/Transactions/components/TablePurchaseProducts'
 import { Divider } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -70,6 +73,99 @@ const data:TablePurchaseProductsItem[] = [
   }
 ]
 
+const suppliers:Supplier[] = [
+  {
+    id: 1,
+    RUC: '112345676789',
+    name: 'Proveedor 1',
+    address: 'Jr. Marsical cacareees',
+    phone: '998094343',
+    createdAt: '2023-11-09 10:03:07',
+    updatedAt: '2023-11-09 10:03:07'
+  },
+  {
+    id: 2,
+    RUC: '123456767892',
+    name: 'Proveedor 2',
+    address: 'Av. Aasambleas',
+    phone: '998998998',
+    createdAt: '2023-11-09 10:03:07',
+    updatedAt: '2023-11-09 10:03:07'
+  },
+  {
+    id: 3,
+    RUC: '123456767898',
+    name: 'Proveedor 3',
+    address: 'Jr. Bellido',
+    phone: '900990009',
+    createdAt: '2023-11-09 10:03:07',
+    updatedAt: '2023-11-09 10:03:07'
+  },
+  {
+    id: 4,
+    RUC: '1345656767898',
+    name: 'Proveedor 4',
+    address: 'Jr. Peresz de Regollar',
+    phone: '968230122',
+    createdAt: '2023-11-09 10:03:07',
+    updatedAt: '2023-11-09 10:03:07'
+  }
+]
+
+const products:Product[] = [
+  {
+    id: 1,
+    name: 'Pc Hp',
+    image: 'https://unavatar.io/pikachu',
+    inventaryMin: 5,
+    priceSale: 12.50,
+    unit: 'Unidad',
+    saleFor: ESaleFor.unit,
+    isActive: true,
+    category: {
+      id: 1,
+      slug: 'pc',
+      name: 'Pc'
+    },
+    createdAt: '2023-11-21 15:45:21',
+    updateAt: '2023-11-21 15:45:21'
+  },
+  {
+    id: 2,
+    name: 'Laptop Hp',
+    image: 'https://unavatar.io/pikachu',
+    inventaryMin: 5,
+    priceSale: 1200.50,
+    unit: 'Unidad',
+    saleFor: ESaleFor.unit,
+    isActive: true,
+    category: {
+      id: 1,
+      slug: 'laptop',
+      name: 'Laptop'
+    },
+    createdAt: '2023-11-21 15:45:21',
+    updateAt: '2023-11-21 15:45:21'
+  },
+  {
+    id: 3,
+    name: 'Mouse Avatar',
+    image: 'https://unavatar.io/spirit',
+    inventaryMin: 5,
+    priceSale: 60.50,
+    unit: 'Unidad',
+    saleFor: ESaleFor.quantity,
+    isActive: false,
+    category: {
+      id: 1,
+      slug: 'mouse',
+      name: 'Mouse'
+    },
+    createdAt: '2023-11-21 15:45:21',
+    updateAt: '2023-11-21 15:45:21'
+  }
+]
+
 function NewPurchasePage () {
   return (
     <>
@@ -77,11 +173,11 @@ function NewPurchasePage () {
       <Divider />
       <MyBreadcrumbs className='mt-2' items={breadcrumbItems} />
       <br />
-      <FormPurchaseAddProducts />
+      <FormPurchaseAddProducts products={products} />
       <br />
       <TablePurchaseProducts dataProducts={data} />
       <br />
-      <FormPurchaseConfirm />
+      <FormPurchaseConfirm suppliers={suppliers} />
     </>
   )
 }

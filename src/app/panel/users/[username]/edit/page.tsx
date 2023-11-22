@@ -1,11 +1,10 @@
 import React from 'react'
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
-import FormUserChangePassword from '@/features/FormUserChangePassword'
 import { Divider } from '@nextui-org/divider'
-import FormUserEditData from '@/features/FormUserEditData'
-import FormUserEditAccount from '@/features/FormUserEditAccount'
+import { FormUserChangePassword, FormUserEditAccount, FormUserEditData } from '@/pages/Users/components'
+import { MyBreadcrumbs } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 
 type Props = {
   params: Params

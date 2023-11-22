@@ -1,10 +1,10 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
-import FiltersProductsPerSale from '@/features/FiltersProductsPerSale'
-import ListProductsPerSale from '@/features/ListProductsPerSale'
-import { ESaleFor } from '@/types/enumDB'
-import { TProduct } from '@/types/types'
+import { ESaleFor } from '@/models'
+import { Product } from '@/pages/Productos/models'
+import { FilterProductsPerSale, ListProductsPerSale } from '@/pages/Transactions/components'
 import { Divider, Input } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -21,9 +21,9 @@ const breadcrumbItems: MyBreadcrumbItemProps[] = [
   }
 ]
 
-const products:TProduct[] = [
+const products:Product[] = [
   {
-    productId: 1,
+    id: 1,
     name: 'Pc Hp',
     image: 'https://unavatar.io/pikachu',
     inventaryMin: 5,
@@ -35,10 +35,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'pc',
       name: 'Pc'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 2,
+    id: 2,
     name: 'Laptop Hp',
     image: 'https://unavatar.io/pikachu',
     inventaryMin: 5,
@@ -50,10 +52,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'laptop',
       name: 'Laptop'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 3,
+    id: 3,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -65,10 +69,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 4,
+    id: 4,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -80,10 +86,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 5,
+    id: 5,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -95,10 +103,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 6,
+    id: 6,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -110,10 +120,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 7,
+    id: 7,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -125,10 +137,12 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   },
   {
-    productId: 8,
+    id: 8,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
@@ -140,7 +154,9 @@ const products:TProduct[] = [
       id: 1,
       slug: 'mouse',
       name: 'Mouse'
-    }
+    },
+    createdAt: '2023-11-09 10:03:07',
+    updateAt: '2023-11-09 10:03:07'
   }
 ]
 
@@ -159,7 +175,7 @@ function NewSalePage () {
         {/* <Button className='w-full md:w-min' color='warning' variant='ghost'>Ver carrito</Button> */}
       </div>
       <br />
-      <FiltersProductsPerSale />
+      <FilterProductsPerSale />
       <br />
       <ListProductsPerSale products={products} />
     </>

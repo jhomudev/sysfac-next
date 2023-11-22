@@ -1,6 +1,8 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormCategory from '@/features/FormCategory'
+import { MyBreadcrumbs } from '@/components'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { FormCategory } from '@/pages/Categories/components'
+import { Category } from '@/pages/Categories/models'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {
@@ -24,6 +26,15 @@ function page ({ params }: Props) {
     }
   ]
 
+  const categoryData:Category = {
+    id: 1,
+    name: 'Laptops',
+    slug: 'laptops',
+    image: 'https://assetsio.reedpopcdn.com/g502x_f9QuuM8.jpeg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
+  }
+
   return (
     <div>
       <MyBreadcrumbs items={breadcrumbItems} />
@@ -31,13 +42,7 @@ function page ({ params }: Props) {
       <div className='flex flex-col w-[min(100%,800px)]'>
         <h1 className='text-xl font-semibold'>Laptops</h1>
         <br />
-        <FormCategory categoryData={{
-          categoryId: 1,
-          name: 'Laptops',
-          slug: 'laptops',
-          image: 'https://assetsio.reedpopcdn.com/g502x_f9QuuM8.jpeg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp'
-        }}
-        />
+        <FormCategory categoryData={categoryData} />
       </div>
     </div>
   )

@@ -1,14 +1,13 @@
 import { conn } from '@/libs/mysql'
-import { EUserState } from '@/types/enumDB'
-import { TUser, TUserCredentials } from '@/types/types'
+import { EUserState, UserCredentials, UserDB } from '@/models'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (req:NextRequest) => {
   try {
-    const { username, password }: TUserCredentials = await req.json()
+    const { username, password }: UserCredentials = await req.json()
     // Validate user exist
-    const [user] = await conn.query<TUser[]>('SELECT username, type, state, names, lastnames, email FROM users WHERE username = ? AND password = ?', [username, password])
-    if (user?.state === EUserState.active) {
+    const [user] = await conn.query<UserDB[]>('SELECT username, type, state, names, lastnames, email FROM users WHERE username = ? AND password = ?', [username, password])
+    if (user.state === EUserState.active) {
       return NextResponse.json({
         ok: true,
         message: 'Credentials pass',

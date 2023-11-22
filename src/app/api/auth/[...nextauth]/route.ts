@@ -1,4 +1,5 @@
-import axios from 'axios'
+import { validateUserCredentials } from '@/interceptors'
+import { UserCredentials } from '@/models'
 import NextAuth, { Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -12,11 +13,10 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize (credentials) {
-        const res = await axios.post(`${process.env.API_URL}/auth/login`, credentials)
-        const auth = await res.data
+        const auth = await validateUserCredentials(credentials as UserCredentials)
 
         // If no error and we have user data, return it
-        if (auth.ok) return auth.data
+        if (auth.access && auth.isActive) return auth.data as any
         // Return null if user data could not be retrieved
         // throw auth
         return null
@@ -24,10 +24,10 @@ export const authOptions = {
     })
   ],
   callbacks: {
-    async jwt ({ token, user }: {token: JWT, user: User}) {
+    async jwt ({ token, user }: { token: JWT, user: User }) {
       return { ...token, ...user }
     },
-    async session ({ session, token }: {session: Session, token: JWT}) {
+    async session ({ session, token }: { session: Session, token: JWT }) {
       session.user = token
       return session
     }

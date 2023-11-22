@@ -1,66 +1,70 @@
-'use client'
-import CardCategory from '@/components/CardCategory'
-import { TCategory } from '@/types/types'
-import { motion } from 'framer-motion'
+import { ListCategories } from '@/pages/Categories/components'
+import { Category } from '@/pages/Categories/models'
 import React from 'react'
 
-const categories: TCategory[] = [
+const categories: Category[] = [
   {
-    categoryId: 1,
+    id: 1,
     name: 'Laptops',
     slug: 'laptops',
-    image: 'https://i.insider.com/61a930fc5d47cc0018e9160c?width=700'
+    image: 'https://i.insider.com/61a930fc5d47cc0018e9160c?width=700',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 2,
+    id: 2,
     name: 'PC',
-    slug: 'pc'
+    slug: 'pc',
+    image: 'https://i.insider.com/61a930fc5d47cc0018e9160c?width=700',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 3,
+    id: 3,
     name: 'Mouses',
     slug: 'mouses',
-    image: 'https://assetsio.reedpopcdn.com/g502x_f9QuuM8.jpeg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp'
+    image: 'https://assetsio.reedpopcdn.com/g502x_f9QuuM8.jpeg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 4,
+    id: 4,
     name: 'Teclado',
     slug: 'teclado',
-    image: 'https://i.blogs.es/8c11b5/teclados-ap/1366_2000.jpeg'
+    image: 'https://i.blogs.es/8c11b5/teclados-ap/1366_2000.jpeg',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 5,
+    id: 5,
     slug: 'impresoras',
-    name: 'Impresoras'
+    name: 'Impresoras',
+    image: '',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 6,
+    id: 6,
     name: 'Monitores',
-    slug: 'monitores'
+    slug: 'monitores',
+    image: '',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
-    categoryId: 7,
+    id: 7,
     slug: 'teclado',
-    name: 'teclados'
+    name: 'teclados',
+    image: '',
+    createdAt: '2023-11-21 15:45:21',
+    updatedAt: '2023-11-21 15:45:21'
   }
 ]
 
 function CategoriesPage () {
   return (
     <>
-      <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
-        {
-          categories.map((cat, i) => (
-            <CardCategory
-              key={cat.categoryId}
-              customMotionI={i}
-              name={cat.name}
-              slug={cat.slug}
-              image={cat.image}
-            />
-          ))
-        }
-      </motion.div>
+      <ListCategories categories={categories} />
     </>
   )
 }

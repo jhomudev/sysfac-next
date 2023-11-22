@@ -1,11 +1,10 @@
-'use client'
 import ROUTES from '@/app/routes'
-import CardEntityDashboard from '@/components/CardEntityDashboard'
-import CardGraphic from '@/components/CardGraphic'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
-import ChartTransactions from '@/features/ChartTransactions'
-import TableTransactions from '@/features/TableTransactions'
-import { NEXTUI_COLORS } from '@/libs/nextui'
+import { CardEntityDashboard, CardGraphic, Yesicon } from '@/components'
+import { CLASS_ICONS } from '@/components/Yesicon'
+import { ChartTransactions } from '@/features'
+import { NEXTUI_COLORS } from '@/libs'
+import { EOperationType, EProofType, Transaction } from '@/models'
+import { TableTransactions } from '@/pages/Transactions/components'
 import { Card, CardBody, Divider, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
@@ -22,6 +21,90 @@ const itemsTransactions = [
     quantity: 200,
     color: NEXTUI_COLORS.success,
     icon: CLASS_ICONS.purchases
+  }
+]
+
+const data: Transaction[] = [
+  {
+    id: 1,
+    operationType: EOperationType.sell,
+    proofType: EProofType.invoice,
+    totalImport: 100,
+    discount: 10,
+    totalPay: 90,
+    supplier: {
+      id: 1,
+      name: 'Proveedor 1'
+    },
+    client: {
+      id: 1,
+      names: 'Jose',
+      lastnames: 'de la Fuente',
+      dni: '71728342'
+    },
+    user: {
+      id: 1,
+      username: 'pedro',
+      names: 'Pedro',
+      lastnames: 'De la Cruz'
+    },
+    proofCode: 'DW3443',
+    comments: 'etc',
+    createdAt: '2023-11-09 10:03:07'
+  },
+  {
+    id: 2,
+    operationType: EOperationType.sell,
+    proofType: EProofType.invoice,
+    totalImport: 100,
+    discount: 10,
+    totalPay: 90,
+    supplier: {
+      id: 1,
+      name: 'Proveedor 1'
+    },
+    client: {
+      id: 2,
+      names: 'Yessica',
+      lastnames: 'Morales',
+      dni: '71728342'
+    },
+    user: {
+      id: 2,
+      username: 'pedro',
+      names: 'Pedro',
+      lastnames: 'De la Cruz'
+    },
+    proofCode: 'DW3443',
+    comments: 'etc',
+    createdAt: '2023-11-09 10:03:07'
+  },
+  {
+    id: 3,
+    operationType: EOperationType.buy,
+    proofType: EProofType.invoice,
+    totalImport: 100,
+    discount: 10,
+    totalPay: 90,
+    supplier: {
+      id: 2,
+      name: 'Proveedor 2'
+    },
+    client: {
+      id: 1,
+      names: 'Jose',
+      lastnames: 'de la Fuente',
+      dni: '71728342'
+    },
+    user: {
+      id: 1,
+      username: 'pedro',
+      names: 'Pedro',
+      lastnames: 'De la Cruz'
+    },
+    proofCode: 'DW3443',
+    comments: 'etc',
+    createdAt: '2023-11-09 10:03:07'
   }
 ]
 
@@ -91,7 +174,7 @@ function TransactionsPage () {
       <h2 className='title'>Transacciones realizadas</h2>
       <p className='text'>Gestiona las transacciones realizadas por los usuarios.</p>
       <br />
-      <TableTransactions />
+      <TableTransactions transactions={data} />
     </>
   )
 }

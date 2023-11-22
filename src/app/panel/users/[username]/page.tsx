@@ -1,22 +1,22 @@
 import ROUTES from '@/app/routes'
-import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import { Chip } from '@nextui-org/chip'
 import { Link } from '@nextui-org/link'
 import { Card, CardBody, CardHeader } from '@nextui-org/card'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
-import { TTransaction } from '@/types/types'
-import { EOperationType, EProofType } from '@/types/enumDB'
-import TableTransactionsPerUser from '@/features/TableTransactionsPerUser'
 import { Button, Tooltip } from '@nextui-org/react'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs, Yesicon } from '@/components'
+import { CLASS_ICONS } from '@/components/Yesicon'
+import { EOperationType, EProofType, Transaction } from '@/models'
+import { TableTransactionsPerUser } from '@/pages/Users/components'
 
 type Props = {
   params: Params
 }
 
-const data:Partial<TTransaction>[] = [
+const data:Partial<Transaction>[] = [
   {
-    transactionId: 1,
+    id: 1,
     operationType: EOperationType.sell,
     proofType: EProofType.invoice,
     totalImport: 100,
@@ -34,7 +34,7 @@ const data:Partial<TTransaction>[] = [
     }
   },
   {
-    transactionId: 2,
+    id: 2,
     operationType: EOperationType.sell,
     proofType: EProofType.invoice,
     totalImport: 100,
@@ -52,7 +52,7 @@ const data:Partial<TTransaction>[] = [
     }
   },
   {
-    transactionId: 3,
+    id: 3,
     operationType: EOperationType.buy,
     proofType: EProofType.invoice,
     totalImport: 100,
@@ -175,4 +175,3 @@ function UserPage ({ params }: Props) {
   )
 }
 export default UserPage
-// TODO: Report that BreadcrumbsItems dont work in server component, only in client components, the BreadCrumb container work normaly
