@@ -1,6 +1,5 @@
 'use client'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
 import { TClient } from '@/types/types'
 import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Pagination, Selection } from '@nextui-org/react'
 import React from 'react'
@@ -66,7 +65,7 @@ function ClientsPage () {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar cliente' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de clientes <span className='font-medium'>12</span></p>
@@ -95,8 +94,10 @@ function ClientsPage () {
   }, [selectedKeys])
 
   return (
-    <div className='flex-1 p-2'>
-      <h1 className='text-2xl font-medium mb-3'>Clientes</h1>
+    <>
+      <h1 className='title-main'>Clientes</h1>
+      <p className='text'>Observe los clientes que tuvo durante todo su progreso con el sistema, si necesita puede modificar algunos datos del cliente.</p>
+      <br />
       <Divider />
       <br />
       <Table
@@ -140,7 +141,7 @@ function ClientsPage () {
           )}
         </TableBody>
       </Table>
-    </div>
+    </>
   )
 }
 export default ClientsPage

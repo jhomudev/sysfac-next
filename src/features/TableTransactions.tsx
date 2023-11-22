@@ -1,12 +1,27 @@
-import React from 'react'
+import ROUTES from '@/app/routes'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { THeaderColumn } from '@/libs/nextui'
 import { EOperationType, EProofType } from '@/types/enumDB'
-import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Selection, Input, Button, Pagination } from '@nextui-org/react'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
-import { TTransactions } from '@/types/types'
-import { THeaderColumns } from '@/libs/nextui'
+import { TTransaction } from '@/types/types'
+import {
+  Button,
+  Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
+  Link,
+  Pagination,
+  Selection,
+  Table, TableBody,
+  TableCell,
+  TableColumn, TableHeader,
+  TableRow
+} from '@nextui-org/react'
+import React from 'react'
 
-const headerColumns: THeaderColumns[] = [
+const headerColumns: THeaderColumn[] = [
   {
     id: crypto.randomUUID(),
     name: 'Tipo',
@@ -34,22 +49,23 @@ const headerColumns: THeaderColumns[] = [
   },
   {
     id: crypto.randomUUID(),
-    name: 'Proveedor',
-    sortable: false
+    name: 'Proveedor'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Cliente',
-    sortable: false
+    name: 'Cliente'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Usuario',
-    sortable: false
+    name: 'Usuario'
+  },
+  {
+    id: crypto.randomUUID(),
+    name: 'Acciones'
   }
 ]
 
-const data:Partial<TTransactions>[] = [
+const data:Partial<TTransaction>[] = [
   {
     transactionId: 1,
     operationType: EOperationType.sell,
@@ -100,7 +116,7 @@ const data:Partial<TTransactions>[] = [
   },
   {
     transactionId: 3,
-    operationType: EOperationType.sell,
+    operationType: EOperationType.buy,
     proofType: EProofType.invoice,
     totalImport: 100,
     discount: 10,
@@ -132,8 +148,8 @@ function TableTransactions () {
       <>
         <div className='flex gap-3 items-center justify-between'>
           <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='success' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo compra</Button>
-          <Button color='danger' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo venta</Button>
+          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color='success' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo compra</Button>
+          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color='danger' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo venta</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de transacciones <span className='font-medium'>12</span></p>
@@ -162,7 +178,7 @@ function TableTransactions () {
   }, [selectedKeys])
 
   return (
-    <div className='flex-1 p-2'>
+    <>
       <Table
         isHeaderSticky
         aria-label='Tabla de transacciones'
@@ -192,25 +208,42 @@ function TableTransactions () {
         </TableHeader>
         <TableBody emptyContent='No se econtraron transacciones' items={data}>
           {(item) => {
-            const isSale = item.operationType === EOperationType.sell
+            const isSale: boolean = item.operationType === EOperationType.sell
             const isProofTicket = item.proofType === EProofType.ticket
+            const routeDetails = `${ROUTES.transactions}/${!isSale ? 'purchases' : 'sales'}/${item.transactionId}`
 
             return (
               <TableRow key={item.transactionId}>
                 <TableCell><Chip variant='flat' color={isSale ? 'danger' : 'success'}>{item.operationType}</Chip></TableCell>
-                <TableCell><Chip variant='flat' color={isProofTicket ? 'warning' : 'secondary'}>{item.proofType}</Chip></TableCell>
+                <TableCell><Chip variant='dot' color={isProofTicket ? 'warning' : 'secondary'}>{item.proofType}</Chip></TableCell>
                 <TableCell>{item.totalImport?.toFixed(2)}</TableCell>
                 <TableCell>{item.discount?.toFixed(2)}</TableCell>
                 <TableCell>{item.totalPay?.toFixed(2)}</TableCell>
                 <TableCell>{item.supplier?.name}</TableCell>
                 <TableCell>{item.client?.names} {item.client?.lastnames}</TableCell>
                 <TableCell>{item.user?.names} {item.user?.lastnames}</TableCell>
+                <TableCell>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button isIconOnly size='sm' variant='light'>
+                        <Yesicon icon={CLASS_ICONS.options} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label='actions'
+                      variant='flat'
+                    >
+                      <DropdownItem key='view' startContent={<Yesicon icon={CLASS_ICONS.view} />} href={routeDetails}>Ver detalles</DropdownItem>
+                      <DropdownItem className={`${!isSale && 'hidden'}`} key='ticket' startContent={<Yesicon icon={CLASS_ICONS.ticket} />} href={routeDetails} target='_blank'>Ver comprobante</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
               </TableRow>
             )
           }}
         </TableBody>
       </Table>
-    </div>
+    </>
   )
 }
 export default TableTransactions

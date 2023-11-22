@@ -1,9 +1,9 @@
 'use client'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
+import ROUTES from '@/app/routes'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
 import { EUserType } from '@/types/enumDB'
 import { TUser } from '@/types/types'
-import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Input, Button, Pagination, Selection } from '@nextui-org/react'
+import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Input, Button, Pagination, Selection, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Link } from '@nextui-org/react'
 import React from 'react'
 
 const headerColumns = [
@@ -36,6 +36,11 @@ const headerColumns = [
     id: crypto.randomUUID(),
     name: 'Teléfono',
     sortable: false
+  },
+  {
+    id: crypto.randomUUID(),
+    name: 'Acciones',
+    sortable: false
   }
 ]
 
@@ -62,13 +67,15 @@ const data:Partial<TUser>[] = [
 
 function UsersPage () {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
+  const [isOpenModal, setIsOpenModal] = React.useState<boolean>(false)
+  const [userToDelete, setUserToDelete] = React.useState<string | null>(null)
 
   const topContent = React.useMemo(() => {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo usuario</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Button as={Link} href={`${ROUTES.users}/create`} color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo usuario</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de usuarios <span className='font-medium'>12</span></p>
@@ -97,10 +104,7 @@ function UsersPage () {
   }, [selectedKeys])
 
   return (
-    <div className='flex-1 p-2'>
-      <h1 className='text-2xl font-medium mb-3'>Usuarios</h1>
-      <Divider />
-      <br />
+    <>
       <Table
         isHeaderSticky
         aria-label='Tabla de usuarios'
@@ -138,11 +142,55 @@ function UsersPage () {
               <TableCell><Chip variant='flat' color={item.type === EUserType.admin ? 'success' : item.type === EUserType.superadmin ? 'secondary' : 'warning'}>{item.type}</Chip></TableCell>
               <TableCell>{item.email}</TableCell>
               <TableCell>{item.phone}</TableCell>
+              <TableCell>
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button isIconOnly size='sm' variant='light'>
+                      <Yesicon icon={CLASS_ICONS.options} />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    aria-label='actions'
+                    variant='flat' onAction={(key) => {
+                      if (key === 'delete') {
+                        setUserToDelete(item.username!)
+                        setIsOpenModal(true)
+                      }
+                    }}
+                  >
+                    <DropdownItem key='view' startContent={<Yesicon icon={CLASS_ICONS.view} />} href={`${ROUTES.users}/${item.username}`}>Ver</DropdownItem>
+                    <DropdownItem key='edit' startContent={<Yesicon icon={CLASS_ICONS.edit} />} href={`${ROUTES.users}/${item.username}/edit`}>Editar</DropdownItem>
+                    <DropdownItem key='delete' startContent={<Yesicon icon={CLASS_ICONS.delete} />} color='danger' className='text-danger'>Eliminar</DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </div>
+      <Modal placement='top' isOpen={isOpenModal} onOpenChange={setIsOpenModal}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className='flex flex-col gap-1'>Confirmación</ModalHeader>
+              <ModalBody>
+                <p>¿Estás seguro de eliminar este usuario?</p>
+                <small className='text-danger'><em>OJO: Esta acción es irreversible.</em></small>
+                <p>{userToDelete}</p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color='default' variant='light' onPress={onClose}>
+                  Cancelar
+                </Button>
+                <Button color='danger' onPress={onClose}>
+                  Confirmar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   )
 }
 export default UsersPage

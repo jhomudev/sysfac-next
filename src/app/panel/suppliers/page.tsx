@@ -1,62 +1,70 @@
 'use client'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
-import { EUserType } from '@/types/enumDB'
-import { TUser } from '@/types/types'
-import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Input, Button, Pagination, Selection } from '@nextui-org/react'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { getFormatedDate } from '@/libs/utils/date'
+import { TSupplier } from '@/types/types'
+import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Button, Pagination, Selection } from '@nextui-org/react'
 import React from 'react'
 
 const headerColumns = [
   {
     id: crypto.randomUUID(),
-    name: 'Nombre de usuario',
+    name: 'RUC',
     sortable: false
   },
   {
     id: crypto.randomUUID(),
-    name: 'Nombres',
+    name: 'Nombre',
     sortable: false
   },
   {
     id: crypto.randomUUID(),
-    name: 'Apellidos',
-    sortable: false
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Tipo',
-    sortable: true
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Correo',
+    name: 'Dirección',
     sortable: false
   },
   {
     id: crypto.randomUUID(),
     name: 'Teléfono',
     sortable: false
+  },
+  {
+    id: crypto.randomUUID(),
+    name: 'Fecha',
+    sortable: true
   }
 ]
 
-const data:Partial<TUser>[] = [
+const data:Partial<TSupplier>[] = [
   {
-    userId: 1,
-    username: 'usuario1',
-    names: 'Juan',
-    lastnames: 'Perez',
-    type: EUserType.admin,
-    email: 'juan.perez@email.com',
-    phone: '123456789'
+    supplierId: 1,
+    RUC: '112345676789',
+    name: 'Proveedor 1',
+    address: 'Jr. Marsical cacareees',
+    phone: '998094343',
+    createdAt: '2023-11-09 10:03:07'
   },
   {
-    userId: 2,
-    username: 'usuario2',
-    names: 'Carlos',
-    lastnames: 'Ramirez',
-    type: EUserType.seller,
-    email: 'carlos.ramirez@email.com',
-    phone: '123456780'
+    supplierId: 2,
+    RUC: '123456767892',
+    name: 'Proveedor 2',
+    address: 'Av. Aasambleas',
+    phone: '998998998',
+    createdAt: '2023-11-09 10:03:07'
+  },
+  {
+    supplierId: 3,
+    RUC: '123456767898',
+    name: 'Proveedor 3',
+    address: 'Jr. Bellido',
+    phone: '900990009',
+    createdAt: '2023-11-09 10:03:07'
+  },
+  {
+    supplierId: 4,
+    RUC: '1345656767898',
+    name: 'Proveedor 4',
+    address: 'Jr. Peresz de Regollar',
+    phone: '968230122',
+    createdAt: '2023-11-09 10:03:07'
   }
 ]
 
@@ -67,11 +75,11 @@ function Supplierspage () {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo usuario</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar proveedor' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo proveedor</Button>
         </div>
         <div className='flex items-center justify-between'>
-          <p>Total de usuarios <span className='font-medium'>12</span></p>
+          <p>Total de proveedores <span className='font-medium'>12</span></p>
           <div className='flex items-center gap-2'>
             <span>Resultados por página</span>
             <select>
@@ -97,8 +105,10 @@ function Supplierspage () {
   }, [selectedKeys])
 
   return (
-    <div className='flex-1 p-2'>
-      <h1 className='text-2xl font-medium mb-3'>Usuarios</h1>
+    <>
+      <h1 className='title-main'>Proveedores</h1>
+      <p className='text'>Gestione los los proveedores que tiene la empresa, agregue, modifique datos, etc.</p>
+      <br />
       <Divider />
       <br />
       <Table
@@ -129,20 +139,19 @@ function Supplierspage () {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron usuarios' items={data}>
+        <TableBody emptyContent='No se econtraron proveedores' items={data}>
           {(item) => (
-            <TableRow key={item.userId}>
-              <TableCell>{item.username}</TableCell>
-              <TableCell>{item.names}</TableCell>
-              <TableCell>{item.lastnames}</TableCell>
-              <TableCell><Chip variant='flat' color={item.type === EUserType.admin ? 'success' : item.type === EUserType.superadmin ? 'secondary' : 'warning'}>{item.type}</Chip></TableCell>
-              <TableCell>{item.email}</TableCell>
+            <TableRow key={item.supplierId}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.RUC}</TableCell>
+              <TableCell>{item.address}</TableCell>
               <TableCell>{item.phone}</TableCell>
+              <TableCell>{item.createdAt && getFormatedDate(item.createdAt).dateLetter}</TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </div>
+    </>
   )
 }
 export default Supplierspage

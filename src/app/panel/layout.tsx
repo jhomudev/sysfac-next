@@ -1,7 +1,8 @@
 'use client'
 import Header from '@/features/Header'
 import MenuBar from '@/features/MenuBar'
-import { Card } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
+import { motion } from 'framer-motion'
 // import { Button } from '@nextui-org/react'
 // import { signOut, useSession } from 'next-auth/react'
 import React from 'react'
@@ -19,11 +20,11 @@ function PanelLayout ({ children }: Props) {
       </div>
       <div className='flex-1 flex flex-col gap-5 overflow-auto'>
         <Header />
-        <main className='flex-1 flex'>
-          <Card className='flex-1 p-5'>
-            {children}
-          </Card>
-        </main>
+        {/* <main className='flex-1 flex'> */}
+        <Card as={motion.main} className='flex flex-1 overflow-visible'>
+          <CardBody className='flex-1 p-5'>{children}</CardBody>
+        </Card>
+        {/* </main> */}
       </div>
       {/* <Button onClick={() => { signOut() }} variant='shadow' color='danger'>Salir</Button>
       <pre>

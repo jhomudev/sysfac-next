@@ -1,5 +1,5 @@
 import { number } from 'zod'
-import { EOperationType, EProofType, ESaleFor, EUserState, EUserType } from './enumDB'
+import { ELocationType, EOperationType, EProofType, ESaleFor, EUserState, EUserType } from './enumDB'
 
 export type TUserCredentials = {
   username: string,
@@ -16,7 +16,28 @@ export type TUser = {
   lastnames: string,
   email: string | null,
   phone: `${number}` | null,
+  createdAt?: string,
+  updatedAt?: string
+}
+
+export type TSupplier = {
+  supplierId: number,
+  RUC: `${number}`,
+  name: string,
+  address: string,
+  phone: `${number}` | null,
   createdAt?: string
+  updatedAt?: string
+}
+
+export type TLocation = {
+  localId: number,
+  name: string,
+  address: string,
+  type: ELocationType,
+  canStoreMore: boolean,
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type TClient = {
@@ -31,7 +52,7 @@ export type TClient = {
   updateAt?: string
 }
 
-export type TTransactions = {
+export type TTransaction = {
   transactionId: number,
   operationType: EOperationType,
   proofType: EProofType,
@@ -47,8 +68,8 @@ export type TTransactions = {
   client: {
     id: number,
     dni: `${number}`,
-    names:string,
-    lastnames:string,
+    names: string,
+    lastnames: string,
   },
   user: {
     id: number,
@@ -59,11 +80,25 @@ export type TTransactions = {
   createdAt: string
 }
 
+export type TOperation = {
+  operationId: number,
+  description: string,
+  serialNumber?: string,
+  priceSale: number,
+  quantity: number,
+  importSale: number,
+  details: string,
+  transactionId: number,
+  createdAt: string
+}
+
 export type TCategory = {
   categoryId: number,
   slug: string,
   name: string,
-  image?: string
+  image?: string,
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type TProduct = {

@@ -11,6 +11,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        ptSans: ['"PT Sans"', 'sans-serif']
+      },
       colors: {
         myDark: '#0E0E0E',
         mySoftDark: '#9b9b9b',

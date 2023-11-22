@@ -7,7 +7,7 @@ export const NEXTUI_COLORS = {
   warning: '#f5a524'
 }
 
-export type THeaderColumns = {
+export type THeaderColumn = {
   id: string
   name: string,
   sortable?: boolean,

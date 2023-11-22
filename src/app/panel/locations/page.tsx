@@ -1,25 +1,20 @@
 'use client'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
-import { EUserType } from '@/types/enumDB'
-import { TUser } from '@/types/types'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { getFormatedDate } from '@/libs/utils/date'
+import { ELocationType } from '@/types/enumDB'
+import { TLocation } from '@/types/types'
 import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Input, Button, Pagination, Selection } from '@nextui-org/react'
 import React from 'react'
 
 const headerColumns = [
   {
     id: crypto.randomUUID(),
-    name: 'Nombre de usuario',
+    name: 'Nombre',
     sortable: false
   },
   {
     id: crypto.randomUUID(),
-    name: 'Nombres',
-    sortable: false
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Apellidos',
+    name: 'Dirección',
     sortable: false
   },
   {
@@ -29,34 +24,40 @@ const headerColumns = [
   },
   {
     id: crypto.randomUUID(),
-    name: 'Correo',
-    sortable: false
+    name: 'canStore',
+    sortable: true
   },
   {
     id: crypto.randomUUID(),
-    name: 'Teléfono',
-    sortable: false
+    name: 'Fecha',
+    sortable: true
   }
 ]
 
-const data:Partial<TUser>[] = [
+const data:TLocation[] = [
   {
-    userId: 1,
-    username: 'usuario1',
-    names: 'Juan',
-    lastnames: 'Perez',
-    type: EUserType.admin,
-    email: 'juan.perez@email.com',
-    phone: '123456789'
+    localId: 1,
+    name: 'Local 1',
+    type: ELocationType.warehouse,
+    address: 'Jr. Libertad',
+    canStoreMore: true,
+    createdAt: '2023-11-09 10:03:07'
   },
   {
-    userId: 2,
-    username: 'usuario2',
-    names: 'Carlos',
-    lastnames: 'Ramirez',
-    type: EUserType.seller,
-    email: 'carlos.ramirez@email.com',
-    phone: '123456780'
+    localId: 2,
+    name: 'Local 2',
+    type: ELocationType.store,
+    address: 'Jr. Asambleas',
+    canStoreMore: true,
+    createdAt: '2023-11-09 10:03:07'
+  },
+  {
+    localId: 3,
+    name: 'Local 3',
+    type: ELocationType.store,
+    address: 'Jr. Bellido',
+    canStoreMore: false,
+    createdAt: '2023-11-09 10:03:07'
   }
 ]
 
@@ -67,11 +68,11 @@ function LocationsPage () {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo usuario</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar local' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo local</Button>
         </div>
         <div className='flex items-center justify-between'>
-          <p>Total de usuarios <span className='font-medium'>12</span></p>
+          <p>Total de locales <span className='font-medium'>12</span></p>
           <div className='flex items-center gap-2'>
             <span>Resultados por página</span>
             <select>
@@ -97,25 +98,27 @@ function LocationsPage () {
   }, [selectedKeys])
 
   return (
-    <div className='flex-1 p-2'>
-      <h1 className='text-2xl font-medium mb-3'>Usuarios</h1>
+  // <div className='flex-1 p-2'>
+    <>
+      <h1 className='title-main'>Locales</h1>
+      <p className='text'>Gestione los locales de la empresa o negocio, agregue o quite locales, es importante tener registrados los locales en donde circulan los productos.</p>
+      <br />
       <Divider />
       <br />
       <Table
         isHeaderSticky
-        aria-label='Tabla de usuarios'
+        aria-label='Tabla de locals'
         bottomContentPlacement='outside'
         classNames={{
           wrapper: 'max-h-[382px]'
         }}
         selectedKeys={selectedKeys}
         selectionMode='multiple'
-        // sortDescriptor={sortDescriptor}
+          // sortDescriptor={sortDescriptor}
         topContent={topContent}
         bottomContent={bottomContent}
         topContentPlacement='outside'
         onSelectionChange={setSelectedKeys}
-        // onSortChange={() = >{}}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -129,20 +132,20 @@ function LocationsPage () {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron usuarios' items={data}>
+        <TableBody emptyContent='No se econtraron locals' items={data}>
           {(item) => (
-            <TableRow key={item.userId}>
-              <TableCell>{item.username}</TableCell>
-              <TableCell>{item.names}</TableCell>
-              <TableCell>{item.lastnames}</TableCell>
-              <TableCell><Chip variant='flat' color={item.type === EUserType.admin ? 'success' : item.type === EUserType.superadmin ? 'secondary' : 'warning'}>{item.type}</Chip></TableCell>
-              <TableCell>{item.email}</TableCell>
-              <TableCell>{item.phone}</TableCell>
+            <TableRow key={item.localId}>
+              <TableCell>{item.name}</TableCell>
+              <TableCell>{item.address}</TableCell>
+              <TableCell><Chip variant='flat' color={item.type === ELocationType.store ? 'warning' : 'secondary'}>{item.type}</Chip></TableCell>
+              <TableCell><Chip variant='dot' color={item.canStoreMore ? 'primary' : 'danger'}>{item.canStoreMore ? 'Sí' : 'No'}</Chip></TableCell>
+              <TableCell>{item.createdAt && getFormatedDate(item.createdAt).dateLetter}</TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </div>
+    </>
+  // </div>
   )
 }
 export default LocationsPage

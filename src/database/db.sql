@@ -1,4 +1,4 @@
--- Active: 1697733910034@@localhost@3307@sysfac
+-- Active: 1700143401531@@127.0.0.1@3307@sysfac
 DROP DATABASE IF EXISTS sysfac;
 
 
@@ -209,6 +209,7 @@ CREATE TABLE
   OPERATIONS (
     operationId INT NOT NULL AUTO_INCREMENT,
     -- operation data
+    description VARCHAR(500)NOT NULL,
     serialNumber VARCHAR(100),
     priceSale DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
     quantity SMALLINT NOT NULL,

@@ -1,7 +1,6 @@
 'use client'
 import CardCategory from '@/components/CardCategory'
 import { TCategory } from '@/types/types'
-import { Divider } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
 
@@ -49,18 +48,19 @@ const categories: TCategory[] = [
 function CategoriesPage () {
   return (
     <>
-      <div className='flex-1 p-2'>
-        <h1 className='text-2xl font-medium mb-3'>Categorías</h1>
-        <Divider />
-        <br />
-        <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
-          {
-            categories.map((cat, i) => (
-              <CardCategory key={cat.name} {...cat} customMotionI={i} />
-            ))
-          }
-        </motion.div>
-      </div>
+      <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
+        {
+          categories.map((cat, i) => (
+            <CardCategory
+              key={cat.categoryId}
+              customMotionI={i}
+              name={cat.name}
+              slug={cat.slug}
+              image={cat.image}
+            />
+          ))
+        }
+      </motion.div>
     </>
   )
 }

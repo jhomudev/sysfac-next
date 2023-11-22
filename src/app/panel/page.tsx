@@ -42,6 +42,7 @@ const dashboardItems: CardEntityDashboardProps[] = [
 function DashboardPage () {
   return (
     <>
+      <h1 className='title-main'>Dashboard</h1>
       <div className='flex flex-col gap-5'>
         <div className='flex flex-wrap gap-5'>
           {

@@ -1,6 +1,5 @@
 'use client'
-import Yesicon from '@/components/Yesicon'
-import { CLASS_ICONS } from '@/libs/yesicon'
+import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
 import { ESaleFor, EStateProduct } from '@/types/enumDB'
 import { TProduct } from '@/types/types'
 import { Divider, Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Chip, Input, Button, Pagination, Selection, Avatar } from '@nextui-org/react'
@@ -12,6 +11,7 @@ type THEaderColumns = {
   sortable: boolean,
   align?: 'start' | 'center' | 'end'
 }
+
 const headerColumns: THEaderColumns[] = [
   {
     id: crypto.randomUUID(),
@@ -111,7 +111,7 @@ function ProductsPage () {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar producto' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
           <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo producto</Button>
         </div>
         <div className='flex items-center justify-between'>
@@ -142,7 +142,9 @@ function ProductsPage () {
 
   return (
     <div className='flex-1 p-2'>
-      <h1 className='text-2xl font-medium mb-3'>Productos</h1>
+      <h1 className='title-main'>Productos</h1>
+      <p className='text'>Gestiona los productos dentro del sistema, agregue nuevos productos al inventario, modifique información o elimine los productos que considere.</p>
+      <br />
       <Divider />
       <br />
       <Table
@@ -173,7 +175,7 @@ function ProductsPage () {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron usuarios' items={data}>
+        <TableBody emptyContent='No se econtraron productos' items={data}>
           {(item) => {
             const isActive = item.isActive
             const saleForUnit = item.saleFor === ESaleFor.unit
@@ -186,7 +188,7 @@ function ProductsPage () {
                 <TableCell>{item.priceSale.toFixed(2)}</TableCell>
                 <TableCell><Chip variant='flat' color={`${saleForUnit ? 'secondary' : 'warning'}`}>{item.saleFor}</Chip></TableCell>
                 <TableCell>{item.unit}</TableCell>
-                <TableCell><Chip variant='flat' color={`${isActive ? 'success' : 'danger'}`}>{isActive ? EStateProduct.active : EStateProduct.active}</Chip></TableCell>
+                <TableCell><Chip variant='dot' color={`${isActive ? 'success' : 'danger'}`}>{isActive ? EStateProduct.active : EStateProduct.inactive}</Chip></TableCell>
               </TableRow>
             )
           }}
