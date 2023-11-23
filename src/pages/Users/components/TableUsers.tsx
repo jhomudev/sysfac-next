@@ -1,7 +1,9 @@
 'use client'
 import ROUTES from '@/app/routes'
-import { Yesicon, CLASS_ICONS } from '@/components'
-import { EUserType, User } from '@/models'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { User } from '@/types/User'
+import { EUserType } from '@/types/enums.d'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection,
@@ -60,8 +62,8 @@ function TableUsers ({ users }: Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button as={Link} href={`${ROUTES.users}/create`} color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo usuario</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar usuario' startContent={<Yesicon icon={ICONS.search} />} />
+          <Button as={Link} href={`${ROUTES.users}/create`} color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo usuario</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de usuarios <span className='font-medium'>12</span></p>
@@ -132,7 +134,7 @@ function TableUsers ({ users }: Props) {
                 <Dropdown>
                   <DropdownTrigger>
                     <Button isIconOnly size='sm' variant='light'>
-                      <Yesicon icon={CLASS_ICONS.options} />
+                      <Yesicon icon={ICONS.options} />
                     </Button>
                   </DropdownTrigger>
                   <DropdownMenu
@@ -144,9 +146,9 @@ function TableUsers ({ users }: Props) {
                       }
                     }}
                   >
-                    <DropdownItem key='view' startContent={<Yesicon icon={CLASS_ICONS.view} />} href={`${ROUTES.users}/${user.username}`}>Ver</DropdownItem>
-                    <DropdownItem key='edit' startContent={<Yesicon icon={CLASS_ICONS.edit} />} href={`${ROUTES.users}/${user.username}/edit`}>Editar</DropdownItem>
-                    <DropdownItem key='delete' startContent={<Yesicon icon={CLASS_ICONS.delete} />} color='danger' className='text-danger'>Eliminar</DropdownItem>
+                    <DropdownItem key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.users}/${user.username}`}>Ver</DropdownItem>
+                    <DropdownItem key='edit' startContent={<Yesicon icon={ICONS.edit} />} href={`${ROUTES.users}/${user.username}/edit`}>Editar</DropdownItem>
+                    <DropdownItem key='delete' startContent={<Yesicon icon={ICONS.delete} />} color='danger' className='text-danger'>Eliminar</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </TableCell>

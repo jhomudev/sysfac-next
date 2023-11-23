@@ -1,7 +1,8 @@
 'use client'
+import { SelectTagItem } from '@/types/components'
 import { Button, Select, SelectItem } from '@nextui-org/react'
 
-const itemsCategories = [
+const itemsCategories: SelectTagItem[] = [
   {
     label: 'PC',
     value: 'pc'

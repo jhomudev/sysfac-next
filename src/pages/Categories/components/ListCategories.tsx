@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
 import { motion } from 'framer-motion'
-import { Category } from '../models'
-import { CardCategory } from '.'
+import CardCategory from './CardCategory'
+import { Category } from '@/types/Category'
 
 type Props = {
   categories: Category[]

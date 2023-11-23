@@ -4,8 +4,9 @@ import {
   Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,
   Tooltip, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
 } from '@nextui-org/react'
-import { Yesicon, CLASS_ICONS } from '@/components'
-import { TableHeaderColumns } from '@/models'
+import { TableHeaderColumns } from '@/types/components'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 
 export type TablePurchaseProductsItem={
   product: string,
@@ -74,7 +75,7 @@ function TablePurchaseProducts ({ dataProducts }:Props) {
           color='secondary'
           className='w-min'
         >
-          <Yesicon icon={CLASS_ICONS.clean} />Limpiar carrito
+          <Yesicon icon={ICONS.clean} />Limpiar carrito
         </Button>
       </>
     )
@@ -110,7 +111,7 @@ function TablePurchaseProducts ({ dataProducts }:Props) {
               <TableCell>{item.serialnumber}</TableCell>
               <TableCell>{item.quantity}</TableCell>
               <TableCell>{item.total}</TableCell>
-              <TableCell><Tooltip content='Eliminar' color='danger'><span className='block w-min text-danger cursor-pointer'><Yesicon fontSize={20} icon={CLASS_ICONS.delete} /></span></Tooltip></TableCell>
+              <TableCell><Tooltip content='Eliminar' color='danger'><span className='block w-min text-danger cursor-pointer'><Yesicon fontSize={20} icon={ICONS.delete} /></span></Tooltip></TableCell>
             </TableRow>
           )}
         </TableBody>

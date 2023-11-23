@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
-import { EUserType } from '@/types/enumDB'
 import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import Cart from './Cart'
 import { useCart } from '@/hooks'
-import { CLASS_ICONS, Yesicon } from '@/components'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { EUserType } from '@/types/enums.d'
 
 function Header () {
   const { data: session } = useSession()
@@ -35,7 +36,7 @@ function Header () {
               aria-label='Carrito de venta'
               variant='light'
             >
-              <Yesicon fontSize={20} icon={CLASS_ICONS.cart} />
+              <Yesicon fontSize={20} icon={ICONS.cart} />
             </Button>
           </Badge>
           <Dropdown placement='bottom-end' className='max-w-sm'>
@@ -47,7 +48,7 @@ function Header () {
                   aria-label='Notificaciones'
                   variant='light'
                 >
-                  <Yesicon fontSize={20} icon={CLASS_ICONS.notifications} />
+                  <Yesicon fontSize={20} icon={ICONS.notifications} />
                 </Button>
               </DropdownTrigger>
             </Badge>

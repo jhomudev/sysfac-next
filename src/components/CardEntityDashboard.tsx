@@ -1,7 +1,7 @@
 'use client'
 import { Card, CardBody, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
-import { Yesicon } from '.'
+import Yesicon from './Yesicon'
 
 export type CardEntityDashboardProps = {
   route?: string,
@@ -11,7 +11,7 @@ export type CardEntityDashboardProps = {
   icon: string,
 }
 
-export function CardEntityDashboard ({ route, label, quantity, color, icon }: CardEntityDashboardProps) {
+function CardEntityDashboard ({ route, label, quantity, color, icon }: CardEntityDashboardProps) {
   return (
     <motion.article
       className='flex-[1_0_100px] flex h-36 min-h-[120px] max-h-[160px]'
@@ -32,3 +32,5 @@ export function CardEntityDashboard ({ route, label, quantity, color, icon }: Ca
     </motion.article>
   )
 }
+
+export default CardEntityDashboard

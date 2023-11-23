@@ -1,7 +1,7 @@
-'use client'
-import { Header, MenuBar } from '@/features'
-import { Card, CardBody } from '@nextui-org/react'
 import React from 'react'
+import Header from '@/features/Header'
+import MenuBar from '@/features/MenuBar'
+import { Card, CardBody } from '@nextui-org/card'
 
 type Props = {
   children: React.ReactNode

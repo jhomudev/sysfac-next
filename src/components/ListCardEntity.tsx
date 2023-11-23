@@ -1,5 +1,6 @@
 'use client'
-import { CardEntityDashboard, CardEntityDashboardProps } from '.'
+
+import CardEntityDashboard, { CardEntityDashboardProps } from './CardEntityDashboard'
 
 type Props = {
   items: CardEntityDashboardProps[]

@@ -1,10 +1,11 @@
 'use client'
-import { Yesicon, CLASS_ICONS } from '@/components'
-import { Product } from '@/pages/Productos/models'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { Product } from '@/types/Product'
 import { Button, Card, CardBody, CardFooter, CardHeader, Image } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
-import { FormSaleAddProduct } from '.'
+import FormSaleAddProduct from './FormSaleAddProduct'
 
 type Props = {
   products: Product[]
@@ -40,7 +41,7 @@ function ListProductsPerSale ({ products }: Props) {
                     setProductToAdd(product)
                     setShowForm(true)
                   }}
-                ><Yesicon fontSize={20} icon={CLASS_ICONS.cart} />
+                ><Yesicon fontSize={20} icon={ICONS.cart} />
                 </Button>
               </CardFooter>
             </Card>

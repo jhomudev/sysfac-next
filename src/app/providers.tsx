@@ -5,7 +5,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Provider } from 'react-redux'
-import { store } from '@/redux/store'
+import { store } from '@/store/store'
 
 export function Providers ({ children }: { children: React.ReactNode }) {
   const router = useRouter()

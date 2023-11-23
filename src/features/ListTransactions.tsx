@@ -1,8 +1,10 @@
 'use client'
 import ROUTES from '@/app/routes'
-import { CLASS_ICONS, Yesicon } from '@/components'
-import { NEXTUI_COLORS, getLeftTime } from '@/libs/utils'
-import { EOperationType, Transaction } from '@/models'
+import Yesicon from '@/components/Yesicon'
+import { ICONS, NEXTUI_COLORS } from '@/contants'
+import { Transaction } from '@/types/Transaction'
+import { EOperationType } from '@/types/enums.d'
+import getLeftTime from '@/utils/getLeftTime'
 import { Card, CardHeader, Link, Listbox, ListboxItem } from '@nextui-org/react'
 
 type Props = {
@@ -31,7 +33,7 @@ function ListTransactions ({ transactions }: Props) {
                 <ListboxItem
                   key={item.id}
                   description={
-                    <span className='flex items-center text'><Yesicon fontSize={15} icon={CLASS_ICONS.time} />{getLeftTime(item.createdAt)}</span>
+                    <span className='flex items-center text'><Yesicon fontSize={15} icon={ICONS.time} />{getLeftTime(item.createdAt)}</span>
                     }
                   startContent={
                     <span

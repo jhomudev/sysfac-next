@@ -1,6 +1,0 @@
-export { default as FormUserChangePassword } from './FormUserChangePassword'
-export { default as FormUserCreate } from './FormUserCreate'
-export { default as FormUserEditAccount } from './FormUserEditAccount'
-export { default as FormUserEditData } from './FormUserEditData'
-export { default as TableTransactionsPerUser } from './TableTransactionsPerUser'
-export { default as TableUsers } from './TableUsers'

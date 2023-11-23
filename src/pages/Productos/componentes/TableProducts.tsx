@@ -1,12 +1,14 @@
 'use client'
-import { ESaleFor, EStateProduct, TableHeaderColumns } from '@/models'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { Product } from '@/types/Product'
+import { TableHeaderColumns } from '@/types/components'
+import { ESaleFor, EStateProduct } from '@/types/enums.d'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection, Avatar
 } from '@nextui-org/react'
 import React from 'react'
-import { Yesicon, CLASS_ICONS } from '@/components'
-import { Product } from '../models'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -63,8 +65,8 @@ function TableProducts ({ products }:Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar producto' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo producto</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar producto' startContent={<Yesicon icon={ICONS.search} />} />
+          <Button color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo producto</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de produtos <span className='font-medium'>12</span></p>

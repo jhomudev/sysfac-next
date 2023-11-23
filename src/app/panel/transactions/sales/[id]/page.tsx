@@ -1,9 +1,12 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, Yesicon, CLASS_ICONS, MyBreadcrumbItemProps } from '@/components'
-import { formatDate } from '@/libs/utils'
-import { EOperationType, EProofType, Transaction } from '@/models'
-import { Operation } from '@/pages/Transactions/models'
-import { TableOperationsPerSale } from '@/pages/Transactions/components'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import TableOperationsPerSale from '@/pages/Transactions/components/TableOperationsPerSale'
+import { Operation } from '@/types/Operation'
+import { Transaction } from '@/types/Transaction'
+import { EOperationType, EProofType } from '@/types/enums.d'
+import formatDate from '@/utils/formatDate'
 import { Button, Divider, Link } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
@@ -128,7 +131,7 @@ function SalePage ({ params }: Props) {
             <dd className='text mb-2'>{formatDate(data.createdAt).dateLetter}</dd>
           </dl>
         </div>
-        <Button startContent={<Yesicon icon={CLASS_ICONS.ticket} />} as={Link} href={`${ROUTES.transactions}/sales/${transactionId}`} target='_blank' color='secondary' variant='flat'>Ver comprobante</Button>
+        <Button startContent={<Yesicon icon={ICONS.ticket} />} as={Link} href={`${ROUTES.transactions}/sales/${transactionId}`} target='_blank' color='secondary' variant='flat'>Ver comprobante</Button>
       </section>
       <br />
       <h2 className='title'>Movimientos</h2>

@@ -1,26 +1,29 @@
 'use client'
+import React from 'react'
 import { useCart } from '@/hooks'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-type FormData = {
+type FormDataUser = {
   names: string,
   lastnames: string,
   dni: number,
 }
+
 type FormDataDiscount = {
   discount: number,
   typeDiscount: 'value' | 'percent'
 }
 
 function CartForm () {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+  const { register, handleSubmit, formState: { errors } } = useForm<FormDataUser>()
+
   const formDiscount = useForm<FormDataDiscount>()
+  const [typeDiscountForm, setTypeDiscountForm] = React.useState<'percent' | 'value'>('percent')
+
   const { addDiscount, cart: { items, _import } } = useCart()
   const hasItems = items.length > 0
-  const [typeDiscountForm, setTypeDiscountForm] = React.useState<'percent' | 'value'>('percent')
 
   const handleSubmitForm = handleSubmit((data) => {
     if (!hasItems) {
@@ -81,7 +84,7 @@ function CartForm () {
         <h2 className='title'>Cliente</h2>
         {/* <Input
           variant='bordered'
-          placeholder='Ingrese el DNI o RUC del cliente' endContent={<Yesicon icon={CLASS_ICONS.search} />}
+          placeholder='Ingrese el DNI o RUC del cliente' endContent={<Yesicon icon={ICONS.search} />}
         /> */}
       </div>
       <form onSubmit={handleSubmitForm} className='flex flex-col gap-2'>

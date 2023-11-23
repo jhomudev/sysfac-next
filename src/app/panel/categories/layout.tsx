@@ -1,7 +1,9 @@
 import React from 'react'
 import ROUTES from '@/app/routes'
-import { Button, Divider, Link } from '@nextui-org/react'
-import { Yesicon, CLASS_ICONS } from '@/components'
+import { Button } from '@nextui-org/button'
+import { Divider } from '@nextui-org/divider'
+import { Link } from '@nextui-org/link'
+import Yesicon, { ICONSS } from '@/components/Yesicon'
 
 type Props={
   children: React.ReactNode
@@ -15,7 +17,7 @@ function CategoriesLayout ({ children }:Props) {
           <h1 className='title-main'>Categorías</h1>
           <p className='text'>Gestiona las categorias de los productos que existen en el sistema, es necesario tener todos los productos categorizados segun algun criterrio.</p>
         </div>
-        <Button as={Link} href={`${ROUTES.categories}/create`} color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nueva categoria</Button>
+        <Button as={Link} href={`${ROUTES.categories}/create`} color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nueva categoria</Button>
       </div>
       <br />
       <Divider />

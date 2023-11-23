@@ -1,6 +1,8 @@
-import { CLASS_ICONS, Yesicon } from '@/components'
+'use client'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 import { useCart } from '@/hooks'
-import { TableHeaderColumns } from '@/models'
+import { TableHeaderColumns } from '@/types/components'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react'
 
 const headerColumns: TableHeaderColumns[] = [
@@ -42,6 +44,10 @@ function CartTableItems () {
   return (
     <Table
       className='w-full md:w-[70%]'
+      classNames={{
+        wrapper: 'flex-1',
+        table: 'h-full'
+      }}
       isHeaderSticky
       aria-label='Tabla de productos para compra'
     >
@@ -73,7 +79,7 @@ function CartTableItems () {
                       removeProductFromCart(item.itemId)
                     }} className='block w-min text-danger cursor-pointer'
                   >
-                    <Yesicon fontSize={20} icon={CLASS_ICONS.delete} />
+                    <Yesicon fontSize={20} icon={ICONS.delete} />
                   </button>
                 </Tooltip>
                 <Tooltip content='Gratificar' color='success'>
@@ -83,7 +89,7 @@ function CartTableItems () {
                     }}
                     className='block w-min text-success cursor-pointer'
                   >
-                    <Yesicon fontSize={20} icon={CLASS_ICONS.tag} />
+                    <Yesicon fontSize={20} icon={ICONS.tag} />
                   </button>
                 </Tooltip>
               </div>

@@ -1,9 +1,14 @@
-// 'use client'
 import ROUTES from '../routes'
-import { NEXTUI_COLORS } from '@/libs/utils'
-import { EOperationType, EProofType, Transaction } from '@/models'
-import { ChartMoreSales, ChartStates, ChartTransactions, ListTransactions } from '@/features'
-import { CardGraphic, CardEntityDashboardProps, ListCardEntity } from '@/components'
+import ChartTransactions from '@/features/ChartTransactions'
+import ListTransactions from '@/features/ListTransactions'
+import ChartStates from '@/features/ChartStates'
+import ChartMoreSales from '@/features/ChartMoreSales'
+import ListCardEntity from '@/components/ListCardEntity'
+import CardGraphic from '@/components/CardGraphic'
+import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
+import { NEXTUI_COLORS } from '@/contants'
+import { EOperationType, EProofType } from '@/types/enums.d'
+import { Transaction } from '@/types/Transaction'
 
 const dashboardItems: CardEntityDashboardProps[] = [
   {
@@ -143,33 +148,33 @@ function DashboardPage () {
       <h1 className='title-main'>Dashboard</h1>
       <div className='flex flex-col gap-5'>
         <div className='flex flex-wrap gap-5'>
-          {/* <ListCardEntity items={dashboardItems} /> */}
+          <ListCardEntity items={dashboardItems} />
         </div>
         <div className='flex flex-col lg:flex-row gap-5'>
-          {/* <CardGraphic
+          <CardGraphic
             className='w-full p-4'
             title='Análisis de movimientos'
             description='El gráfico muestra las ventas y compras mensuales a lo largo del tiempo. Puede ver cómo las transacciones han variado mes a mes.'
           >
             <ChartTransactions />
-          </CardGraphic> */}
-          {/* <ListTransactions transactions={transactions} /> */}
+          </CardGraphic>
+          <ListTransactions transactions={transactions} />
         </div>
         <div className='flex flex-col lg:flex-row gap-5'>
-          {/* <CardGraphic
+          <CardGraphic
             className='w-full lg:w-[35%] p-4'
             title='Gráfico por estados'
             description='Observa la cantidad de productos correspondiente a cada estado'
           >
             <ChartStates />
-          </CardGraphic> */}
-          {/* <CardGraphic
+          </CardGraphic>
+          <CardGraphic
             className='w-full lg:w-[65%] p-4'
             title='Productos más vendidos'
             description='Verifique los productos más con más ventas.'
           >
             <ChartMoreSales />
-          </CardGraphic> */}
+          </CardGraphic>
         </div>
       </div>
     </>

@@ -1,12 +1,14 @@
 'use client'
-import { Yesicon, CLASS_ICONS } from '@/components'
-import { formatDate } from '@/libs/utils'
-import { ELocationType } from '@/models'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { Location } from '@/types/Location'
+import { TableHeaderColumns } from '@/types/components'
+import { ELocationType } from '@/types/enums.d'
+import formatDate from '@/utils/formatDate'
 import { Button, Chip, Input, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import React from 'react'
-import { Location } from '../models'
 
-const headerColumns = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Nombre',
@@ -45,8 +47,8 @@ function TableLocations ({ locations }: Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar local' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo local</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar local' startContent={<Yesicon icon={ICONS.search} />} />
+          <Button color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo local</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de locales <span className='font-medium'>12</span></p>

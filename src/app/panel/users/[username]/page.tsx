@@ -4,7 +4,7 @@ import { Link } from '@nextui-org/link'
 import { Card, CardBody, CardHeader } from '@nextui-org/card'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 import { Button, Tooltip } from '@nextui-org/react'
-import { MyBreadcrumbItemProps, MyBreadcrumbs, Yesicon, CLASS_ICONS } from '@/components'
+import { MyBreadcrumbItemProps, MyBreadcrumbs, Yesicon, ICONSS } from '@/components'
 import { EOperationType, EProofType, Transaction } from '@/models'
 import { TableTransactionsPerUser } from '@/pages/Users/components'
 
@@ -107,7 +107,7 @@ function UserPage ({ params }: Props) {
                 as={Link}
                 href={`${ROUTES.users}/${username}/edit#personal`}
               >
-                <Yesicon fontSize={20} icon={CLASS_ICONS.edit} />
+                <Yesicon fontSize={20} icon={ICONS.edit} />
               </Button>
             </Tooltip>
           </CardHeader>
@@ -141,7 +141,7 @@ function UserPage ({ params }: Props) {
                 as={Link}
                 href={`${ROUTES.users}/${username}/edit#account`}
               >
-                <Yesicon fontSize={20} icon={CLASS_ICONS.edit} />
+                <Yesicon fontSize={20} icon={ICONS.edit} />
               </Button>
             </Tooltip>
           </CardHeader>

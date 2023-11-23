@@ -1,10 +1,14 @@
 'use client'
 import ROUTES from '@/app/routes'
-import { CLASS_ICONS, CardEntityDashboardProps, CardGraphic, ListCardEntity, Yesicon } from '@/components'
-import { ChartTransactions } from '@/features'
-import { NEXTUI_COLORS } from '@/libs/utils'
-import { EOperationType, EProofType, Transaction } from '@/models'
-import { TableTransactions } from '@/pages/Transactions/components'
+import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
+import CardGraphic from '@/components/CardGraphic'
+import ListCardEntity from '@/components/ListCardEntity'
+import Yesicon from '@/components/Yesicon'
+import { ICONS, NEXTUI_COLORS } from '@/contants'
+import ChartTransactions from '@/features/ChartTransactions'
+import TableTransactions from '@/pages/Transactions/components/TableTransactions'
+import { Transaction } from '@/types/Transaction'
+import { EOperationType, EProofType } from '@/types/enums.d'
 import { Card, CardBody, Divider, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
@@ -14,13 +18,13 @@ const itemsTransactions: CardEntityDashboardProps[] = [
     label: 'Ventas',
     quantity: 200,
     color: NEXTUI_COLORS.danger,
-    icon: CLASS_ICONS.sales
+    icon: ICONS.sales
   },
   {
     label: 'Compras',
     quantity: 200,
     color: NEXTUI_COLORS.success,
-    icon: CLASS_ICONS.purchases
+    icon: ICONS.purchases
   }
 ]
 
@@ -131,7 +135,7 @@ function TransactionsPage () {
             >
               <Card as={Link} href={`${ROUTES.transactions}/purchases/new`} className='border-success border-2 flex-1 '>
                 <CardBody className='flex flex-row gap-3 items-center justify-center text-success'>
-                  <Yesicon fontSize={20} icon={CLASS_ICONS.plus} />
+                  <Yesicon fontSize={20} icon={ICONS.plus} />
                   <span>Nueva compra</span>
                 </CardBody>
               </Card>
@@ -143,7 +147,7 @@ function TransactionsPage () {
             >
               <Card as={Link} href={`${ROUTES.transactions}/sales/new`} className='border-danger border-2  flex-1'>
                 <CardBody className='flex flex-row gap-3 items-center justify-center text-danger'>
-                  <Yesicon fontSize={20} icon={CLASS_ICONS.plus} />
+                  <Yesicon fontSize={20} icon={ICONS.plus} />
                   <span>Nueva venta</span>
                 </CardBody>
               </Card>

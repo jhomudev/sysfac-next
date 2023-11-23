@@ -1,12 +1,15 @@
+'use client'
 import ROUTES from '@/app/routes'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { Transaction } from '@/types/Transaction'
+import { TableHeaderColumns } from '@/types/components'
+import { EOperationType, EProofType } from '@/types/enums.d'
 import {
   Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
 import React from 'react'
-import { Transaction } from '../models'
-import { EOperationType, EProofType, TableHeaderColumns } from '@/models'
-import { Yesicon, CLASS_ICONS } from '@/components'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -63,9 +66,9 @@ function TableTransactions ({ transactions }:Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por usuario' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color='success' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo compra</Button>
-          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color='danger' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo venta</Button>
+          <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por usuario' startContent={<Yesicon icon={ICONS.search} />} />
+          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color='success' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
+          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color='danger' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de transacciones <span className='font-medium'>12</span></p>
@@ -142,15 +145,15 @@ function TableTransactions ({ transactions }:Props) {
                   <Dropdown>
                     <DropdownTrigger>
                       <Button isIconOnly size='sm' variant='light'>
-                        <Yesicon icon={CLASS_ICONS.options} />
+                        <Yesicon icon={ICONS.options} />
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu
                       aria-label='actions'
                       variant='flat'
                     >
-                      <DropdownItem key='view' startContent={<Yesicon icon={CLASS_ICONS.view} />} href={routeDetails}>Ver detalles</DropdownItem>
-                      <DropdownItem className={`${!isSale && 'hidden'}`} key='ticket' startContent={<Yesicon icon={CLASS_ICONS.ticket} />} href={routeDetails} target='_blank'>Ver comprobante</DropdownItem>
+                      <DropdownItem key='view' startContent={<Yesicon icon={ICONS.view} />} href={routeDetails}>Ver detalles</DropdownItem>
+                      <DropdownItem className={`${!isSale && 'hidden'}`} key='ticket' startContent={<Yesicon icon={ICONS.ticket} />} href={routeDetails} target='_blank'>Ver comprobante</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </TableCell>

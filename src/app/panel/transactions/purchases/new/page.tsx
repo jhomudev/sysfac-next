@@ -1,10 +1,11 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
-import { ESaleFor } from '@/models'
-import { Product } from '@/pages/Productos/models'
-import { Supplier } from '@/pages/Suppliers/models'
-import { FormPurchaseAddProducts, FormPurchaseConfirm, TablePurchaseProducts } from '@/pages/Transactions/components'
-import { TablePurchaseProductsItem } from '@/pages/Transactions/components/TablePurchaseProducts'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import FormPurchaseAddProducts from '@/pages/Transactions/components/FormPurchaseAddProducts'
+import FormPurchaseConfirm from '@/pages/Transactions/components/FormPurchaseConfirm'
+import TablePurchaseProducts, { TablePurchaseProductsItem } from '@/pages/Transactions/components/TablePurchaseProducts'
+import { Product } from '@/types/Product'
+import { Supplier } from '@/types/Supplier'
+import { ESaleFor } from '@/types/enums.d'
 import { Divider } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -72,7 +73,7 @@ const data:TablePurchaseProductsItem[] = [
   }
 ]
 
-const suppliers:Supplier[] = [
+const suppliers: Supplier[] = [
   {
     id: 1,
     RUC: '112345676789',

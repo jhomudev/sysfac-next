@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
-import { Yesicon, CLASS_ICONS } from '@/components'
 import { Button, Input } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 
 function FormLogin () {
   const router = useRouter()
@@ -42,18 +43,18 @@ function FormLogin () {
         errorMessage={errors.username && 'Este campo es requerido'}
         color='success'
         variant='underlined'
-        startContent={<Yesicon className='text-mySoftLight' icon={CLASS_ICONS.user} />}
+        startContent={<Yesicon className='text-mySoftLight' icon={ICONS.user} />}
         placeholder='username'
         {...register('username', { required: true })}
       />
       <Input
         type={isVisible ? 'text' : 'password'}
-        endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? CLASS_ICONS.show : CLASS_ICONS.hidden} /></button>}
+        endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? ICONS.show : ICONS.hidden} /></button>}
         isInvalid={!!errors.password}
         errorMessage={!!errors.password && 'Este campo es requerido'}
         color='success'
         variant='underlined'
-        startContent={<Yesicon className='text-mySoftLight' icon={CLASS_ICONS.password} />}
+        startContent={<Yesicon className='text-mySoftLight' icon={ICONS.password} />}
         placeholder='Password'
         {...register('password', { required: true })}
       />

@@ -1,9 +1,10 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
-import { formatDate } from '@/libs/utils'
-import { EOperationType, EProofType, Transaction } from '@/models'
-import { TableOperationsPerPurchase } from '@/pages/Transactions/components'
-import { Operation } from '@/pages/Transactions/models'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import TableOperationsPerPurchase from '@/pages/Transactions/components/TableOperationsPerPurchase'
+import { Operation } from '@/types/Operation'
+import { Transaction } from '@/types/Transaction'
+import { EOperationType, EProofType } from '@/types/enums.d'
+import formatDate from '@/utils/formatDate'
 import { Divider } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
@@ -101,9 +102,11 @@ type Props = {
 }
 
 function PurchasePage ({ params }: Props) {
+  const { purchaseId } = params
+
   return (
     <>
-      <h1 className='title-main'>Detalles de compra</h1>
+      <h1 className='title-main'>Detalles de compra {purchaseId}</h1>
       <Divider />
       <MyBreadcrumbs className='mt-2' items={breadcrumbItems} />
       <br />
@@ -116,10 +119,6 @@ function PurchasePage ({ params }: Props) {
             <dd className='text mb-2'>{data.supplier.name}</dd>
           </dl>
           <dl>
-            {/* <dt className='title mb-0'>Importe:</dt> */}
-            {/* <dd className='text mb-2'>S/{data.totalImport}</dd> */}
-            {/* <dt className='title mb-0'>Descuento:</dt>
-            <dd className='text mb-2'>S/{data.discount}</dd> */}
             <dt className='title mb-0'>Total pagado:</dt>
             <dd className='text mb-2'>S/{data.totalPay}</dd>
             <dt className='title mb-0'>Fecha:</dt>

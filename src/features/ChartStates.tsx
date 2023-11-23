@@ -1,7 +1,7 @@
 'use client'
 import { Pie } from 'react-chartjs-2'
-import { NEXTUI_COLORS } from '@/libs/utils'
 import { Chart as ChartJs, ArcElement, Tooltip, Legend, ChartData } from 'chart.js'
+import { NEXTUI_COLORS } from '@/contants'
 
 ChartJs.register(
   ArcElement,

@@ -1,6 +1,7 @@
-import { NEXT_PUBLIC_IGV as IGV } from '@/libs/utils'
-import { TCart, TCartItemId, TCartItemWithoutId, setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/redux/slices/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/storeActions'
+import { setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/store/slices/cartSlice'
+import { useAppDispatch, useAppSelector } from '@/store/storeActions'
+import { NEXT_PUBLIC_IGV as IGV } from '@/contants'
+import { Cart, CartItemId, CartItemWithoutId } from '@/types/Cart'
 
 const igv = Number(IGV)
 
@@ -8,10 +9,11 @@ const useCart = () => {
   const dispatch = useAppDispatch()
   const cart = useAppSelector(state => state.cart)
 
-  const updateCart = (data: TCart) => {
+  const updateCart = (data: Cart) => {
     dispatch(setCart(data))
   }
-  const addProductToCart = (item: TCartItemWithoutId) => {
+
+  const addProductToCart = (item: CartItemWithoutId) => {
     const alreadyProduct = cart.items.some(itemCart => itemCart.productId === item.productId || itemCart.serialNumber === item.serialNumber)
     if (alreadyProduct) {
       return {
@@ -26,11 +28,11 @@ const useCart = () => {
     }
   }
 
-  const removeProductFromCart = (itemId: TCartItemId) => {
+  const removeProductFromCart = (itemId: CartItemId) => {
     dispatch(deleteItem(itemId))
   }
 
-  const gratifyProduct = (itemId: TCartItemId) => {
+  const gratifyProduct = (itemId: CartItemId) => {
     dispatch(gratifyItem(itemId))
   }
 

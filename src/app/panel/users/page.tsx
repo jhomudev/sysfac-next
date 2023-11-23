@@ -1,6 +1,6 @@
 import { EUserState, User } from '@/models'
 import TableUsers from '@/pages/Users/components/TableUsers'
-import { EUserType } from '@/types/enumDB'
+import { EUserType } from '@/types-old/enums'
 import React from 'react'
 
 const data:User[] = [

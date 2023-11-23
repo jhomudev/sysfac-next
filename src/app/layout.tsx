@@ -6,7 +6,7 @@ import React from 'react'
 import { Providers } from './providers'
 import NextTopLoader from 'nextjs-toploader'
 import { Toaster } from 'sonner'
-import { NEXTUI_COLORS } from '@/libs/utils'
+import { NEXTUI_COLORS } from '@/contants'
 
 // const font = PT_Sans({
 //   weight: ['400', '700'],

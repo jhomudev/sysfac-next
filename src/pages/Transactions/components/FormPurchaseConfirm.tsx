@@ -1,5 +1,5 @@
 'use client'
-import { Supplier } from '@/pages/Suppliers/models'
+import { Supplier } from '@/types/Supplier'
 import { Button, Select, SelectItem, Textarea, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'

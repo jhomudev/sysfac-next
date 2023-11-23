@@ -3,7 +3,7 @@
 import React from 'react'
 import { Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { Category } from '../models'
+import { Category } from '@/types/Category'
 
 type Props = {
   categoryData: Category

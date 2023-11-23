@@ -1,4 +1,4 @@
-import { Modal, ModalHeader, ModalBody, ModalContent/* ,ModalFooter, Button  */ } from '@nextui-org/react'
+import { Modal, ModalHeader, ModalBody, ModalContent/* ,ModalFooter, Button  */ } from '@nextui-org/modal'
 import React from 'react'
 import CartTableItems from './CartTableItems'
 import CartForm from './CartForm'

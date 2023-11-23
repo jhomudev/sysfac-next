@@ -1,6 +1,6 @@
 import { TableLocations } from '@/pages/Locations/components'
 import { Location } from '@/pages/Locations/models'
-import { ELocationType } from '@/types/enumDB'
+import { ELocationType } from '@/types-old/enums'
 import { Divider } from '@nextui-org/react'
 
 const data: Location[] = [

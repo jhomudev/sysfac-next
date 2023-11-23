@@ -1,10 +1,10 @@
-import { validateUserCredentials } from '@/interceptors'
-import { UserCredentials } from '@/models'
-import NextAuth, { Session, User } from 'next-auth'
+import { validateUserCredentials } from '@/interceptors/validateUser'
+import { UserCredentials } from '@/types/User'
+import NextAuth, { AuthOptions, Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -16,7 +16,7 @@ export const authOptions = {
         const auth = await validateUserCredentials(credentials as UserCredentials)
 
         // If no error and we have user data, return it
-        if (auth.access && auth.isActive) return auth.data as any
+        if (auth!.access && auth!.isActive) return auth!.data as any
         // Return null if user data could not be retrieved
         // throw auth
         return null
@@ -24,7 +24,7 @@ export const authOptions = {
     })
   ],
   callbacks: {
-    async jwt ({ token, user }: { token: JWT, user: User }) {
+    async jwt ({ token, user }) {
       return { ...token, ...user }
     },
     async session ({ session, token }: { session: Session, token: JWT }) {

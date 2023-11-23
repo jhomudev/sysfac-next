@@ -1,11 +1,13 @@
 'use client'
-import { Yesicon, CLASS_ICONS } from '@/components'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import { Supplier } from '@/types/Supplier'
+import { TableHeaderColumns } from '@/types/components'
+import formatDate from '@/utils/formatDate'
 import { Button, Input, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import React from 'react'
-import { Supplier } from '../models'
-import { formatDate } from '@/libs/utils'
 
-const headerColumns = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'RUC',
@@ -44,8 +46,8 @@ function TableSuppliers ({ suppliers }: Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar proveedor' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
-          <Button color='primary' startContent={<Yesicon icon={CLASS_ICONS.plus} />}>Nuevo proveedor</Button>
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar proveedor' startContent={<Yesicon icon={ICONS.search} />} />
+          <Button color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo proveedor</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de proveedores <span className='font-medium'>12</span></p>

@@ -2,7 +2,8 @@
 import React from 'react'
 import { Input, InputProps } from '@nextui-org/react'
 import { RegisterOptions } from 'react-hook-form'
-import { CLASS_ICONS, Yesicon } from '.'
+import Yesicon from './Yesicon'
+import { ICONS } from '@/contants'
 
 type InputPasswordProps = InputProps & {
   registerUseForm?: {
@@ -20,7 +21,7 @@ function InputPassword (props: InputPasswordProps) {
   return (
     <Input
       type={isVisible ? 'text' : 'password'}
-      endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? CLASS_ICONS.show : CLASS_ICONS.hidden} /></button>}
+      endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? ICONS.show : ICONS.hidden} /></button>}
       placeholder='Password'
       {...props}
       {...props.registerUseForm}

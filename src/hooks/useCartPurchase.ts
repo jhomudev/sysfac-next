@@ -1,15 +1,16 @@
-import { TCartPurchaseItemWhithoutId, TCartPurchaseItemId, addItem, deleteItem, clearItems } from '@/redux/slices/cartPurchaseSlice'
-import { useAppDispatch, useAppSelector } from '@/redux/storeActions'
+import { addItem, deleteItem, clearItems } from '@/store/slices/cartPurchaseSlice'
+import { CartPurchaseItemId, CartPurchaseItemWhithoutId } from '@/types/CartPurchase'
+import { useAppDispatch, useAppSelector } from '@/store/storeActions'
 
 const useCartPurchase = () => {
   const dispatch = useAppDispatch()
   const cartPurchase = useAppSelector(state => state.cartPurchase)
 
-  const addProductToCart = (item: TCartPurchaseItemWhithoutId) => {
+  const addProductToCart = (item: CartPurchaseItemWhithoutId) => {
     dispatch(addItem({ itemId: crypto.randomUUID(), ...item }))
   }
 
-  const removeProductFromCart = (itemId: TCartPurchaseItemId) => {
+  const removeProductFromCart = (itemId: CartPurchaseItemId) => {
     dispatch(deleteItem(itemId))
   }
 

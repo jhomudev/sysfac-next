@@ -1,7 +1,7 @@
 'use client'
 import { TableProducts } from '@/pages/Productos/componentes'
 import { Product } from '@/pages/Productos/models/product.model'
-import { ESaleFor } from '@/types/enumDB'
+import { ESaleFor } from '@/types-old/enums'
 import { Divider } from '@nextui-org/react'
 
 const data:Product[] = [

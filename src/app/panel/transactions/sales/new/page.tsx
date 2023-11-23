@@ -1,8 +1,11 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps, Yesicon, CLASS_ICONS } from '@/components'
-import { ESaleFor } from '@/models'
-import { Product } from '@/pages/Productos/models'
-import { FilterProductsPerSale, ListProductsPerSale } from '@/pages/Transactions/components'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
+import FiltersProductsPerSale from '@/pages/Transactions/components/FilterProductsPerSale'
+import ListProductsPerSale from '@/pages/Transactions/components/ListProductsPerSale'
+import { Product } from '@/types/Product'
+import { ESaleFor } from '@/types/enums.d'
 import { Divider, Input } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -169,11 +172,11 @@ function NewSalePage () {
       <p className='text'>Agregue productos al carrito de venta.</p>
       <br />
       <div className='flex flex-col md:flex-row justify-between gap-3'>
-        <Input isClearable className='w-full md:max-w-md' startContent={<Yesicon icon={CLASS_ICONS.search} />} placeholder='Buscar producto' />
+        <Input isClearable className='w-full md:max-w-md' startContent={<Yesicon icon={ICONS.search} />} placeholder='Buscar producto' />
         {/* <Button className='w-full md:w-min' color='warning' variant='ghost'>Ver carrito</Button> */}
       </div>
       <br />
-      <FilterProductsPerSale />
+      <FiltersProductsPerSale />
       <br />
       <ListProductsPerSale products={products} />
     </>

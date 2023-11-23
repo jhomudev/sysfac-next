@@ -1,10 +1,12 @@
 'use client'
 import React from 'react'
 import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Pagination, Selection } from '@nextui-org/react'
-import { Client } from '../models'
-import { Yesicon, CLASS_ICONS } from '@/components'
+import { TableHeaderColumns } from '@/types/components'
+import { Client } from '@/types/Client'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 
-const headerColumns = [
+const headerColumns:TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'RUC',
@@ -48,7 +50,7 @@ function TableClients ({ clients }:Props) {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar cliente' startContent={<Yesicon icon={CLASS_ICONS.search} />} />
+          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar cliente' startContent={<Yesicon icon={ICONS.search} />} />
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de clientes <span className='font-medium'>12</span></p>

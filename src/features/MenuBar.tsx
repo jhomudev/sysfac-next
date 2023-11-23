@@ -1,7 +1,8 @@
 'use client'
 import ROUTES from '@/app/routes'
 import { logo } from '@/assets'
-import { Yesicon, CLASS_ICONS } from '@/components'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 import { Button, Card, CardBody, CardHeader, Divider, Link } from '@nextui-org/react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'
@@ -11,42 +12,42 @@ const menuItems = [
   {
     label: 'Dashboard',
     route: ROUTES.panel,
-    icon: CLASS_ICONS.dashboard
+    icon: ICONS.dashboard
   },
   {
     label: 'Usuarios',
     route: ROUTES.users,
-    icon: CLASS_ICONS.users
+    icon: ICONS.users
   },
   {
     label: 'Clientes',
     route: ROUTES.clients,
-    icon: CLASS_ICONS.clients
+    icon: ICONS.clients
   },
   {
     label: 'Productos',
     route: ROUTES.products,
-    icon: CLASS_ICONS.products
+    icon: ICONS.products
   },
   {
     label: 'Categorias',
     route: ROUTES.categories,
-    icon: CLASS_ICONS.categories
+    icon: ICONS.categories
   },
   {
     label: 'Transacciones',
     route: ROUTES.transactions,
-    icon: CLASS_ICONS.transactions
+    icon: ICONS.transactions
   },
   {
     label: 'Proveedores',
     route: ROUTES.suppliers,
-    icon: CLASS_ICONS.suppliers
+    icon: ICONS.suppliers
   },
   {
     label: 'Locales',
     route: ROUTES.locations,
-    icon: CLASS_ICONS.locations
+    icon: ICONS.locations
   }
 ]
 
@@ -85,7 +86,7 @@ function MenuBar () {
                 color='danger'
                 variant='light'
                 fullWidth
-                startContent={<Yesicon icon={CLASS_ICONS.logout} />}
+                startContent={<Yesicon icon={ICONS.logout} />}
               >Cerrar sesión
               </Button>
             </li>
