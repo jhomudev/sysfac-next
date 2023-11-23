@@ -4,6 +4,7 @@ import React from 'react'
 type Props ={
   children: React.ReactNode
 }
+
 function UsersLayout ({ children }:Props) {
   return (
     <>

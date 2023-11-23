@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import { Input, InputProps } from '@nextui-org/react'
-import Yesicon, { CLASS_ICONS } from './Yesicon'
 import { RegisterOptions } from 'react-hook-form'
+import { CLASS_ICONS, Yesicon } from '.'
 
 type InputPasswordProps = InputProps & {
   registerUseForm?: {

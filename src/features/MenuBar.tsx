@@ -1,7 +1,7 @@
 'use client'
 import ROUTES from '@/app/routes'
 import { logo } from '@/assets'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { Button, Card, CardBody, CardHeader, Divider, Link } from '@nextui-org/react'
 import { signOut } from 'next-auth/react'
 import Image from 'next/image'

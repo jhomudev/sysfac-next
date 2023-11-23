@@ -1,9 +1,9 @@
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
-import useCart from '@/hooks/useCart'
-import { THeaderColumn } from '@/libs/nextui'
+import { CLASS_ICONS, Yesicon } from '@/components'
+import { useCart } from '@/hooks'
+import { TableHeaderColumns } from '@/models'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react'
 
-const headerColumns: THeaderColumn[] = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Producto'

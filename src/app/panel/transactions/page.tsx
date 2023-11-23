@@ -1,15 +1,15 @@
+'use client'
 import ROUTES from '@/app/routes'
-import { CardEntityDashboard, CardGraphic, Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { CLASS_ICONS, CardEntityDashboardProps, CardGraphic, ListCardEntity, Yesicon } from '@/components'
 import { ChartTransactions } from '@/features'
-import { NEXTUI_COLORS } from '@/libs'
+import { NEXTUI_COLORS } from '@/libs/utils'
 import { EOperationType, EProofType, Transaction } from '@/models'
 import { TableTransactions } from '@/pages/Transactions/components'
 import { Card, CardBody, Divider, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
 
-const itemsTransactions = [
+const itemsTransactions: CardEntityDashboardProps[] = [
   {
     label: 'Ventas',
     quantity: 200,
@@ -121,17 +121,7 @@ function TransactionsPage () {
       <div className='flex gap-5 flex-col lg:flex-row'>
         <div className='w-full lg:min-w-[300px] lg:w-[min(100%,400px)] flex flex-col gap-5'>
           <div className='flex-1 flex flex-col gap-5'>
-            {
-            itemsTransactions.map(item => (
-              <CardEntityDashboard
-                key={item.label}
-                color={item.color}
-                label={item.label}
-                icon={item.icon}
-                quantity={item.quantity}
-              />
-            ))
-          }
+            <ListCardEntity items={itemsTransactions} />
           </div>
           <div className='flex-1 flex flex-col md:flex-row lg:flex-col gap-5 h-full'>
             <motion.article

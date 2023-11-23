@@ -1,5 +1,5 @@
-import { TCartPurchaseItemWhithoutId, TCartPurchaseItemId, addItem, deleteItem, clearItems } from '@/context/store/slices/cartPurchaseSlice'
-import { useAppDispatch, useAppSelector } from '@/context/store/storeActions'
+import { TCartPurchaseItemWhithoutId, TCartPurchaseItemId, addItem, deleteItem, clearItems } from '@/redux/slices/cartPurchaseSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/storeActions'
 
 const useCartPurchase = () => {
   const dispatch = useAppDispatch()

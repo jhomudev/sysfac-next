@@ -1,16 +1,14 @@
 import ROUTES from '@/app/routes'
-import { THeaderColumn } from '@/libs'
 import {
   Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
 import React from 'react'
 import { Transaction } from '../models'
-import { EOperationType, EProofType } from '@/models'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { EOperationType, EProofType, TableHeaderColumns } from '@/models'
+import { Yesicon, CLASS_ICONS } from '@/components'
 
-const headerColumns: THeaderColumn[] = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Tipo',

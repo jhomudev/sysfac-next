@@ -1,4 +1,4 @@
-import useCart from '@/hooks/useCart'
+import { useCart } from '@/hooks'
 import { ESaleFor } from '@/models'
 import { Product } from '@/pages/Productos/models'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, Input, Textarea } from '@nextui-org/react'

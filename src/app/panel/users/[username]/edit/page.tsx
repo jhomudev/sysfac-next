@@ -3,8 +3,7 @@ import ROUTES from '@/app/routes'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 import { Divider } from '@nextui-org/divider'
 import { FormUserChangePassword, FormUserEditAccount, FormUserEditData } from '@/pages/Users/components'
-import { MyBreadcrumbs } from '@/components'
-import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
 
 type Props = {
   params: Params

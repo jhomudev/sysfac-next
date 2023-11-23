@@ -1,13 +1,13 @@
 'use client'
-import { THeaderColumn } from '@/libs'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { Operation } from '../models'
+import { TableHeaderColumns } from '@/models'
 
 type Props = {
   items: Operation[]
 }
 
-const headerColumns: THeaderColumn[] = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Descripción'

@@ -2,8 +2,7 @@
 import React from 'react'
 import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Pagination, Selection } from '@nextui-org/react'
 import { Client } from '../models'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 
 const headerColumns = [
   {

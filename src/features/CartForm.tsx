@@ -1,5 +1,5 @@
 'use client'
-import useCart from '@/hooks/useCart'
+import { useCart } from '@/hooks'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'

@@ -1,6 +1,5 @@
 'use client'
-import { THeaderColumn } from '@/libs/nextui'
-import { Transaction } from '@/models'
+import { TableHeaderColumns, Transaction } from '@/models'
 import { EOperationType, EProofType } from '@/types/enumDB'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Chip } from '@nextui-org/react'
 
@@ -8,7 +7,7 @@ type Props = {
   data: Partial<Transaction>[]
 }
 
-const headerColumns: THeaderColumn[] = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Tipo',

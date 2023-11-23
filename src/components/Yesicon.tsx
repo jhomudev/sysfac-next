@@ -33,8 +33,6 @@ export const CLASS_ICONS = {
   purchases: 'ri:exchange-cny-line'
 }
 
-function Yesicon (Props: IconProps) {
+export function Yesicon (Props: IconProps) {
   return <Icon {...Props} />
 }
-
-export default Yesicon

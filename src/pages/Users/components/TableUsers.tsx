@@ -1,6 +1,6 @@
+'use client'
 import ROUTES from '@/app/routes'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { EUserType, User } from '@/models'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,

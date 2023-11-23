@@ -1,22 +1,14 @@
 'use client'
-import { ESaleFor, EStateProduct } from '@/models'
+import { ESaleFor, EStateProduct, TableHeaderColumns } from '@/models'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection, Avatar
 } from '@nextui-org/react'
 import React from 'react'
-import { Product } from '../models/product.model'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
+import { Product } from '../models'
 
-type THEaderColumns = {
-  id: string,
-  name: string,
-  sortable: boolean,
-  align?: 'start' | 'center' | 'end'
-}
-
-const headerColumns: THEaderColumns[] = [
+const headerColumns: TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Imagen',

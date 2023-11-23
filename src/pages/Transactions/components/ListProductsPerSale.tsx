@@ -1,6 +1,5 @@
 'use client'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { Product } from '@/pages/Productos/models'
 import { Button, Card, CardBody, CardFooter, CardHeader, Image } from '@nextui-org/react'
 import { motion } from 'framer-motion'

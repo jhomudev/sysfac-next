@@ -1,8 +1,7 @@
 import React from 'react'
 import ROUTES from '@/app/routes'
 import { Button, Divider, Link } from '@nextui-org/react'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 
 type Props={
   children: React.ReactNode

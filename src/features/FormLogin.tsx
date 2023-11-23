@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
 import { Button, Input } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { CLASS_ICONS, Yesicon } from '@/components'
 
 function FormLogin () {
   const router = useRouter()

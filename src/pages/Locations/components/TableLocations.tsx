@@ -1,6 +1,5 @@
 'use client'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { formatDate } from '@/libs/utils'
 import { ELocationType } from '@/models'
 import { Button, Chip, Input, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'

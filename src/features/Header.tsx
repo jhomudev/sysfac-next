@@ -1,11 +1,11 @@
 'use client'
 import React from 'react'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
 import { EUserType } from '@/types/enumDB'
 import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import Cart from './Cart'
-import useCart from '@/hooks/useCart'
+import { useCart } from '@/hooks'
+import { CLASS_ICONS, Yesicon } from '@/components'
 
 function Header () {
   const { data: session } = useSession()

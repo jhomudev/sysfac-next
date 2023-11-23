@@ -4,9 +4,8 @@ import {
   Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,
   Tooltip, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
 } from '@nextui-org/react'
-import { THeaderColumn } from '@/libs'
-import { Yesicon } from '@/components'
-import { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
+import { TableHeaderColumns } from '@/models'
 
 export type TablePurchaseProductsItem={
   product: string,
@@ -21,7 +20,7 @@ type Props ={
   dataProducts: TablePurchaseProductsItem[]
 }
 
-const headerColumns:THeaderColumn[] = [
+const headerColumns:TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Producto',

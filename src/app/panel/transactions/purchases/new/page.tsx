@@ -1,6 +1,5 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs } from '@/components'
-import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
 import { ESaleFor } from '@/models'
 import { Product } from '@/pages/Productos/models'
 import { Supplier } from '@/pages/Suppliers/models'

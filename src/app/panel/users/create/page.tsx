@@ -1,6 +1,5 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs } from '@/components'
-import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
 import { FormUserCreate } from '@/pages/Users/components'
 
 function CreateUserPage () {

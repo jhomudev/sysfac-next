@@ -1,5 +1,5 @@
 'use client'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { Button, Input, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import React from 'react'
 import { Supplier } from '../models'

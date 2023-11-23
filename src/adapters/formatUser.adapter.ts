@@ -1,5 +1,5 @@
-import { User } from '@/models/user.model'
-import { UserResponse } from '@/models/user-response.model'
+import { User } from '@/models/User.model'
+import { UserResponse } from '@/models/UserResponse.model'
 
 export const formatUser = (userResponse: UserResponse) => {
   const { data } = userResponse

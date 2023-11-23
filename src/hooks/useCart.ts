@@ -1,7 +1,8 @@
-import { TCart, TCartItemId, TCartItemWithoutId, setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/context/store/slices/cartSlice'
-import { useAppDispatch, useAppSelector } from '@/context/store/storeActions'
+import { NEXT_PUBLIC_IGV as IGV } from '@/libs/utils'
+import { TCart, TCartItemId, TCartItemWithoutId, setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/redux/slices/cartSlice'
+import { useAppDispatch, useAppSelector } from '@/redux/storeActions'
 
-export const IGV = 18 // 18 %
+const igv = Number(IGV)
 
 const useCart = () => {
   const dispatch = useAppDispatch()
@@ -43,7 +44,7 @@ const useCart = () => {
 
   const totalImport = (() => {
     const discountInMoney = discount / 100 * _import
-    const IGVinMoney = IGV / 100 * _import
+    const IGVinMoney = igv / 100 * _import
 
     return _import - discountInMoney + IGVinMoney
   })()

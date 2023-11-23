@@ -1,6 +1,6 @@
 'use client'
 import { Line } from 'react-chartjs-2'
-import { NEXTUI_COLORS } from '@/libs/nextui'
+import { NEXTUI_COLORS } from '@/libs/utils'
 import { Chart as ChartJs, Filler, LineElement, LinearScale, PointElement, Title, Tooltip, Legend, CategoryScale, ChartData } from 'chart.js'
 
 ChartJs.register(

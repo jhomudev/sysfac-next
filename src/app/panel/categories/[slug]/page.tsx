@@ -1,6 +1,5 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs } from '@/components'
-import { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
 import { FormCategory } from '@/pages/Categories/components'
 import { Category } from '@/pages/Categories/models'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'

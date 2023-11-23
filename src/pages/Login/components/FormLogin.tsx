@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import Yesicon, { CLASS_ICONS } from '@/components/Yesicon'
+import { Yesicon, CLASS_ICONS } from '@/components'
 import { Button, Input } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'

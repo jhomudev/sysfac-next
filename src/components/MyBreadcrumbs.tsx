@@ -11,7 +11,7 @@ export type MyBreadcrumbsProps = BreadcrumbsProps & {
   items: MyBreadcrumbItemProps[]
 }
 
-function MyBreadcrumbs (props: MyBreadcrumbsProps) {
+export function MyBreadcrumbs (props: MyBreadcrumbsProps) {
   return (
     <Breadcrumbs {...props}>
       {
@@ -22,4 +22,3 @@ function MyBreadcrumbs (props: MyBreadcrumbsProps) {
     </Breadcrumbs>
   )
 }
-export default MyBreadcrumbs

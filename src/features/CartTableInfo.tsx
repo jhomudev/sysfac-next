@@ -1,8 +1,10 @@
 'use client'
-import useCart, { IGV } from '@/hooks/useCart'
-import { THeaderColumn } from '@/libs/nextui'
+import { useCart } from '@/hooks'
+import { NEXT_PUBLIC_IGV as IGV } from '@/libs/utils'
+import { TableHeaderColumns } from '@/models'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
-const headerColumns:THeaderColumn[] = [
+
+const headerColumns:TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
     name: 'Importe'
