@@ -1,9 +1,9 @@
 'use client'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
-import { ICONS } from '@/contants'
-import { User } from '@/types/User'
-import { EUserType } from '@/types/enums.d'
+import { COLORS_ENT, ICONS } from '@/contants'
+import { User, EUserType, EUserState } from '@/types'
+import NextLink from 'next/link'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection,
@@ -38,6 +38,11 @@ const headerColumns = [
   },
   {
     id: crypto.randomUUID(),
+    name: 'Estado',
+    sortable: true
+  },
+  {
+    id: crypto.randomUUID(),
     name: 'Correo',
     sortable: false
   },
@@ -56,7 +61,7 @@ const headerColumns = [
 function TableUsers ({ users }: Props) {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [isOpenModal, setIsOpenModal] = React.useState<boolean>(false)
-  const [userToDelete, setUserToDelete] = React.useState<string | null>(null)
+  const [userToDelete, setUserToDelete] = React.useState<User>({} as User)
 
   const topContent = React.useMemo(() => {
     return (
@@ -122,38 +127,45 @@ function TableUsers ({ users }: Props) {
           )}
         </TableHeader>
         <TableBody emptyContent='No se econtraron usuarios' items={users}>
-          {(user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.username}</TableCell>
-              <TableCell>{user.names}</TableCell>
-              <TableCell>{user.lastnames}</TableCell>
-              <TableCell><Chip variant='flat' color={user.type === EUserType.admin ? 'success' : user.type === EUserType.superadmin ? 'secondary' : 'warning'}>{user.type}</Chip></TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone}</TableCell>
-              <TableCell>
-                <Dropdown>
-                  <DropdownTrigger>
-                    <Button isIconOnly size='sm' variant='light'>
-                      <Yesicon icon={ICONS.options} />
-                    </Button>
-                  </DropdownTrigger>
-                  <DropdownMenu
-                    aria-label='actions'
-                    variant='flat' onAction={(key) => {
-                      if (key === 'delete') {
-                        setUserToDelete(user.username)
-                        setIsOpenModal(true)
-                      }
-                    }}
-                  >
-                    <DropdownItem key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.users}/${user.username}`}>Ver</DropdownItem>
-                    <DropdownItem key='edit' startContent={<Yesicon icon={ICONS.edit} />} href={`${ROUTES.users}/${user.username}/edit`}>Editar</DropdownItem>
-                    <DropdownItem key='delete' startContent={<Yesicon icon={ICONS.delete} />} color='danger' className='text-danger'>Eliminar</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </TableCell>
-            </TableRow>
-          )}
+          {(user) => {
+            const colorUserState = user.state === EUserState.active ? COLORS_ENT.userState.active.nextui : COLORS_ENT.userState.inactive.nextui
+            const colorUserType = user.type === EUserType.admin
+              ? COLORS_ENT.userType.admin.nextui
+              : user?.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
+            return (
+              <TableRow key={user.id}>
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.names}</TableCell>
+                <TableCell>{user.lastnames}</TableCell>
+                <TableCell><Chip variant='flat' color={colorUserType}>{user.type}</Chip></TableCell>
+                <TableCell><Chip variant='dot' color={colorUserState}>{user.state}</Chip></TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.phone}</TableCell>
+                <TableCell>
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button isIconOnly size='sm' variant='light'>
+                        <Yesicon icon={ICONS.options} />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                      aria-label='actions'
+                      variant='flat' onAction={(key) => {
+                        if (key === 'delete') {
+                          setUserToDelete(user)
+                          setIsOpenModal(true)
+                        }
+                      }}
+                    >
+                      <DropdownItem as={NextLink} key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.users}/${user.username}`}>Ver</DropdownItem>
+                      <DropdownItem as={NextLink} key='edit' startContent={<Yesicon icon={ICONS.edit} />} href={`${ROUTES.users}/${user.username}/edit`}>Editar</DropdownItem>
+                      <DropdownItem key='delete' startContent={<Yesicon icon={ICONS.delete} />} color='danger' className='text-danger'>Eliminar</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </TableCell>
+              </TableRow>
+            )
+          }}
         </TableBody>
       </Table>
       <Modal placement='top' isOpen={isOpenModal} onOpenChange={setIsOpenModal}>
@@ -164,7 +176,7 @@ function TableUsers ({ users }: Props) {
               <ModalBody>
                 <p>¿Estás seguro de eliminar este usuario?</p>
                 <small className='text-danger'><em>OJO: Esta acción es irreversible.</em></small>
-                <p>{userToDelete}</p>
+                <p>{userToDelete?.names}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color='default' variant='light' onPress={onClose}>

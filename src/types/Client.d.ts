@@ -2,7 +2,7 @@ import { ApiResponseWithReturn } from './ApiResponse'
 
 export interface Client {
   id: number,
-  RUC: `${number}` | null,
+  ruc: `${number}` | null,
   dni: `${number}` | null,
   names: string,
   lastnames: string,
@@ -14,7 +14,7 @@ export interface Client {
 
 export interface ClientDB {
   clientId: number,
-  RUC: `${number}` | null,
+  ruc: `${number}` | null,
   dni: `${number}` | null,
   names: string,
   lastnames: string,

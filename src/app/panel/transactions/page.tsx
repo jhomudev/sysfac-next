@@ -4,11 +4,10 @@ import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
 import CardGraphic from '@/components/CardGraphic'
 import ListCardEntity from '@/components/ListCardEntity'
 import Yesicon from '@/components/Yesicon'
-import { ICONS, NEXTUI_COLORS } from '@/contants'
+import { COLORS_ENT, ICONS } from '@/contants'
 import ChartTransactions from '@/features/ChartTransactions'
 import TableTransactions from '@/pages/Transactions/components/TableTransactions'
-import { Transaction } from '@/types/Transaction'
-import { EOperationType, EProofType } from '@/types/enums.d'
+import { Transaction, EOperationType, EProofType } from '@/types'
 import { Card, CardBody, Divider, Link } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'
@@ -17,13 +16,13 @@ const itemsTransactions: CardEntityDashboardProps[] = [
   {
     label: 'Ventas',
     quantity: 200,
-    color: NEXTUI_COLORS.danger,
+    color: COLORS_ENT.operationType.sell.hex,
     icon: ICONS.sales
   },
   {
     label: 'Compras',
     quantity: 200,
-    color: NEXTUI_COLORS.success,
+    color: COLORS_ENT.operationType.buy.hex,
     icon: ICONS.purchases
   }
 ]
@@ -134,7 +133,7 @@ function TransactionsPage () {
               whileHover={{ scale: 1.02 }}
             >
               <Card as={Link} href={`${ROUTES.transactions}/purchases/new`} className='border-success border-2 flex-1 '>
-                <CardBody className='flex flex-row gap-3 items-center justify-center text-success'>
+                <CardBody className='flex flex-row gap-3 items-center justify-center' style={{ color: COLORS_ENT.operationType.buy.hex }}>
                   <Yesicon fontSize={20} icon={ICONS.plus} />
                   <span>Nueva compra</span>
                 </CardBody>
@@ -146,7 +145,7 @@ function TransactionsPage () {
               whileHover={{ scale: 1.02 }}
             >
               <Card as={Link} href={`${ROUTES.transactions}/sales/new`} className='border-danger border-2  flex-1'>
-                <CardBody className='flex flex-row gap-3 items-center justify-center text-danger'>
+                <CardBody className='flex flex-row gap-3 items-center justify-center' style={{ color: COLORS_ENT.operationType.sell.hex }}>
                   <Yesicon fontSize={20} icon={ICONS.plus} />
                   <span>Nueva venta</span>
                 </CardBody>

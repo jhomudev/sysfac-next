@@ -1,7 +1,7 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
-import { FormCategory } from '@/pages/Categories/components'
-import { Category } from '@/pages/Categories/models'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import FormCategory from '@/pages/Categories/components/FormCategory'
+import { Category } from '@/types'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {
@@ -35,15 +35,15 @@ function page ({ params }: Props) {
   }
 
   return (
-    <div>
+    <>
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <div className='flex flex-col w-[min(100%,800px)]'>
         <h1 className='text-xl font-semibold'>Laptops</h1>
         <br />
-        <FormCategory categoryData={categoryData} />
+        <FormCategory category={categoryData} />
       </div>
-    </div>
+    </>
   )
 }
 export default page

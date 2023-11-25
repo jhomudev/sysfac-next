@@ -1,7 +1,5 @@
 'use client'
-import { Transaction } from '@/types/Transaction'
-import { TableHeaderColumns } from '@/types/components'
-import { EOperationType, EProofType } from '@/types/enums.d'
+import { Transaction, TableHeaderColumns, EOperationType, EProofType } from '@/types'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Chip } from '@nextui-org/react'
 
 type Props = {

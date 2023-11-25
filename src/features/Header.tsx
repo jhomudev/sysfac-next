@@ -1,12 +1,12 @@
 'use client'
 import React from 'react'
 import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image } from '@nextui-org/react'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Cart from './Cart'
 import { useCart } from '@/hooks'
 import Yesicon from '@/components/Yesicon'
-import { ICONS } from '@/contants'
-import { EUserType } from '@/types/enums.d'
+import { COLORS_ENT, ICONS } from '@/contants'
+import { EUserType } from '@/types'
 
 function Header () {
   const { data: session } = useSession()
@@ -15,13 +15,9 @@ function Header () {
   const [showCart, setShowCart] = React.useState<boolean>(false)
   const { cart: { items } } = useCart()
   const hasItems = items.length > 0
-
-  // React.useEffect(() => {
-  //   const dataInLocalStorage = (typeof window !== 'undefined' && window.localStorage) && localStorage.getItem('__sysfac__store__')
-  //   if (dataInLocalStorage) {
-  //     updateCart(JSON.parse(dataInLocalStorage).cart)
-  //   }
-  // }, [])
+  const colorUserType = user?.type === EUserType.admin
+    ? COLORS_ENT.userType.admin.nextui
+    : user?.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
 
   return (
     <>
@@ -92,7 +88,7 @@ function Header () {
               <DropdownItem key='profile'>
                 <p className='font-semibold'>Signed in as</p>
                 <p className='font-semibold'>{user?.email}</p>
-                <Chip radius='md' className='mt-1' color={user?.type === EUserType.admin ? 'primary' : user?.type === EUserType.superadmin ? 'success' : 'warning'}>{user?.type}</Chip>
+                <Chip radius='md' className='mt-1' color={colorUserType}>{user?.type}</Chip>
               </DropdownItem>
               <DropdownItem key='settings'>
                 My Settings
@@ -106,7 +102,7 @@ function Header () {
               <DropdownItem key='help_and_feedback'>
                 Help & Feedback
               </DropdownItem>
-              <DropdownItem key='logout' color='danger'>
+              <DropdownItem onPress={() => signOut()} key='logout' color='danger'>
                 Log Out
               </DropdownItem>
             </DropdownMenu>

@@ -1,7 +1,5 @@
-import { TableLocations } from '@/pages/Locations/components'
-import { Location } from '@/pages/Locations/models'
-import { ELocationType } from '@/types-old/enums'
-import { Divider } from '@nextui-org/react'
+import TableLocations from '@/pages/Locations/components/TableLocations'
+import { ELocationType, Location } from '@/types'
 
 const data: Location[] = [
   {
@@ -35,16 +33,9 @@ const data: Location[] = [
 
 function LocationsPage () {
   return (
-  // <div className='flex-1 p-2'>
     <>
-      <h1 className='title-main'>Locales</h1>
-      <p className='text'>Gestione los locales de la empresa o negocio, agregue o quite locales, es importante tener registrados los locales en donde circulan los productos.</p>
-      <br />
-      <Divider />
-      <br />
       <TableLocations locations={data} />
     </>
-  // </div>
   )
 }
 export default LocationsPage

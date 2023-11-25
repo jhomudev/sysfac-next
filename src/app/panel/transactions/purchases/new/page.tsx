@@ -3,9 +3,8 @@ import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs
 import FormPurchaseAddProducts from '@/pages/Transactions/components/FormPurchaseAddProducts'
 import FormPurchaseConfirm from '@/pages/Transactions/components/FormPurchaseConfirm'
 import TablePurchaseProducts, { TablePurchaseProductsItem } from '@/pages/Transactions/components/TablePurchaseProducts'
-import { Product } from '@/types/Product'
-import { Supplier } from '@/types/Supplier'
-import { ESaleFor } from '@/types/enums.d'
+import { Product, Supplier, ESaleFor } from '@/types'
+
 import { Divider } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -76,7 +75,7 @@ const data:TablePurchaseProductsItem[] = [
 const suppliers: Supplier[] = [
   {
     id: 1,
-    RUC: '112345676789',
+    ruc: '112345676789',
     name: 'Proveedor 1',
     address: 'Jr. Marsical cacareees',
     phone: '998094343',
@@ -85,7 +84,7 @@ const suppliers: Supplier[] = [
   },
   {
     id: 2,
-    RUC: '123456767892',
+    ruc: '123456767892',
     name: 'Proveedor 2',
     address: 'Av. Aasambleas',
     phone: '998998998',
@@ -94,7 +93,7 @@ const suppliers: Supplier[] = [
   },
   {
     id: 3,
-    RUC: '123456767898',
+    ruc: '123456767898',
     name: 'Proveedor 3',
     address: 'Jr. Bellido',
     phone: '900990009',
@@ -103,7 +102,7 @@ const suppliers: Supplier[] = [
   },
   {
     id: 4,
-    RUC: '1345656767898',
+    ruc: '1345656767898',
     name: 'Proveedor 4',
     address: 'Jr. Peresz de Regollar',
     phone: '968230122',

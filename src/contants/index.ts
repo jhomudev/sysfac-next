@@ -5,6 +5,8 @@ export const {
   NEXT_PUBLIC_IGV
 } = process.env
 
+export const IGV = 18
+
 export const NEXTUI_COLORS = {
   default: '#3f3f46',
   primary: '#006FEE',
@@ -46,6 +48,97 @@ export const ICONS = {
   purchases: 'ri:exchange-cny-line'
 }
 
+type typeColor = {
+  hex: string,
+  nextui: 'primary' | 'warning' | 'success' | 'danger' | 'secondary' | 'default'
+}
+
+export const COLORS_ENT: {
+  [key: string] : {
+    [key: string]: typeColor
+  }
+} = {
+  userType: {
+    admin: {
+      hex: NEXTUI_COLORS.primary,
+      nextui: 'primary'
+    },
+    superadmin: {
+      hex: NEXTUI_COLORS.warning,
+      nextui: 'warning'
+    },
+    seller: {
+      hex: NEXTUI_COLORS.success,
+      nextui: 'success'
+    }
+  },
+  userState: {
+    active: {
+      hex: NEXTUI_COLORS.primary,
+      nextui: 'primary'
+    },
+    inactive: {
+      hex: NEXTUI_COLORS.danger,
+      nextui: 'danger'
+    }
+  },
+  saleFor: {
+    quantity: {
+      hex: NEXTUI_COLORS.secondary,
+      nextui: 'secondary'
+    },
+    unit: {
+      hex: NEXTUI_COLORS.warning,
+      nextui: 'warning'
+    }
+  },
+  locationType: {
+    warehouse: {
+      hex: NEXTUI_COLORS.secondary,
+      nextui: 'secondary'
+    },
+    store: {
+      hex: NEXTUI_COLORS.default,
+      nextui: 'default'
+    }
+  },
+  stateProduct: {
+    active: {
+      hex: NEXTUI_COLORS.primary,
+      nextui: 'primary'
+    },
+    inactive: {
+      hex: NEXTUI_COLORS.danger,
+      nextui: 'danger'
+    }
+  },
+  stateProductUnit: {
+    stock: {
+      hex: NEXTUI_COLORS.primary,
+      nextui: 'primary'
+    },
+    sold: {
+      hex: NEXTUI_COLORS.success,
+      nextui: 'success'
+    },
+    damaged: {
+      hex: NEXTUI_COLORS.danger,
+      nextui: 'danger'
+    }
+  },
+  operationType: {
+    buy: {
+      hex: NEXTUI_COLORS.success,
+      nextui: 'success'
+    },
+    sell: {
+      hex: NEXTUI_COLORS.danger,
+      nextui: 'danger'
+    }
+  }
+}
+
+Object.freeze(COLORS_ENT)
 Object.freeze(NEXTUI_COLORS)
 Object.freeze(ICONS)
 Object.freeze(API_URL)

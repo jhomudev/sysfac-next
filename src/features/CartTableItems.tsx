@@ -2,7 +2,7 @@
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 import { useCart } from '@/hooks'
-import { TableHeaderColumns } from '@/types/components'
+import { TableHeaderColumns } from '@/types'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Tooltip } from '@nextui-org/react'
 
 const headerColumns: TableHeaderColumns[] = [

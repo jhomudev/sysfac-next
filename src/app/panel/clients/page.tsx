@@ -1,12 +1,12 @@
 import React from 'react'
-import { Client } from '@/pages/Clients/models'
 import { Divider } from '@nextui-org/react'
-import { TableClients } from '@/pages/Clients/components'
+import { Client } from '@/types'
+import TableClients from '@/pages/Clients/components/TableClients'
 
 const data:Client[] = [
   {
     id: 1,
-    RUC: null,
+    ruc: null,
     dni: '71730987',
     names: 'Juan',
     lastnames: 'Perez',
@@ -17,7 +17,7 @@ const data:Client[] = [
   },
   {
     id: 2,
-    RUC: '123456789123',
+    ruc: '123456789123',
     dni: null,
     names: 'Carlos',
     lastnames: 'Ramirez',

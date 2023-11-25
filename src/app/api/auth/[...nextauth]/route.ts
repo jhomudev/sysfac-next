@@ -1,5 +1,5 @@
-import { validateUserCredentials } from '@/interceptors/validateUser'
-import { UserCredentials } from '@/types/User'
+import { validateUserCredentials } from '@/interceptors'
+import { UserCredentials } from '@/types'
 import NextAuth, { AuthOptions, Session, User } from 'next-auth'
 import { JWT } from 'next-auth/jwt'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
     })
   ],
   callbacks: {
-    async jwt ({ token, user }) {
+    async jwt ({ token, user }:{token: JWT, user: User }) {
       return { ...token, ...user }
     },
     async session ({ session, token }: { session: Session, token: JWT }) {

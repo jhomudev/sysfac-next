@@ -3,10 +3,10 @@
 import React from 'react'
 import { Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { Category } from '@/types/Category'
+import { Category } from '@/types'
 
 type Props = {
-  categoryData: Category
+  category: Category
 }
 
 type FormData = {
@@ -15,8 +15,8 @@ type FormData = {
   image: FileList
 }
 
-function FormCategory ({ categoryData }:Props) {
-  const { name, slug, image } = categoryData
+function FormCategory ({ category }:Props) {
+  const { name, slug, image } = category
   const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [action, setAction] = React.useState<'delete' | 'edit'>('edit')
@@ -41,6 +41,7 @@ function FormCategory ({ categoryData }:Props) {
           variant='underlined'
           label='Nombre'
           placeholder='Escriba el nombre de la categoría'
+          defaultValue={category.name}
           color={errors.name ? 'danger' : 'default'}
           isInvalid={!!errors.name}
           errorMessage={!!errors.name && 'Campo requerido'}
@@ -50,6 +51,7 @@ function FormCategory ({ categoryData }:Props) {
           variant='underlined'
           label='Slug'
           placeholder='Ejm: laptop, pc, mouses,etc'
+          defaultValue={category.slug}
           color={errors.slug ? 'danger' : 'default'}
           isInvalid={!!errors.slug}
           errorMessage={!!errors.slug && 'Campo requerido'}

@@ -2,6 +2,7 @@
 import React from 'react'
 import { Input, Select, SelectItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
+import { EUserState, EUserType, User } from '@/types'
 
 type FormUserEditAccountFields= {
   username: string,
@@ -9,7 +10,11 @@ type FormUserEditAccountFields= {
   state: string,
 }
 
-function FormUserEditAccount () {
+type Props = {
+  user: User
+}
+
+function FormUserEditAccount ({ user }: Props) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormUserEditAccountFields>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
 
@@ -27,6 +32,7 @@ function FormUserEditAccount () {
             variant='underlined'
             placeholder='Escriba los nombre de usuario'
             label='Username'
+            defaultValue={user.username}
             isInvalid={!!errors.username}
             color={errors.username ? 'danger' : 'default'}
             errorMessage={!!errors.username && 'Campo requerido'}
@@ -37,27 +43,29 @@ function FormUserEditAccount () {
             variant='underlined'
             placeholder='Seleccione el tipo'
             label='Tipo de usuario'
+            defaultSelectedKeys={[user.type]}
             isInvalid={!!errors.type}
             color={errors.type ? 'danger' : 'default'}
             errorMessage={!!errors.type && 'Campo requerido'}
             {...register('type', { required: true })}
           >
-            <SelectItem key='admin' value='admin'>Admin</SelectItem>
-            <SelectItem key='superadmin' value='superadmin'>SuperAdmin</SelectItem>
-            <SelectItem key='bendedor' value='vendedor'>vendedor</SelectItem>
+            <SelectItem key={EUserType.admin} value='admin'>Admin</SelectItem>
+            <SelectItem key={EUserType.superadmin} value='superadmin'>SuperAdmin</SelectItem>
+            <SelectItem key={EUserType.seller} value='vendedor'>vendedor</SelectItem>
           </Select>
           <Select
             className='w-full md:w-[min(100%,400px)]'
             variant='underlined'
             placeholder='Seleccione el estado'
             label='Estado de usuario'
+            defaultSelectedKeys={[user.state]}
             isInvalid={!!errors.state}
             color={errors.state ? 'danger' : 'default'}
             errorMessage={!!errors.state && 'Campo requerido'}
             {...register('state', { required: true })}
           >
-            <SelectItem key='activo' value='activo'>Activo</SelectItem>
-            <SelectItem key='inactivco' value='inactivco'>Inactivo</SelectItem>
+            <SelectItem key={EUserState.active} value='activo'>Activo</SelectItem>
+            <SelectItem key={EUserState.inactive} value='inactivco'>Inactivo</SelectItem>
           </Select>
         </div>
         <Button type='submit' className='w-full md:w-auto mt-4' color='primary'>Actualizar</Button>

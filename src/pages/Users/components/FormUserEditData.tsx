@@ -1,4 +1,5 @@
 'use client'
+import { User } from '@/types'
 import { Input, Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -10,12 +11,17 @@ type FormUserEditDataFields= {
   phone: `${number}`
 }
 
-function FormUserEditData () {
+type Props = {
+  user:User
+}
+
+function FormUserEditData ({ user }: Props) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormUserEditDataFields>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
 
   const handleSubmitFormPersonalData = handleSubmit((data) => {
     setShowModal(true)
+    console.log(data)
   })
 
   return (
@@ -28,6 +34,7 @@ function FormUserEditData () {
             variant='underlined'
             placeholder='Escriba los nombres'
             label='Nombres'
+            defaultValue={user.names}
             isInvalid={!!errors.names}
             color={errors.names ? 'danger' : 'default'}
             errorMessage={!!errors.names && 'Campo requerido'}
@@ -38,6 +45,7 @@ function FormUserEditData () {
             variant='underlined'
             placeholder='Escriba los apellidos'
             label='Apellidos'
+            defaultValue={user.lastnames}
             isInvalid={!!errors.lastnames}
             color={errors.lastnames ? 'danger' : 'default'}
             errorMessage={!!errors.lastnames && 'Campo requerido'}
@@ -49,6 +57,7 @@ function FormUserEditData () {
             variant='underlined'
             placeholder='Escriba el email'
             label='Correo'
+            defaultValue={user.email || ''}
             isInvalid={!!errors.email}
             color={errors.email ? 'danger' : 'default'}
             errorMessage={!!errors.email && 'Correo inválido'}
@@ -60,6 +69,7 @@ function FormUserEditData () {
             variant='underlined'
             placeholder='Escriba el telefono'
             label='Teléfono'
+            defaultValue={user.phone || ''}
             isInvalid={!!errors.phone}
             color={errors.phone ? 'danger' : 'default'}
             errorMessage={!!errors.phone && 'Teléfono inválido'}

@@ -1,12 +1,10 @@
-'use client'
-import { TableSuppliers } from '@/pages/Suppliers/components'
-import { Supplier } from '@/pages/Suppliers/models'
-import { Divider } from '@nextui-org/react'
+import TableSuppliers from '@/pages/Suppliers/components/TableSuppliers'
+import { Supplier } from '@/types'
 
 const data:Supplier[] = [
   {
     id: 1,
-    RUC: '112345676789',
+    ruc: '112345676789',
     name: 'Proveedor 1',
     address: 'Jr. Marsical cacareees',
     phone: '998094343',
@@ -15,7 +13,7 @@ const data:Supplier[] = [
   },
   {
     id: 2,
-    RUC: '123456767892',
+    ruc: '123456767892',
     name: 'Proveedor 2',
     address: 'Av. Aasambleas',
     phone: '998998998',
@@ -24,7 +22,7 @@ const data:Supplier[] = [
   },
   {
     id: 3,
-    RUC: '123456767898',
+    ruc: '123456767898',
     name: 'Proveedor 3',
     address: 'Jr. Bellido',
     phone: '900990009',
@@ -33,7 +31,7 @@ const data:Supplier[] = [
   },
   {
     id: 4,
-    RUC: '1345656767898',
+    ruc: '1345656767898',
     name: 'Proveedor 4',
     address: 'Jr. Peresz de Regollar',
     phone: '968230122',
@@ -45,11 +43,6 @@ const data:Supplier[] = [
 function Supplierspage () {
   return (
     <>
-      <h1 className='title-main'>Proveedores</h1>
-      <p className='text'>Gestione los los proveedores que tiene la empresa, agregue, modifique datos, etc.</p>
-      <br />
-      <Divider />
-      <br />
       <TableSuppliers suppliers={data} />
     </>
   )

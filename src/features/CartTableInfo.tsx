@@ -1,7 +1,7 @@
 'use client'
+import { IGV } from '@/contants'
 import { useCart } from '@/hooks'
-import { TableHeaderColumns } from '@/types/components'
-import { NEXT_PUBLIC_IGV as IGV } from '@/contants'
+import { TableHeaderColumns } from '@/types'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 
 const headerColumns:TableHeaderColumns[] = [

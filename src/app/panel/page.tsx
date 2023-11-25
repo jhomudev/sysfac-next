@@ -7,8 +7,7 @@ import ListCardEntity from '@/components/ListCardEntity'
 import CardGraphic from '@/components/CardGraphic'
 import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
 import { NEXTUI_COLORS } from '@/contants'
-import { EOperationType, EProofType } from '@/types/enums.d'
-import { Transaction } from '@/types/Transaction'
+import { EOperationType, EProofType, Transaction } from '@/types'
 
 const dashboardItems: CardEntityDashboardProps[] = [
   {

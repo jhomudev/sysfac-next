@@ -1,10 +1,9 @@
 'use client'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
-import { ICONS } from '@/contants'
-import { Transaction } from '@/types/Transaction'
-import { TableHeaderColumns } from '@/types/components'
-import { EOperationType, EProofType } from '@/types/enums.d'
+import { COLORS_ENT, ICONS } from '@/contants'
+import NextLink from 'next/link'
+import { Transaction, TableHeaderColumns, EOperationType, EProofType } from '@/types'
 import {
   Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
@@ -67,8 +66,8 @@ function TableTransactions ({ transactions }:Props) {
       <>
         <div className='flex gap-3 items-center justify-between'>
           <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por usuario' startContent={<Yesicon icon={ICONS.search} />} />
-          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color='success' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
-          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color='danger' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
+          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color={COLORS_ENT.operationType.buy.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
+          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color={COLORS_ENT.operationType.sell.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de transacciones <span className='font-medium'>12</span></p>
@@ -102,12 +101,8 @@ function TableTransactions ({ transactions }:Props) {
         isHeaderSticky
         aria-label='Tabla de transacciones'
         bottomContentPlacement='outside'
-        classNames={{
-          wrapper: 'max-h-[382px]'
-        }}
         selectedKeys={selectedKeys}
         selectionMode='multiple'
-      // sortDescriptor={sortDescriptor}
         topContent={topContent}
         bottomContent={bottomContent}
         topContentPlacement='outside'
@@ -133,7 +128,7 @@ function TableTransactions ({ transactions }:Props) {
 
             return (
               <TableRow key={item.id}>
-                <TableCell><Chip variant='flat' color={isSale ? 'danger' : 'success'}>{item.operationType}</Chip></TableCell>
+                <TableCell><Chip variant='flat' color={isSale ? COLORS_ENT.operationType.sell.nextui : COLORS_ENT.operationType.buy.nextui}>{item.operationType}</Chip></TableCell>
                 <TableCell><Chip variant='dot' color={isProofTicket ? 'warning' : 'secondary'}>{item.proofType}</Chip></TableCell>
                 <TableCell>{item.totalImport?.toFixed(2)}</TableCell>
                 <TableCell>{item.discount?.toFixed(2)}</TableCell>
@@ -152,7 +147,7 @@ function TableTransactions ({ transactions }:Props) {
                       aria-label='actions'
                       variant='flat'
                     >
-                      <DropdownItem key='view' startContent={<Yesicon icon={ICONS.view} />} href={routeDetails}>Ver detalles</DropdownItem>
+                      <DropdownItem as={NextLink} key='view' startContent={<Yesicon icon={ICONS.view} />} href={routeDetails}>Ver detalles</DropdownItem>
                       <DropdownItem className={`${!isSale && 'hidden'}`} key='ticket' startContent={<Yesicon icon={ICONS.ticket} />} href={routeDetails} target='_blank'>Ver comprobante</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>

@@ -1,7 +1,7 @@
 'use client'
 import { Bar } from 'react-chartjs-2'
 import { Chart as ChartJs, Filler, LineElement, LinearScale, PointElement, Title, Tooltip, Legend, CategoryScale, BarElement, ChartData } from 'chart.js'
-import { NEXTUI_COLORS } from '@/contants'
+import { COLORS_ENT } from '@/contants'
 
 ChartJs.register(
   CategoryScale,
@@ -22,15 +22,15 @@ function ChartMoreSales () {
       {
         label: 'Ventas',
         data: [123, 100, 145, 156, 156, 112, 134, 145],
-        backgroundColor: `${NEXTUI_COLORS.danger}30`,
-        borderColor: NEXTUI_COLORS.danger,
+        backgroundColor: `${COLORS_ENT.operationType.sell.hex}30`,
+        borderColor: COLORS_ENT.operationType.sell.hex,
         borderWidth: 2
       },
       {
         label: 'Compras',
         data: [23, 34, 55, 56, 76, 12, 34, 45],
-        backgroundColor: `${NEXTUI_COLORS.success}30`,
-        borderColor: NEXTUI_COLORS.success,
+        backgroundColor: `${COLORS_ENT.operationType.buy.hex}30`,
+        borderColor: COLORS_ENT.operationType.buy.hex,
         borderWidth: 2
       }
     ]

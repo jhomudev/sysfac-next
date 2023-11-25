@@ -1,5 +1,5 @@
 import { conn } from '@/libs/mysql'
-import { EUserState, UserCredentials, UserDB } from '@/models'
+import { UserCredentials, UserDB, EUserState } from '@/types'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const POST = async (req:NextRequest) => {

@@ -1,10 +1,8 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import TableOperationsPerPurchase from '@/pages/Transactions/components/TableOperationsPerPurchase'
-import { Operation } from '@/types/Operation'
-import { Transaction } from '@/types/Transaction'
-import { EOperationType, EProofType } from '@/types/enums.d'
-import formatDate from '@/utils/formatDate'
+import { Operation, Transaction, EOperationType, EProofType } from '@/types'
+import { formatDate } from '@/utils'
 import { Divider } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 

@@ -111,7 +111,7 @@ CREATE TABLE
   SUPPLIERS (
     supplierId INT NOT NULL AUTO_INCREMENT,
     -- supplier data
-    RUC VARCHAR(13) NOT NULL,
+    ruc VARCHAR(13) NOT NULL,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(100) NOT NULL,
     phone VARCHAR(10),
@@ -132,7 +132,7 @@ CREATE TABLE
   CLIENTS (
     clientId INT NOT NULL AUTO_INCREMENT,
     -- client data
-    RUC VARCHAR(13),
+    ruc VARCHAR(13),
     dni VARCHAR(8),
     names VARCHAR(100) NOT NULL,
     lastnames VARCHAR(100) NOT NULL,

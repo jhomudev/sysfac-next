@@ -1,7 +1,7 @@
 'use client'
 import { Pie } from 'react-chartjs-2'
 import { Chart as ChartJs, ArcElement, Tooltip, Legend, ChartData } from 'chart.js'
-import { NEXTUI_COLORS } from '@/contants'
+import { COLORS_ENT } from '@/contants'
 
 ChartJs.register(
   ArcElement,
@@ -17,14 +17,14 @@ function ChartStates () {
         label: 'Cantidad',
         data: [123, 100, 145],
         backgroundColor: [
-          `${NEXTUI_COLORS.success}30`,
-          `${NEXTUI_COLORS.danger}30`,
-          `${NEXTUI_COLORS.primary}30`
+          `${COLORS_ENT.stateProductUnit.sold.hex}30`,
+          `${COLORS_ENT.stateProductUnit.damaged.hex}30`,
+          `${COLORS_ENT.stateProductUnit.stock.hex}30`
         ],
         borderColor: [
-          NEXTUI_COLORS.success,
-          NEXTUI_COLORS.danger,
-          NEXTUI_COLORS.primary
+          COLORS_ENT.stateProductUnit.sold.hex,
+          COLORS_ENT.stateProductUnit.damaged.hex,
+          COLORS_ENT.stateProductUnit.stock.hex
         ],
         borderWidth: 2
       }

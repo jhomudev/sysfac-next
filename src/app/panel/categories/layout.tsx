@@ -3,7 +3,8 @@ import ROUTES from '@/app/routes'
 import { Button } from '@nextui-org/button'
 import { Divider } from '@nextui-org/divider'
 import { Link } from '@nextui-org/link'
-import Yesicon, { ICONSS } from '@/components/Yesicon'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 
 type Props={
   children: React.ReactNode

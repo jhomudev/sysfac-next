@@ -1,8 +1,7 @@
 'use client'
 import React from 'react'
 import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Pagination, Selection } from '@nextui-org/react'
-import { TableHeaderColumns } from '@/types/components'
-import { Client } from '@/types/Client'
+import { TableHeaderColumns, Client } from '@/types'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 
@@ -111,7 +110,7 @@ function TableClients ({ clients }:Props) {
         <TableBody emptyContent='No se econtraron clientes' items={clients}>
           {(item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.RUC ?? 'No aplica'}</TableCell>
+              <TableCell>{item.ruc ?? 'No aplica'}</TableCell>
               <TableCell>{item.dni ?? 'No aplica'}</TableCell>
               <TableCell>{item.names}</TableCell>
               <TableCell>{item.lastnames}</TableCell>

@@ -4,8 +4,7 @@ import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 import FiltersProductsPerSale from '@/pages/Transactions/components/FilterProductsPerSale'
 import ListProductsPerSale from '@/pages/Transactions/components/ListProductsPerSale'
-import { Product } from '@/types/Product'
-import { ESaleFor } from '@/types/enums.d'
+import { Product, ESaleFor } from '@/types'
 import { Divider, Input } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [

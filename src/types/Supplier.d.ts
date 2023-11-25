@@ -2,7 +2,7 @@ import { ApiResponseWithReturn } from './ApiResponse'
 
 export interface Supplier {
   id: number,
-  RUC: `${number}`,
+  ruc: `${number}`,
   name: string,
   address: string,
   phone: `${number}` | null,
@@ -12,7 +12,7 @@ export interface Supplier {
 
 export interface SupplierDB {
   supplierId: number,
-  RUC: `${number}`,
+  ruc: `${number}`,
   name: string,
   address: string,
   phone: `${number}` | null,

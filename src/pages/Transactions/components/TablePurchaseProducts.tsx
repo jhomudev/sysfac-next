@@ -4,7 +4,7 @@ import {
   Button, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow,
   Tooltip, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
 } from '@nextui-org/react'
-import { TableHeaderColumns } from '@/types/components'
+import { TableHeaderColumns } from '@/types'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 

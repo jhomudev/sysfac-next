@@ -1,7 +1,6 @@
 'use client'
 import { useCart } from '@/hooks'
-import { Product } from '@/types/Product'
-import { ESaleFor } from '@/types/enums.d'
+import { Product, ESaleFor } from '@/types'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, Input, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'

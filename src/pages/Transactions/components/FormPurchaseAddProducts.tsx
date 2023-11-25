@@ -1,5 +1,5 @@
 'use client'
-import { Product } from '@/types/Product'
+import { Product } from '@/types'
 import { Select, SelectItem, Button, Checkbox, Input } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'

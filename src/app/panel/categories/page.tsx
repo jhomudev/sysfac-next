@@ -1,5 +1,5 @@
 import ListCategories from '@/pages/Categories/components/ListCategories'
-import { Category } from '@/pages/Categories/models/category.model'
+import { Category } from '@/types'
 import React from 'react'
 
 const categories: Category[] = [
@@ -64,7 +64,7 @@ const categories: Category[] = [
 function CategoriesPage () {
   return (
     <>
-      {/* <ListCategories categories={categories} /> */}
+      <ListCategories categories={categories} />
     </>
   )
 }

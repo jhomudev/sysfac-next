@@ -1,7 +1,6 @@
-import { formatUser } from '@/adapters/formatUser'
+import { formatUser } from '@/adapters'
 import { API_URL } from '@/contants'
-import { UserResponse, UserCredentials } from '@/types/User'
-import { EUserState } from '@/types/enums.d'
+import { UserResponse, UserCredentials, EUserState } from '@/types'
 import axios from 'axios'
 
 export const validateUserCredentials = async (credentials: UserCredentials) => {

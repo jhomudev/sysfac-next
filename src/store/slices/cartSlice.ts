@@ -1,4 +1,4 @@
-import { Cart, CartItem, CartItemId } from '@/types/Cart'
+import { Cart, CartItem, CartItemId } from '@/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const defaultState: Cart = {

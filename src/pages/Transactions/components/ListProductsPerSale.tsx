@@ -1,7 +1,7 @@
 'use client'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { Product } from '@/types/Product'
+import { Product } from '@/types'
 import { Button, Card, CardBody, CardFooter, CardHeader, Image } from '@nextui-org/react'
 import { motion } from 'framer-motion'
 import React from 'react'

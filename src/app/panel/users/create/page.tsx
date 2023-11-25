@@ -1,6 +1,6 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
-import { FormUserCreate } from '@/pages/Users/components'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import FormUserCreate from '@/pages/Users/components/FormUserCreate'
 
 function CreateUserPage () {
   const breadcrumbItems:MyBreadcrumbItemProps[] = [

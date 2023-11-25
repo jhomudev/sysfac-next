@@ -1,7 +1,8 @@
+'use client'
 /* eslint-disable react/jsx-indent */
 import { motion } from 'framer-motion'
 import CardCategory from './CardCategory'
-import { Category } from '@/types/Category'
+import { Category } from '@/types'
 
 type Props = {
   categories: Category[]
@@ -13,23 +14,22 @@ function ListCategories ({ categories }: Props) {
   return (
     <>
       {
-      hasCategories
-        ? <p>No hay categorias aún.</p>
-        : <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
-          {
-            categories.map((cat, i) => (
-              <CardCategory
-                key={cat.id}
-                customMotionI={i}
-                name={cat.name}
-                slug={cat.slug}
-                image={cat.image}
-              />
-            ))
-          }
-          </motion.div>
-    }
-
+        !hasCategories
+          ? <p>No hay categorias aún.</p>
+          : <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
+            {
+              categories.map((cat, i) => (
+                <CardCategory
+                  key={cat.id}
+                  customMotionI={i}
+                  name={cat.name}
+                  slug={cat.slug}
+                  image={cat.image}
+                />
+              ))
+            }
+            </motion.div>
+      }
     </>
   )
 }

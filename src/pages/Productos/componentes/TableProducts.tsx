@@ -1,9 +1,7 @@
 'use client'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { Product } from '@/types/Product'
-import { TableHeaderColumns } from '@/types/components'
-import { ESaleFor, EStateProduct } from '@/types/enums.d'
+import { Product, TableHeaderColumns, ESaleFor, EStateProduct } from '@/types'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection, Avatar

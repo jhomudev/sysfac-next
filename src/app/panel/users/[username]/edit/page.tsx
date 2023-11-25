@@ -2,8 +2,11 @@ import React from 'react'
 import ROUTES from '@/app/routes'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 import { Divider } from '@nextui-org/divider'
-import { FormUserChangePassword, FormUserEditAccount, FormUserEditData } from '@/pages/Users/components'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import FormUserEditData from '@/pages/Users/components/FormUserEditData'
+import FormUserEditAccount from '@/pages/Users/components/FormUserEditAccount'
+import FormUserChangePassword from '@/pages/Users/components/FormUserChangePassword'
+import { EUserState, EUserType, User } from '@/types'
 
 type Props = {
   params: Params
@@ -11,7 +14,19 @@ type Props = {
 
 function EditUserPage ({ params }: Props) {
   const { username } = params
-  // const [isVisible, setIsVisible] = React.useState<boolean>(false)
+  const user:User = {
+    id: 1,
+    username: 'usuario1',
+    names: 'Juan',
+    lastnames: 'Perez',
+    type: EUserType.admin,
+    email: 'juan.perez@email.com',
+    phone: '123456789',
+    password: 'asdfsdf',
+    state: EUserState.active,
+    createdAt: '',
+    updatedAt: ''
+  }
 
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
     {
@@ -36,15 +51,14 @@ function EditUserPage ({ params }: Props) {
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <strong className='title'>Editar usuario</strong>
-      <h1 className='text-xl font-semibold text-secondary'>Jhonan caleb Muñoz</h1>
-      <br />
+      <h1 className='text-xl font-semibold text-secondary mb-3'>{user.names} {user.lastnames}</h1>
       <Divider />
       <br />
-      <FormUserEditData />
+      <FormUserEditData user={user} />
       <br /><br />
-      <FormUserEditAccount />
+      <FormUserEditAccount user={user} />
       <br /><br />
-      <FormUserChangePassword />
+      <FormUserChangePassword user={user} />
     </div>
   )
 }

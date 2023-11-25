@@ -1,5 +1,5 @@
 import { addItem, deleteItem, clearItems } from '@/store/slices/cartPurchaseSlice'
-import { CartPurchaseItemId, CartPurchaseItemWhithoutId } from '@/types/CartPurchase'
+import { CartPurchaseItemId, CartPurchaseItemWhithoutId } from '@/types'
 import { useAppDispatch, useAppSelector } from '@/store/storeActions'
 
 const useCartPurchase = () => {

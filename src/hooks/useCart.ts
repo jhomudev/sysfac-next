@@ -1,9 +1,7 @@
+import { IGV } from '@/contants'
 import { setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/store/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/store/storeActions'
-import { NEXT_PUBLIC_IGV as IGV } from '@/contants'
-import { Cart, CartItemId, CartItemWithoutId } from '@/types/Cart'
-
-const igv = Number(IGV)
+import { Cart, CartItemId, CartItemWithoutId } from '@/types'
 
 const useCart = () => {
   const dispatch = useAppDispatch()
@@ -45,10 +43,11 @@ const useCart = () => {
   const discount = cart.discount
 
   const totalImport = (() => {
-    const discountInMoney = discount / 100 * _import
-    const IGVinMoney = igv / 100 * _import
+    // const discountInMoney = discount / 100 * _import
+    const importWithDiscount = _import - discount
+    const IGVinMoney = IGV / 100 * importWithDiscount
 
-    return _import - discountInMoney + IGVinMoney
+    return importWithDiscount + IGVinMoney
   })()
 
   return {

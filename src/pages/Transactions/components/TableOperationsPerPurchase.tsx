@@ -1,6 +1,5 @@
 'use client'
-import { Operation } from '@/types/Operation'
-import { TableHeaderColumns } from '@/types/components'
+import { Operation, TableHeaderColumns } from '@/types'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 
 type Props = {

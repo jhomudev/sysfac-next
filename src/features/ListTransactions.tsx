@@ -1,9 +1,8 @@
 'use client'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
-import { ICONS, NEXTUI_COLORS } from '@/contants'
-import { Transaction } from '@/types/Transaction'
-import { EOperationType } from '@/types/enums.d'
+import { COLORS_ENT, ICONS } from '@/contants'
+import { Transaction, EOperationType } from '@/types'
 import getLeftTime from '@/utils/getLeftTime'
 import { Card, CardHeader, Link, Listbox, ListboxItem } from '@nextui-org/react'
 
@@ -26,8 +25,7 @@ function ListTransactions ({ transactions }: Props) {
         >
           {
             (item) => {
-              const colorBorder = `${item.operationType === EOperationType.buy ? NEXTUI_COLORS.danger : NEXTUI_COLORS.success}20`
-              const color = `${item.operationType === EOperationType.buy ? NEXTUI_COLORS.danger : NEXTUI_COLORS.success}`
+              const color = item.operationType === EOperationType.buy ? COLORS_ENT.operationType.buy.hex : COLORS_ENT.operationType.sell.hex
               const icon = item.operationType === EOperationType.buy ? 'material-symbols:shopping-cart-outline' : 'material-symbols:sell-outline'
               return (
                 <ListboxItem
@@ -38,7 +36,7 @@ function ListTransactions ({ transactions }: Props) {
                   startContent={
                     <span
                       className='p-2 rounded-md' style={{
-                        backgroundColor: colorBorder,
+                        backgroundColor: color + '20',
                         border: `1px solid ${color}`
                       }}
                     >

@@ -40,7 +40,7 @@ function CardCategory ({ customMotionI, name, image, slug }: CardCategoryProps) 
             alt={name}
             loading='lazy'
             className='w-full h-[160px]'
-            src={image ?? 'https://media.istockphoto.com/id/1305169776/es/foto/q-y-un-concepto-signo-de-interrogaci%C3%B3n-amarillo-brillando-en-medio-de-signos-de-interrogaci%C3%B3n.jpg?s=612x612&w=0&k=20&c=I0bcmVT1jY9jCP1Ow3BDnpqV31rR1QVMqq_NUBE14-s='}
+            src={image || 'https://media.istockphoto.com/id/1305169776/es/foto/q-y-un-concepto-signo-de-interrogaci%C3%B3n-amarillo-brillando-en-medio-de-signos-de-interrogaci%C3%B3n.jpg?s=612x612&w=0&k=20&c=I0bcmVT1jY9jCP1Ow3BDnpqV31rR1QVMqq_NUBE14-s='}
           />
         </CardBody>
       </Card>

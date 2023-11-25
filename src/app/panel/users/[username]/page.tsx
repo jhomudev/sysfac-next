@@ -1,12 +1,15 @@
 import ROUTES from '@/app/routes'
-import { Chip } from '@nextui-org/chip'
-import { Link } from '@nextui-org/link'
-import { Card, CardBody, CardHeader } from '@nextui-org/card'
+// import { Chip } from '@nextui-org/chip'
+// import { Link } from '@nextui-org/link'
+// import { Card, CardBody, CardHeader } from '@nextui-org/card'
+// import { Button, Tooltip } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, Chip, Link, Button, Tooltip } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
-import { Button, Tooltip } from '@nextui-org/react'
-import { MyBreadcrumbItemProps, MyBreadcrumbs, Yesicon, ICONSS } from '@/components'
-import { EOperationType, EProofType, Transaction } from '@/models'
-import { TableTransactionsPerUser } from '@/pages/Users/components'
+import { EOperationType, EProofType, EUserState, EUserType, Transaction, User } from '@/types'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import Yesicon from '@/components/Yesicon'
+import { COLORS_ENT, ICONS } from '@/contants'
+import TableTransactionsPerUser from '@/pages/Users/components/TableTransactionsPerUser'
 
 type Props = {
   params: Params
@@ -68,8 +71,21 @@ const data:Partial<Transaction>[] = [
     }
   }
 ]
+const user:User = {
+  id: 1,
+  username: 'usuario1',
+  names: 'Juan',
+  lastnames: 'Perez',
+  type: EUserType.admin,
+  email: 'juan.perez@email.com',
+  phone: '123456789',
+  password: 'asdfsdf',
+  state: EUserState.active,
+  createdAt: '',
+  updatedAt: ''
+}
 
-function UserPage ({ params }: Props) {
+async function UserPage ({ params }: Props) {
   const { username } = params
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
     {
@@ -84,6 +100,9 @@ function UserPage ({ params }: Props) {
       label: username
     }
   ]
+  const colorUserType = user.type === EUserType.admin
+    ? COLORS_ENT.userType.admin.nextui
+    : user.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
 
   return (
     <div>
@@ -91,7 +110,7 @@ function UserPage ({ params }: Props) {
       <br />
       <div className='flex items-center justify-between'>
         <h1 className='title-main'>Jhonan Caleb Muñoz Carrillo</h1>
-        <Chip color='danger' variant='shadow'>Administrador</Chip>
+        <Chip color={colorUserType} variant='shadow'>Administrador</Chip>
       </div>
       <small>{username}</small>
       <br /> <br />

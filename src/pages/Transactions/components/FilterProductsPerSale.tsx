@@ -1,5 +1,5 @@
 'use client'
-import { SelectTagItem } from '@/types/components'
+import { SelectTagItem } from '@/types'
 import { Button, Select, SelectItem } from '@nextui-org/react'
 
 const itemsCategories: SelectTagItem[] = [

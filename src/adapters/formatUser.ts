@@ -1,4 +1,4 @@
-import { User, UserResponse } from '@/types/User'
+import { User, UserResponse } from '@/types'
 
 export const formatUser = (userResponse: UserResponse) => {
   const { data } = userResponse

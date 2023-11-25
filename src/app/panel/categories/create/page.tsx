@@ -1,7 +1,6 @@
 import ROUTES from '@/app/routes'
-import { MyBreadcrumbs, MyBreadcrumbItemProps } from '@/components'
-
-import { FormCategoryCreate } from '@/pages/Categories/components'
+import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
+import FormCategoryCreate from '@/pages/Categories/components/FormCategoryCreate'
 
 const breadcrumbItems:MyBreadcrumbItemProps[] = [
   {
@@ -16,9 +15,10 @@ const breadcrumbItems:MyBreadcrumbItemProps[] = [
     label: 'Crear categoría'
   }
 ]
+
 function CreateCategoryPage () {
   return (
-    <div>
+    <>
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <div className='flex flex-col w-[min(100%,800px)]'>
@@ -26,7 +26,7 @@ function CreateCategoryPage () {
         <br />
         <FormCategoryCreate />
       </div>
-    </div>
+    </>
   )
 }
 export default CreateCategoryPage
