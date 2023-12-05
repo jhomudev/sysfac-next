@@ -1,7 +1,8 @@
 import React from 'react'
 import Header from '@/features/Header'
 import MenuBar from '@/features/MenuBar'
-import { Card, CardBody } from '@nextui-org/card'
+import { Card, CardBody, CardFooter } from '@nextui-org/card'
+import Footer from '@/features/Footer'
 
 type Props = {
   children: React.ReactNode
@@ -17,6 +18,9 @@ function PanelLayout ({ children }: Props) {
         <Header />
         <Card as='main' className='flex flex-1 overflow-visible'>
           <CardBody className='flex-1 p-5'>{children}</CardBody>
+          <CardFooter>
+            <Footer />
+          </CardFooter>
         </Card>
       </div>
     </div>

@@ -37,7 +37,7 @@ const products:Product[] = [
       name: 'Pc'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 2,
@@ -54,7 +54,7 @@ const products:Product[] = [
       name: 'Laptop'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 3,
@@ -71,7 +71,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 4,
@@ -88,7 +88,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 5,
@@ -105,7 +105,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 6,
@@ -122,7 +122,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 7,
@@ -139,7 +139,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   },
   {
     id: 8,
@@ -156,7 +156,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-09 10:03:07',
-    updateAt: '2023-11-09 10:03:07'
+    updatedAt: '2023-11-09 10:03:07'
   }
 ]
 

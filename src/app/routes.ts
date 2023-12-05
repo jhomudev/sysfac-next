@@ -6,7 +6,9 @@ const ROUTES = {
   transactions: '/panel/transactions',
   categories: '/panel/categories',
   suppliers: '/panel/suppliers',
-  locations: '/panel/locations'
+  locations: '/panel/locations',
+  sales: '/panel/sales',
+  purchases: '/panel/purchases'
 }
 
 export default ROUTES

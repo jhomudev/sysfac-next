@@ -11,14 +11,21 @@ export interface Location {
   updatedAt: string
 }
 
-export interface LocationDB {
+export interface LocationFromDB {
   localId: number,
   name: string,
   address: string,
   type: ELocationType,
   canStoreMore: boolean,
-  createdAt?: string
-  updatedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
-export type LocationResponse = ApiResponseWithReturn<LocationDB>
+export interface LocationToDB {
+  name: string,
+  address: string,
+  type: ELocationType,
+  canStoreMore: boolean,
+}
+
+export type LocationResponse = ApiResponseWithReturn<LocationFromDB>

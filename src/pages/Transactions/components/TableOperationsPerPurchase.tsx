@@ -52,7 +52,7 @@ function TableOperationsPerPurchase ({ items }: Props) {
           <TableRow key={item.id}>
             <TableCell>{item.description}</TableCell>
             <TableCell>{item.serialNumber || 'N.A.'}</TableCell>
-            <TableCell>S/{item.priceSale}</TableCell>
+            <TableCell>S/{item.unitCost}</TableCell>
             <TableCell>{item.quantity}</TableCell>
             <TableCell>S/{item.importSale}</TableCell>
           </TableRow>

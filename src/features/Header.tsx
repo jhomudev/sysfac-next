@@ -3,28 +3,62 @@ import React from 'react'
 import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image } from '@nextui-org/react'
 import { signOut, useSession } from 'next-auth/react'
 import Cart from './Cart'
-import { useCart } from '@/hooks'
+import { useCart, useCartPurchase } from '@/hooks'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
 import { EUserType } from '@/types'
+import { useRouter } from 'next/navigation'
+import ROUTES from '@/app/routes'
 
 function Header () {
   const { data: session } = useSession()
   const user = session?.user
+  const { push } = useRouter()
 
-  const [showCart, setShowCart] = React.useState<boolean>(false)
-  const { cart: { items } } = useCart()
-  const hasItems = items.length > 0
+  const { cart: { items }, setShowCart, showCart } = useCart()
+  const { cartPurchase: { items: itemsInPurchase } } = useCartPurchase()
+  const hasItemsInCart = items.length > 0
+  const hasItemsInCartPurchase = itemsInPurchase.length > 0
   const colorUserType = user?.type === EUserType.admin
     ? COLORS_ENT.userType.admin.nextui
     : user?.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
+
+  const notifications = [
+    {
+      key: crypto.randomUUID(),
+      label: 'Producto por agotarse',
+      image: 'https://cdn-icons-png.flaticon.com/512/5166/5166939.png',
+      description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.',
+      handle: () => push(`${ROUTES.products}`)
+    }
+  ]
+  if (hasItemsInCart) {
+    notifications.unshift({
+      key: crypto.randomUUID(),
+      label: 'Venta inconclusa',
+      image: 'https://cdn-icons-png.flaticon.com/512/5408/5408490.png',
+      description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.',
+      handle: () => setShowCart(true)
+    })
+  }
+  if (hasItemsInCartPurchase) {
+    notifications.unshift({
+      key: crypto.randomUUID(),
+      label: 'Compra inconclusa',
+      image: 'https://cdn-icons-png.flaticon.com/512/3847/3847867.png',
+      description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.',
+      handle: () => push(`${ROUTES.purchases}/new`)
+    })
+  }
+
+  const hasNotifications = notifications.length > 0
 
   return (
     <>
       <header className='flex items-center justify-between h-[5rem] bg-myLight rounded-xl p-5 text-myDark'>
         <span>Hola <strong>{user?.names}</strong></span>
         <div className='flex gap-5 items-center'>
-          <Badge content={items.length} shape='circle' color='danger' isInvisible={!hasItems}>
+          <Badge content={items.length} shape='circle' color='danger' isInvisible={!hasItemsInCart}>
             <Button
               onPress={() => setShowCart(true)}
               radius='full'
@@ -36,7 +70,7 @@ function Header () {
             </Button>
           </Badge>
           <Dropdown placement='bottom-end' className='max-w-sm'>
-            <Badge content='99+' shape='circle' color='danger'>
+            <Badge content={notifications.length} shape='circle' color='danger' isInvisible={!hasNotifications}>
               <DropdownTrigger>
                 <Button
                   radius='full'
@@ -48,29 +82,20 @@ function Header () {
                 </Button>
               </DropdownTrigger>
             </Badge>
-            <DropdownMenu variant='faded' aria-label='Dropdown menu with description'>
+            <DropdownMenu variant='faded' aria-label='notifications' items={notifications}>
               <DropdownSection title='Notificaciones'>
-                <DropdownItem
-                  key='unfinished_purchase'
-                  description={<p className='line-clamp-2'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.</p>}
-                  startContent={<Image width={30} height={30} src='https://cdn-icons-png.flaticon.com/512/3847/3847867.png' alt='l-' />}
-                >
-                  Compra inconclusa
-                </DropdownItem>
-                <DropdownItem
-                  key='unfinished_sale'
-                  description={<p className='line-clamp-2'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.</p>}
-                  startContent={<Image width={30} height={30} src='https://cdn-icons-png.flaticon.com/512/5408/5408490.png' alt='l-' />}
-                >
-                  Venta inconclusa
-                </DropdownItem>
-                <DropdownItem
-                  key='sold_out'
-                  description={<p className='line-clamp-2'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.</p>}
-                  startContent={<Image width={30} height={30} src='https://cdn-icons-png.flaticon.com/512/5166/5166939.png' alt='l-' />}
-                >
-                  Producto por agotarse
-                </DropdownItem>
+                {
+                  notifications.map((item) => (
+                    <DropdownItem
+                      key={item.key}
+                      onPress={() => item.handle()}
+                      description={<p className='line-clamp-2'>{item.description}</p>}
+                      startContent={<Image width={30} height={30} src={item.image} alt='image' />}
+                    >
+                      {item.label}
+                    </DropdownItem>
+                  ))
+                }
               </DropdownSection>
             </DropdownMenu>
           </Dropdown>

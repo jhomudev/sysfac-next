@@ -16,10 +16,10 @@ export interface Product {
     name: string,
   }
   createdAt: string,
-  updateAt: string
+  updatedAt: string
 }
 
-export interface ProductDB {
+export interface ProductResponse {
   productId: number,
   name: string,
   image: string,
@@ -34,7 +34,32 @@ export interface ProductDB {
     name: string,
   }
   createdAt: string,
-  updateAt: string
+  updatedAt: string
 }
 
-export type ProductResponse = ApiResponseWithReturn<ProductDB>
+export interface ProductFromDB {
+  productId: number,
+  name: string,
+  image: string,
+  inventaryMin: number,
+  priceSale: number,
+  unit: string,
+  saleFor: ESaleFor,
+  isActive: boolean,
+  createdAt: string,
+  updatedAt: string
+  categoryId: number,
+  categorySlug: string,
+  categoryName: string,
+}
+
+export interface ProductToDB {
+  name: string,
+  image: string,
+  inventaryMin: number,
+  priceSale: number,
+  unit: string,
+  saleFor: ESaleFor,
+  isActive: boolean,
+  categoryId: number
+}

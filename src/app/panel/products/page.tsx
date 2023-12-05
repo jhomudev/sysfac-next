@@ -1,9 +1,7 @@
-'use client'
 import TableProducts from '@/pages/Productos/componentes/TableProducts'
 import { ESaleFor, Product } from '@/types'
-import { Divider } from '@nextui-org/react'
 
-const data:Product[] = [
+const products:Product[] = [
   {
     id: 1,
     name: 'Pc Hp',
@@ -19,7 +17,7 @@ const data:Product[] = [
       name: 'Pc'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
     id: 2,
@@ -36,7 +34,7 @@ const data:Product[] = [
       name: 'Laptop'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
     id: 3,
@@ -53,20 +51,15 @@ const data:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   }
 ]
 
 function ProductsPage () {
   return (
-    <div className='flex-1 p-2'>
-      <h1 className='title-main'>Productos</h1>
-      <p className='text'>Gestiona los productos dentro del sistema, agregue nuevos productos al inventario, modifique información o elimine los productos que considere.</p>
-      <br />
-      <Divider />
-      <br />
-      <TableProducts products={data} />
-    </div>
+    <>
+      <TableProducts products={products} />
+    </>
   )
 }
 export default ProductsPage

@@ -1,11 +1,14 @@
 import { IGV } from '@/contants'
+import { CartModalContext } from '@/context/CartModalContext'
 import { setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/store/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/store/storeActions'
 import { Cart, CartItemId, CartItemWithoutId } from '@/types'
+import { useContext } from 'react'
 
 const useCart = () => {
   const dispatch = useAppDispatch()
   const cart = useAppSelector(state => state.cart)
+  const { showCart, setShowCart } = useContext(CartModalContext)
 
   const updateCart = (data: Cart) => {
     dispatch(setCart(data))
@@ -51,6 +54,8 @@ const useCart = () => {
   })()
 
   return {
+    showCart,
+    setShowCart,
     cart: {
       items: cart.items,
       discount,

@@ -6,6 +6,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation'
 import { Provider } from 'react-redux'
 import { store } from '@/store/store'
+import CartModalProvider from '@/context/CartModalContext'
 
 export function Providers ({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -14,7 +15,9 @@ export function Providers ({ children }: { children: React.ReactNode }) {
     <NextUIProvider navigate={router.push}>
       <SessionNextAuthProvider>
         <Provider store={store}>
-          {children}
+          <CartModalProvider>
+            {children}
+          </CartModalProvider>
         </Provider>
       </SessionNextAuthProvider>
     </NextUIProvider>

@@ -9,7 +9,7 @@ export interface Category {
   updatedAt: string
 }
 
-export interface CategoryDB {
+export interface CategoryFromDB {
   categoryId: number,
   slug: string,
   name: string,
@@ -18,4 +18,10 @@ export interface CategoryDB {
   updatedAt: string
 }
 
-export type CategoryResponse = ApiResponseWithReturn<CategoryDB>
+export interface CategoryToDB {
+  slug: string,
+  name: string,
+  image: string
+}
+
+export type CategoryResponse = ApiResponseWithReturn<CategoryFromDB>

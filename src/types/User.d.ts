@@ -15,7 +15,7 @@ export interface User {
   updatedAt: string
 }
 
-export interface UserDB {
+export interface UserFromDB {
   userId: number,
   username: string,
   password: string,
@@ -29,7 +29,18 @@ export interface UserDB {
   updatedAt: string
 }
 
-export type UserResponse = ApiResponseWithReturn<UserDB>
+export interface UserToDB {
+  username: string,
+  password: string,
+  type: EUserType,
+  state: EUserState,
+  names: string,
+  lastnames: string,
+  email: string | null,
+  phone: `${number}` | null,
+}
+
+export type UserResponse = ApiResponseWithReturn<UserFromDB>
 
 export type UserCredentials = {
   username: string,

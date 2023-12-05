@@ -2,7 +2,7 @@ import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import FormPurchaseAddProducts from '@/pages/Transactions/components/FormPurchaseAddProducts'
 import FormPurchaseConfirm from '@/pages/Transactions/components/FormPurchaseConfirm'
-import TablePurchaseProducts, { TablePurchaseProductsItem } from '@/pages/Transactions/components/TablePurchaseProducts'
+import TablePurchaseProducts from '@/pages/Transactions/components/TablePurchaseProducts'
 import { Product, Supplier, ESaleFor } from '@/types'
 
 import { Divider } from '@nextui-org/react'
@@ -21,56 +21,56 @@ const breadcrumbItems: MyBreadcrumbItemProps[] = [
   }
 ]
 
-const data:TablePurchaseProductsItem[] = [
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  },
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  },
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  },
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  },
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  },
-  {
-    product: 'laptop gamer Hp 1',
-    cost: 12.60,
-    priceSale: 15.00,
-    quantity: 5,
-    serialnumber: 'SDFWERSDGDFGSDFE',
-    total: 230.30
-  }
-]
+// const data:TablePurchaseProductsItem[] = [
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   },
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   },
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   },
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   },
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   },
+//   {
+//     product: 'laptop gamer Hp 1',
+//     cost: 12.60,
+//     priceSale: 15.00,
+//     quantity: 5,
+//     serialnumber: 'SDFWERSDGDFGSDFE',
+//     total: 230.30
+//   }
+// ]
 
 const suppliers: Supplier[] = [
   {
@@ -127,7 +127,7 @@ const products:Product[] = [
       name: 'Pc'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
     id: 2,
@@ -144,14 +144,14 @@ const products:Product[] = [
       name: 'Laptop'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   },
   {
     id: 3,
     name: 'Mouse Avatar',
     image: 'https://unavatar.io/spirit',
     inventaryMin: 5,
-    priceSale: 60.50,
+    priceSale: 90.50,
     unit: 'Unidad',
     saleFor: ESaleFor.quantity,
     isActive: false,
@@ -161,7 +161,7 @@ const products:Product[] = [
       name: 'Mouse'
     },
     createdAt: '2023-11-21 15:45:21',
-    updateAt: '2023-11-21 15:45:21'
+    updatedAt: '2023-11-21 15:45:21'
   }
 ]
 
@@ -174,7 +174,7 @@ function NewPurchasePage () {
       <br />
       <FormPurchaseAddProducts products={products} />
       <br />
-      <TablePurchaseProducts dataProducts={data} />
+      <TablePurchaseProducts />
       <br />
       <FormPurchaseConfirm suppliers={suppliers} />
     </>

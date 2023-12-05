@@ -10,14 +10,19 @@ export interface Supplier {
   updatedAt: string
 }
 
-export interface SupplierDB {
+export interface SupplierFromDB {
   supplierId: number,
   ruc: `${number}`,
   name: string,
   address: string,
   phone: `${number}` | null,
-  createdAt?: string
-  updatedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
-export type SuplierResponse = ApiResponseWithReturn<SupplierDB>
+export interface SupplierToDB {
+  ruc: `${number}`,
+  name: string,
+  address: string,
+  phone: `${number}` | null,
+}

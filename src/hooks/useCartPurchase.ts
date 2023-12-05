@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/store/storeActions'
 
 const useCartPurchase = () => {
   const dispatch = useAppDispatch()
-  const cartPurchase = useAppSelector(state => state.cartPurchase)
+  const { items } = useAppSelector(state => state.cartPurchase)
 
   const addProductToCart = (item: CartPurchaseItemWhithoutId) => {
     dispatch(addItem({ itemId: crypto.randomUUID(), ...item }))
@@ -18,13 +18,16 @@ const useCartPurchase = () => {
     dispatch(clearItems())
   }
 
-  const getTotalImport = () => cartPurchase.items.reduce((total, item) => total + item.total, 0)
+  const totalImport = (() => items.reduce((total, item) => total + item.total, 0))()
 
   return {
+    cartPurchase: {
+      items,
+      totalImport
+    },
     addProductToCart,
     removeProductFromCart,
-    clearCart,
-    getTotalImport
+    clearCart
   }
 }
 export default useCartPurchase

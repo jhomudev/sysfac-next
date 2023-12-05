@@ -1,8 +1,10 @@
 'use client'
+import { useCartPurchase } from '@/hooks'
 import { Supplier } from '@/types'
 import { Button, Select, SelectItem, Textarea, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 type FormData= {
   supplierId: number,
@@ -14,11 +16,23 @@ type Props = {
 function FormPurchaseConfirm ({ suppliers }: Props) {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
+  const { cartPurchase: { items } } = useCartPurchase()
+  const hasCartItems = items.length > 0
 
   const handleSubmitForm = handleSubmit((data) => {
+    if (!hasCartItems) {
+      toast('Carrito de compras vacio', {
+        icon: '⚠️'
+      })
+      return
+    }
     setShowModal(true)
     console.log(data)
   })
+
+  const handleMakeShopping = () => {
+
+  }
 
   return (
     <>
@@ -32,7 +46,18 @@ function FormPurchaseConfirm ({ suppliers }: Props) {
           color={errors.supplierId ? 'danger' : 'default'}
           isInvalid={!!errors.supplierId}
           errorMessage={errors.supplierId && 'Elija un proveedor'}
-          {...register('supplierId', { required: true, valueAsNumber: true })}
+          {...register('supplierId', {
+            required: {
+              value: true,
+              message: 'Proveedor requerido'
+            },
+            validate: (v) => {
+              const isSupplier = suppliers.some(supplier => supplier.id === Number(v))
+              if (isSupplier) return true
+              return 'Elija un proveedor'
+            },
+            setValueAs: (v) => parseInt(v)
+          })}
         >
           {
             (item) => (
@@ -61,7 +86,7 @@ function FormPurchaseConfirm ({ suppliers }: Props) {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={onClose}>
+                <Button color='primary' onPress={handleMakeShopping}>
                   Hacer compra
                 </Button>
               </ModalFooter>

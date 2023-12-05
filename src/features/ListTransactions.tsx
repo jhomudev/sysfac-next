@@ -7,10 +7,11 @@ import getLeftTime from '@/utils/getLeftTime'
 import { Card, CardHeader, Link, Listbox, ListboxItem } from '@nextui-org/react'
 
 type Props = {
-  transactions: Transaction[]
+  transactions: Transaction[],
+  showRedirect?: boolean
 }
 
-function ListTransactions ({ transactions }: Props) {
+function ListTransactions ({ transactions, showRedirect = false }: Props) {
   return (
     <Card className='w-full lg:w-[min(100%,400px)] lg:min-w-[350px] p-5'>
       <CardHeader className='flex flex-col items-start'>
@@ -19,14 +20,16 @@ function ListTransactions ({ transactions }: Props) {
       </CardHeader>
       <Card>
         <Listbox
+          aria-label='transacciones recientes'
           variant='bordered'
           items={transactions}
-          bottomContent={<Link className='text-xs mx-auto my-3' color='secondary' href={ROUTES.transactions}>Ver trasacciones</Link>}
+          bottomContent={showRedirect && <Link className='text-xs mx-auto my-3' color='secondary' href={ROUTES.transactions}>Ver trasacciones</Link>}
         >
           {
             (item) => {
               const color = item.operationType === EOperationType.buy ? COLORS_ENT.operationType.buy.hex : COLORS_ENT.operationType.sell.hex
               const icon = item.operationType === EOperationType.buy ? 'material-symbols:shopping-cart-outline' : 'material-symbols:sell-outline'
+              const link = `/panel/transactions/${item.operationType === EOperationType.buy ? 'purchases' : 'sales'}/${item.id}`
               return (
                 <ListboxItem
                   key={item.id}
@@ -47,9 +50,9 @@ function ListTransactions ({ transactions }: Props) {
                       />
                     </span>
                     }
-                  href={`/panel/transactions/${item.id}`}
+                  href={link}
                 >
-                  {item.user.names.concat(` ${item.user.lastnames}`)}
+                  {item.user.fullname}
                 </ListboxItem>
               )
             }

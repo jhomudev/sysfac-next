@@ -55,7 +55,7 @@ function FormCategoryCreate () {
             onDragOver={(e) => {
               e.preventDefault()
             }}
-            className=' cursor-pointer absolute w-full h-full top-0 left-0'
+            className=' cursor-pointer absolute z-20 w-full h-full top-0 left-0'
           >
             <input
               className='hidden'
@@ -74,12 +74,12 @@ function FormCategoryCreate () {
             imagePreviewUrl
               ? <picture className='relative w-[min(100%,300px)] h-[90%]'>
                 <img
-                  className='absolute w-full h-full object-contain'
+                  className='absolute z-10 w-full h-full object-contain'
                   src={imagePreviewUrl}
                   alt='category'
                 />
               </picture>
-              : <p className='text-default'>Click o arrastre aquí</p>
+              : <p className='text-default'>Click o arrastre aquí la imagen</p>
             }
         </div>
         {!!errors.image && <small className='text-danger text-xs -mt-3'>Seleccione una imagen</small>}

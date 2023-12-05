@@ -302,7 +302,7 @@ INSERT INTO
   suppliers(RUC, name, address, phone)
 VALUES
   (
-    '20123456789',
+    '20113456789',
     'Tecnosoluciones S.A.C',
     'Av. Tecnológica 123, Distrito Techville, Lima',
     '987654321'
@@ -314,37 +314,37 @@ VALUES
     '987654322'
   ),
   (
-    '20345678912',
+    '20347678912',
     'ElectroniCorp S.A.C',
     'Av. de la Innovación 789, Distrito Electropolis, Lima',
     '987654323'
   ),
   (
-    '20678912345',
+    '20678712345',
     'Infotech Solutions EIRL',
     'Calle de la Información 234, Distrito Infocity, Lima',
     '987654324'
   ),
   (
-    '20987654321',
+    '20987674321',
     'TechWorld Group S.A.C',
     'Av. TechPark 567, Distrito Digitown, Lima',
     '987654325'
   ),
   (
-    '20234567890',
+    '20234567891',
     'MegaCompuNet EIRL',
     'Calle de la Computación 890, Distrito Cybercity, Lima',
     '987654326'
   ),
   (
-    '20567891234',
+    '20567891034',
     'DataWare Systems S.A.C',
     'Av. Datacenter 123, Distrito Datacenteria, Lima',
     '987654327'
   ),
   (
-    '20890123456',
+    '20890123406',
     'InnoSoft Corporation S.A.C',
     'Calle Innovación 456, Distrito Innovatown, Lima',
     '987654328'
@@ -361,9 +361,3 @@ VALUES
     'Calle de la Información 234, Distrito Infotech, Lima',
     '987654330'
   );
-
-
-SELECT
-  *
-FROM
-  suppliers;

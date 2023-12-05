@@ -12,7 +12,7 @@ export interface Client {
   updatedAt: string
 }
 
-export interface ClientDB {
+export interface ClientFromDB {
   clientId: number,
   ruc: `${number}` | null,
   dni: `${number}` | null,
@@ -21,7 +21,16 @@ export interface ClientDB {
   address: string | null,
   phone: `${number}` | null,
   createdAt: string,
-  updateAt: string
+  updatedAt: string
 }
 
-export type ClientResponse = ApiResponseWithReturn<ClientDB>
+export interface ClientToDB {
+  ruc: `${number}` | undefined,
+  dni: `${number}` | undefined,
+  names: string,
+  lastnames: string,
+  address: string | null,
+  phone: `${number}` | null,
+}
+
+export type ClientResponse = ApiResponseWithReturn<ClientFromDB>

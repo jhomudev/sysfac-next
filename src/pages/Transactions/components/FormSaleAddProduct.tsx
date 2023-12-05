@@ -4,7 +4,7 @@ import { Product, ESaleFor } from '@/types'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, Input, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 
 type Props = {
   product: Product,

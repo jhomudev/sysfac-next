@@ -66,8 +66,8 @@ function TableTransactions ({ transactions }:Props) {
       <>
         <div className='flex gap-3 items-center justify-between'>
           <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por usuario' startContent={<Yesicon icon={ICONS.search} />} />
-          <Button as={Link} href={`${ROUTES.transactions}/purchases/new`} color={COLORS_ENT.operationType.buy.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
-          <Button as={Link} href={`${ROUTES.transactions}/sales/new`} color={COLORS_ENT.operationType.sell.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
+          <Button as={Link} href={`${ROUTES.purchases}/new`} color={COLORS_ENT.operationType.buy.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
+          <Button as={Link} href={`${ROUTES.sales}/new`} color={COLORS_ENT.operationType.sell.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
         </div>
         <div className='flex items-center justify-between'>
           <p>Total de transacciones <span className='font-medium'>12</span></p>
@@ -134,8 +134,8 @@ function TableTransactions ({ transactions }:Props) {
                 <TableCell>{item.discount?.toFixed(2)}</TableCell>
                 <TableCell>{item.totalPay?.toFixed(2)}</TableCell>
                 <TableCell>{item.supplier?.name}</TableCell>
-                <TableCell>{item.client?.names} {item.client?.lastnames}</TableCell>
-                <TableCell>{item.user?.names} {item.user?.lastnames}</TableCell>
+                <TableCell>{item.client?.fullname}</TableCell>
+                <TableCell>{item.user?.fullname}</TableCell>
                 <TableCell>
                   <Dropdown>
                     <DropdownTrigger>

@@ -7,6 +7,8 @@ import {
 import { TableHeaderColumns } from '@/types'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
+import { useCartPurchase } from '@/hooks'
+import { toast } from 'react-hot-toast'
 
 export type TablePurchaseProductsItem={
   product: string,
@@ -15,10 +17,6 @@ export type TablePurchaseProductsItem={
   priceSale: number,
   quantity: number,
   total: number
-}
-
-type Props ={
-  dataProducts: TablePurchaseProductsItem[]
 }
 
 const headerColumns:TableHeaderColumns[] = [
@@ -59,11 +57,18 @@ const headerColumns:TableHeaderColumns[] = [
   }
 ]
 
-function TablePurchaseProducts ({ dataProducts }:Props) {
+function TablePurchaseProducts () {
+  const { cartPurchase: { items, totalImport }, removeProductFromCart, clearCart } = useCartPurchase()
   const [showModal, setShowModal] = React.useState<boolean>(false)
+  const hasItemsCart = items.length > 0
 
   const topContent = React.useMemo(() => {
     const handleClick = () => {
+      console.log({ hasItemsCart, items })
+      if (!hasItemsCart) {
+        toast.success('El carrito ya está vació.')
+        return
+      }
       setShowModal(true)
     }
     return (
@@ -79,16 +84,27 @@ function TablePurchaseProducts ({ dataProducts }:Props) {
         </Button>
       </>
     )
-  }, [])
+  }, [items])
+
+  const bottomContent = React.useMemo(() => {
+    return (
+      <>
+        <div className='flex gap-2'>
+          <p className='uppercase'>Importe total: <strong>S/{totalImport.toFixed(2)}</strong></p>
+        </div>
+      </>
+    )
+  }, [totalImport])
 
   return (
     <>
       <Table
         isHeaderSticky
-        // removeWrapper
         aria-label='Tabla de productos para compra'
         topContent={topContent}
         topContentPlacement='outside'
+        bottomContent={bottomContent}
+        bottomContentPlacement='outside'
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -102,16 +118,20 @@ function TablePurchaseProducts ({ dataProducts }:Props) {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No hay productos en el carrito de compras' items={dataProducts}>
+        <TableBody emptyContent='No hay productos en el carrito de compras' items={items}>
           {(item) => (
             <TableRow key={crypto.randomUUID()}>
               <TableCell>{item.product}</TableCell>
-              <TableCell>{item.priceSale}</TableCell>
-              <TableCell>{item.cost}</TableCell>
-              <TableCell>{item.serialnumber}</TableCell>
+              <TableCell>{item.serialNumber || 'No aplica'}</TableCell>
+              <TableCell>S/{item.cost.toFixed(2)}</TableCell>
+              <TableCell>S/{item.priceSale.toFixed(2)}</TableCell>
               <TableCell>{item.quantity}</TableCell>
-              <TableCell>{item.total}</TableCell>
-              <TableCell><Tooltip content='Eliminar' color='danger'><span className='block w-min text-danger cursor-pointer'><Yesicon fontSize={20} icon={ICONS.delete} /></span></Tooltip></TableCell>
+              <TableCell>S/{item.total.toFixed(2)}</TableCell>
+              <TableCell>
+                <Tooltip content='Eliminar' color='danger'>
+                  <button onClick={() => removeProductFromCart(item.itemId)} className='block w-min text-danger cursor-pointer'><Yesicon fontSize={20} icon={ICONS.delete} /></button>
+                </Tooltip>
+              </TableCell>
             </TableRow>
           )}
         </TableBody>
@@ -128,7 +148,13 @@ function TablePurchaseProducts ({ dataProducts }:Props) {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button variant='ghost' color='warning' onPress={onClose}>
+                <Button
+                  variant='ghost' color='warning' onPress={() => {
+                    clearCart()
+                    toast.success('Carrito de compras limpiado')
+                    onClose()
+                  }}
+                >
                   Limpiar
                 </Button>
               </ModalFooter>

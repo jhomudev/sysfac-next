@@ -1,4 +1,4 @@
--- Active: 1700143401531@@127.0.0.1@3307@sysfac
+-- Active: 1700143401531@@127.0.0.1@3307@sysfac_old
 DROP DATABASE IF EXISTS sysfac;
 
 
@@ -111,7 +111,7 @@ CREATE TABLE
   SUPPLIERS (
     supplierId INT NOT NULL AUTO_INCREMENT,
     -- supplier data
-    ruc VARCHAR(13) NOT NULL,
+    ruc VARCHAR(13) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
     address VARCHAR(100) NOT NULL,
     phone VARCHAR(10),
@@ -180,15 +180,15 @@ CREATE TABLE
     transactionId INT NOT NULL AUTO_INCREMENT,
     -- transaction data
     operationType ENUM('Compra', 'Venta') NOT NULL DEFAULT 'Venta',
-    proofType ENUM('Factura', 'Boleta de venta') NOT NULL,
-    proofCode VARCHAR(50) NOT NULL,
-    totalImport DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
-    discount DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    proofType ENUM('Factura', 'Boleta de venta'),
+    proofCode VARCHAR(50),
+    totalImport DECIMAL(6, 2),
+    discount DECIMAL(6, 2),
     totalPay DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
     comments VARCHAR(1000),
     -- relations
-    supplierId INT NOT NULL,
-    clientId INT NOT NULL,
+    supplierId INT,
+    clientId INT,
     userId INT NOT NULL,
     -- date
     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -207,19 +207,120 @@ DROP TABLE
 
 CREATE TABLE
   OPERATIONS (
-    operationId INT NOT NULL AUTO_INCREMENT,
     -- operation data
+    operationType ENUM('Venta', 'Compra') NOT NULL,
     description VARCHAR(500)NOT NULL,
     serialNumber VARCHAR(100),
-    priceSale DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    unitCost DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
     quantity SMALLINT NOT NULL,
     importSale DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
     details VARCHAR(100),
     -- relations
+    productId INT NOT NULL,
     transactionId INT NOT NULL,
     -- date
     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
     -- definitions
-    PRIMARY KEY(operationId),
-    FOREIGN KEY(transactionId) REFERENCES TRANSACTIONS(transactionId)
-  )
+    PRIMARY KEY (operationType, serialNumber),
+    FOREIGN KEY(transactionId) REFERENCES TRANSACTIONS(transactionId),
+    FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
+  );
+
+-- ? SALES
+-- DROP TABLE
+--   IF EXISTS SALES;
+
+
+-- CREATE TABLE
+--   SALES (
+--     saleId INT NOT NULL AUTO_INCREMENT,
+--     -- sale data
+--     proofType ENUM('Factura', 'Boleta de venta') NOT NULL,
+--     proofCode VARCHAR(50) NOT NULL,
+--     totalImport DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     discount DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     totalPay DECIMAL(6, 2) NOT NULL,
+--     comments VARCHAR(1000),
+--     -- relations
+--     clientId INT NOT NULL,
+--     userId INT NOT NULL,
+--     -- date
+--     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+--     -- definitions
+--     PRIMARY KEY(saleId),
+--     FOREIGN KEY(clientId) REFERENCES CLIENTS(clientId),
+--     FOREIGN KEY(userId) REFERENCES USERS(userId)
+--   );
+
+
+-- -- ? PURCHASES
+-- DROP TABLE
+--   IF EXISTS PURCHASES;
+
+-- CREATE TABLE
+--   PURCHASES (
+--     purchaseId INT NOT NULL AUTO_INCREMENT,
+--     -- purchase data
+--     totalPay DECIMAL(6, 2) NOT NULL,
+--     comments VARCHAR(1000),
+--     -- relations
+--     supplierId INT NOT NULL,
+--     userId INT NOT NULL,
+--     -- date
+--     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+--     -- definitions
+--     PRIMARY KEY(purchaseId),
+--     FOREIGN KEY(supplierId) REFERENCES SUPPLIERS(supplierId),
+--     FOREIGN KEY(userId) REFERENCES USERS(userId)
+--   );
+
+
+-- -- ? OPERATIONS_SALE
+-- DROP TABLE
+--   IF EXISTS OPERATIONS_SALE;
+
+-- CREATE TABLE
+--   OPERATIONS_SALE (
+--     operationId INT NOT NULL AUTO_INCREMENT,
+--     -- operation data
+--     description VARCHAR(500)NOT NULL,
+--     serialNumber VARCHAR(100),
+--     unitCost DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     quantity SMALLINT NOT NULL,
+--     import DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     details VARCHAR(100),
+--     -- relations
+--     productId INT NOT NULL,
+--     saleId INT NOT NULL,
+--     -- date
+--     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+--     -- definitions
+--     PRIMARY KEY(operationId),
+--     FOREIGN KEY(saleId) REFERENCES SALES(saleId),
+--     FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
+--   );
+
+
+-- -- ? OPERATIONS_PURCHASE
+-- DROP TABLE
+--   IF EXISTS OPERATIONS_PURCHASE;
+
+-- CREATE TABLE
+--   OPERATIONS_PURCHASE (
+--     operationId INT NOT NULL AUTO_INCREMENT,
+--     -- operation data
+--     description VARCHAR(500)NOT NULL,
+--     serialNumber VARCHAR(100),
+--     unitCost DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     quantity SMALLINT NOT NULL,
+--     import DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+--     -- relations
+--     productId INT NOT NULL,
+--     purchaseId INT NOT NULL,
+--     -- date
+--     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
+--     -- definitions
+--     PRIMARY KEY(operationId),
+--     FOREIGN KEY(purchaseId) REFERENCES PURCHASES(purchaseId),
+--     FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
+--   );

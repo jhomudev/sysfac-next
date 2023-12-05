@@ -4,7 +4,7 @@ import { Button, Input } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 
@@ -30,7 +30,7 @@ function FormLogin () {
       toast.error('Acceso denegado.')
       return
     }
-    router.replace('/panel')
+    router.push('/panel')
   })
 
   return (

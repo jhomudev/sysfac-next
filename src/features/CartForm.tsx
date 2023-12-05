@@ -3,7 +3,7 @@ import React from 'react'
 import { useCart } from '@/hooks'
 import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
+import { toast } from 'react-hot-toast'
 
 type FormDataUser = {
   names: string,
