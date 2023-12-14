@@ -2,7 +2,7 @@
 import { formatCategory } from '@/adapters'
 import { fetcher } from '@/libs/swr'
 import { ApiResponseWithReturn, CategoryFromDB } from '@/types'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'

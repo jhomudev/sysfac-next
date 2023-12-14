@@ -15,7 +15,7 @@ import { formatUser } from '@/adapters'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
 import { fetcher } from '@/libs/swr'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 
 const headerColumns = [
   {

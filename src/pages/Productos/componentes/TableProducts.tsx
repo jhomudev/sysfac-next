@@ -11,7 +11,7 @@ import {
 import React from 'react'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 import { fetcher } from '@/libs/swr'
 import useSWR from 'swr'
 import { useDebouncedCallback } from 'use-debounce'

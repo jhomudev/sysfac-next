@@ -3,7 +3,7 @@
 import { formatLocation, formatProduct } from '@/adapters'
 import { fetcher } from '@/libs/swr'
 import { ApiResponseWithReturn, EStateProductUnit, LocationFromDB, ProductResponse } from '@/types'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 import { Autocomplete, AutocompleteItem, Select, SelectItem } from '@nextui-org/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'

@@ -4,7 +4,7 @@ import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 import TableOperationsPerSale from '@/pages/Transactions/components/TableOperationsPerSale'
 import { getOperationsByTransactionId, getSaleById } from '@/pages/Transactions/services'
-import formatDate from '@/types/utils/formatDate'
+import formatDate from '@/utils/formatDate'
 import { Button, Divider, Link } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 

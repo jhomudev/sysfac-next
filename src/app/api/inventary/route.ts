@@ -1,7 +1,7 @@
 import { formatUnitInventaryResponse } from '@/adapters'
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, UnitInventaryFromDB, UnitInventaryResponse, UnitInventaryToDB } from '@/types'
-import { getQueryParams } from '@/types/utils'
+import { getQueryParams } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 

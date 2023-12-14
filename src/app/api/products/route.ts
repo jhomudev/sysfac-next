@@ -1,6 +1,6 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, ProductFromDB, ProductResponse, ProductToDB } from '@/types'
-import { getQueryParams } from '@/types/utils'
+import { getQueryParams } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 import { formatProductResponse } from '@/adapters'

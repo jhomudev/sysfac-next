@@ -1,7 +1,7 @@
 import { formatTransactionResponse } from '@/adapters'
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, TransactionFromDB, TransactionResponse } from '@/types'
-import { getQueryParams } from '@/types/utils'
+import { getQueryParams } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const GET = async (req: NextRequest) => {

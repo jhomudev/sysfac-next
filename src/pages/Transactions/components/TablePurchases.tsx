@@ -5,7 +5,7 @@ import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
 import { fetcher } from '@/libs/swr'
 import { ApiResponseWithReturn, PurchaseResponse, TableHeaderColumns } from '@/types'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 import {
   Button,
   Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,

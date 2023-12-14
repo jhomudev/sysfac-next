@@ -5,8 +5,8 @@ import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
 import { fetcher } from '@/libs/swr'
 import { ApiResponseWithReturn, ELocationType, Location, LocationFromDB, TableHeaderColumns } from '@/types'
-import { getURLWithParams } from '@/types/utils'
-import formatDate from '@/types/utils/formatDate'
+import { getURLWithParams } from '@/utils'
+import formatDate from '@/utils/formatDate'
 import {
   Button, Chip, Input, Link,
   Pagination, Selection, Spinner,

@@ -9,7 +9,7 @@ import useSWR from 'swr'
 import { fetcher } from '@/libs/swr'
 import formatClient from '@/adapters/formatClient'
 import { useDebouncedCallback } from 'use-debounce'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 
 const headerColumns:TableHeaderColumns[] = [
   {

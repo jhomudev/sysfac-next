@@ -2,7 +2,7 @@ import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import TableOperationsPerPurchase from '@/pages/Transactions/components/TableOperationsPerPurchase'
 import { getOperationsByTransactionId, getPurchaseById } from '@/pages/Transactions/services'
-import { formatDate } from '@/types/utils'
+import { formatDate } from '@/utils'
 import { Divider } from '@nextui-org/react'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 

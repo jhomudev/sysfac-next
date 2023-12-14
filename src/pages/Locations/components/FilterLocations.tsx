@@ -1,6 +1,6 @@
 'use client'
 import { ELocationType } from '@/types'
-import { getURLWithParams } from '@/types/utils'
+import { getURLWithParams } from '@/utils'
 import { Select, SelectItem } from '@nextui-org/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
