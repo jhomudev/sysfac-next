@@ -1,13 +1,13 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, UserFromDB, UserToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'CONCAT(names, " ", lastnames)',
       orderByColumn: 'userId',
       paramsCols: ['type', 'state'],
@@ -23,6 +23,8 @@ export const GET = async (req: NextRequest) => {
         message: 'Usuarios encontrados',
         data: users,
         meta: {
+          page,
+          rowsPerPage,
           rowsObtained: usersNoLimit.length,
           totalRows: totalUsers.length
         }

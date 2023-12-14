@@ -1,9 +1,10 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import { COLORS_ENT } from '@/contants'
-import { ESaleFor, EStateProduct, Product } from '@/types'
-import { formatDate } from '@/utils'
-import { Chip, Image } from '@nextui-org/react'
+import { getProductById } from '@/pages/Productos/services'
+import { ESaleFor, EStateProduct } from '@/types'
+import { formatDate } from '@/types/utils'
+import { Button, Chip, Image, Link } from '@nextui-org/react'
 
 type Props = {
   params: {
@@ -11,26 +12,12 @@ type Props = {
   }
 }
 
-const product : Product = {
-  id: 1,
-  name: 'Pc Hp',
-  image: 'https://unavatar.io/pikachu',
-  inventaryMin: 5,
-  priceSale: 12.50,
-  unit: 'Unidad',
-  saleFor: ESaleFor.unit,
-  isActive: true,
-  category: {
-    id: 1,
-    slug: 'pc',
-    name: 'Pc'
-  },
-  createdAt: '2023-11-21 15:45:21',
-  updatedAt: '2023-11-21 15:45:21'
-}
-
-function ProductPage ({ params }: Props) {
+async function ProductPage ({ params }: Props) {
   const { id } = params
+
+  const product = await getProductById(id)
+  if (!product) return <p className='text-danger'>Producto no encontrado</p>
+
   const state = product.isActive ? EStateProduct.active : EStateProduct.inactive
 
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
@@ -52,7 +39,10 @@ function ProductPage ({ params }: Props) {
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <div className='flex flex-col w-[min(100%,800px)]'>
-        <h1 className='text-xl font-semibold uppercase'>{product.name} {id}</h1>
+        <div className='flex justify-between items-center'>
+          <h1 className='text-xl font-semibold uppercase'>{product.name}</h1>
+          <Button as={Link} href={`${ROUTES.products}/${id}/edit`} size='sm' variant='ghost' color='secondary'>Editar producto</Button>
+        </div>
         <br />
         <Image className='w-[min(100%,200px)] inline-block' src={product.image || 'https://unavatar.io/pikachu'} alt='product img' />
         <h2 className='title mt-2'>Información del producto</h2>

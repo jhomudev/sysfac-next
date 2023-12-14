@@ -1,20 +1,20 @@
 import { formatTransactionResponse } from '@/adapters'
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, TransactionFromDB, TransactionResponse } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'CONCAT(us.names," ", cli.lastnames)',
       orderByColumn: 'transactionId',
       paramsCols: ['tran.operationtype', 'tran.proofType'],
       URLSearchParams
     })
     const transactions = await conn.query<TransactionFromDB[]>(`
-    SELECT tran.transactionId, tran.operationtype, tran.totalPay, tran.comments, tran.createdAt,
+    SELECT tran.transactionId, tran.operationType, tran.totalPay, tran.comments, tran.createdAt,
     us.userId, us.username, CONCAT(us.names," ", us.lastnames) as userFullname
     FROM TRANSACTIONS tran
     INNER JOIN USERS us ON us.userId = tran.userId
@@ -30,7 +30,9 @@ export const GET = async (req: NextRequest) => {
         data: transactionsFormated,
         meta: {
           rowsObtained: transactionsNoLimit.length,
-          totalRows: totalTransactions.length
+          totalRows: totalTransactions.length,
+          page,
+          rowsPerPage
         }
       })
     }

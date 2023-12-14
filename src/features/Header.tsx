@@ -1,19 +1,26 @@
 'use client'
 import React from 'react'
-import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image } from '@nextui-org/react'
+import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image, Link } from '@nextui-org/react'
 import { signOut, useSession } from 'next-auth/react'
 import Cart from './Cart'
 import { useCart, useCartPurchase } from '@/hooks'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { EUserType } from '@/types'
+import { ApiResponseWithReturn, EUserType, ProductWithQuantityFromDB } from '@/types'
 import { useRouter } from 'next/navigation'
 import ROUTES from '@/app/routes'
+import { fetcher } from '@/libs/swr'
+import useSWR from 'swr'
+import { formatProductWithQuantity } from '@/adapters'
 
 function Header () {
   const { data: session } = useSession()
   const user = session?.user
   const { push } = useRouter()
+
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<ProductWithQuantityFromDB[]>>('/api/products/amounths', fetcher)
+  if (error) console.log('No se pudo cargar los productos', error)
+  const products = React.useMemo(() => data?.data.map(prod => formatProductWithQuantity(prod)) || [], [data])
 
   const { cart: { items }, setShowCart, showCart } = useCart()
   const { cartPurchase: { items: itemsInPurchase } } = useCartPurchase()
@@ -23,15 +30,8 @@ function Header () {
     ? COLORS_ENT.userType.admin.nextui
     : user?.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
 
-  const notifications = [
-    {
-      key: crypto.randomUUID(),
-      label: 'Producto por agotarse',
-      image: 'https://cdn-icons-png.flaticon.com/512/5166/5166939.png',
-      description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. In distinctio ab tempore animi hic repudiandae, nam esse ut fugit labore.',
-      handle: () => push(`${ROUTES.products}`)
-    }
-  ]
+  const notifications = []
+
   if (hasItemsInCart) {
     notifications.unshift({
       key: crypto.randomUUID(),
@@ -51,6 +51,27 @@ function Header () {
     })
   }
 
+  !isLoading && products.forEach((prod, i) => {
+    if (i > 10) return
+    if (prod.quantity === 0) {
+      notifications.push({
+        key: crypto.randomUUID(),
+        label: 'Producto agotado',
+        image: 'https://cdn-icons-png.flaticon.com/512/5166/5166939.png',
+        description: `El producto "${prod.name}" no tiene unidades en el inventario. Realize un abasteciomiento de este producto.`,
+        handle: () => push(`${ROUTES.inventary}?inv.productId=${prod.id}`)
+      })
+    } else if (prod.quantity <= prod.inventaryMin + 5) {
+      notifications.push({
+        key: crypto.randomUUID(),
+        label: 'Producto por agotarse',
+        image: 'https://cdn-icons-png.flaticon.com/512/5166/5166939.png',
+        description: `El producto "${prod.name}" tiene pocas unidades en el inventario. Realize un abasteciomiento de este producto.`,
+        handle: () => push(`${ROUTES.inventary}?inv.productId=${prod.id}`)
+      })
+    }
+  })
+
   const hasNotifications = notifications.length > 0
 
   return (
@@ -58,6 +79,14 @@ function Header () {
       <header className='flex items-center justify-between h-[5rem] bg-myLight rounded-xl p-5 text-myDark'>
         <span>Hola <strong>{user?.names}</strong></span>
         <div className='flex gap-5 items-center'>
+          <Button
+            size='sm'
+            color={COLORS_ENT.operationType.sell.nextui}
+            startContent={<Yesicon icon={ICONS.sales} />}
+            as={Link}
+            href={`${ROUTES.sales}/new`}
+          >Nueva venta
+          </Button>
           <Badge content={items.length} shape='circle' color='danger' isInvisible={!hasItemsInCart}>
             <Button
               onPress={() => setShowCart(true)}
@@ -69,7 +98,9 @@ function Header () {
               <Yesicon fontSize={20} icon={ICONS.cart} />
             </Button>
           </Badge>
-          <Dropdown placement='bottom-end' className='max-w-sm'>
+          <Dropdown
+            placement='bottom-end' className='max-w-sm'
+          >
             <Badge content={notifications.length} shape='circle' color='danger' isInvisible={!hasNotifications}>
               <DropdownTrigger>
                 <Button
@@ -82,7 +113,15 @@ function Header () {
                 </Button>
               </DropdownTrigger>
             </Badge>
-            <DropdownMenu variant='faded' aria-label='notifications' items={notifications}>
+            <DropdownMenu
+              classNames={{
+                list: 'max-h-[500px] overflow-auto'
+              }}
+              variant='faded'
+              aria-label='notifications'
+              items={notifications}
+              emptyContent='No hay notificaiones'
+            >
               <DropdownSection title='Notificaciones'>
                 {
                   notifications.map((item) => (

@@ -25,15 +25,6 @@ export interface TransactionFromDB {
   createdAt: string,
 }
 
-// export interface TransactionToDB {
-//   operationType: EOperationType,
-//   totalPay: number,
-//   comments: string,
-//   supplierId: number,
-//   clientId: number,
-//   userId: number,
-// }
-
 export type TransactionResponse = {
   transactionId: number,
   operationType: EOperationType,
@@ -45,4 +36,24 @@ export type TransactionResponse = {
     fullname: string
   },
   createdAt: string,
+}
+
+export type TransactionMonthDB = {
+  month: number,
+  quantity: number
+}
+
+export type TransactionMonth = {
+  month: number,
+  quantity: number
+}
+
+export type TransactionsMonthRes = {
+  sales: TransactionMonthDB[],
+  purchases: TransactionMonthDB[]
+}
+
+export type TransactionsMonth = {
+  sales: TransactionMonth[],
+  purchases: TransactionMonth[]
 }

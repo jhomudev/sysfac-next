@@ -1,15 +1,17 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import FormCategory from '@/pages/Categories/components/FormCategory'
-import { Category } from '@/types'
+import { getCategoryBySlug } from '@/pages/Categories/services'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {
   params: Params
 }
 
-function page ({ params }: Props) {
+async function page ({ params }: Props) {
   const { slug } = params
+  const category = await getCategoryBySlug(slug)
+  if (!category) return <p className='text-danger'>Categoría no encontrada</p>
 
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
     {
@@ -21,27 +23,18 @@ function page ({ params }: Props) {
       route: ROUTES.categories
     },
     {
-      label: slug
+      label: category.name
     }
   ]
-
-  const categoryData:Category = {
-    id: 1,
-    name: 'Laptops',
-    slug: 'laptops',
-    image: 'https://assetsio.reedpopcdn.com/g502x_f9QuuM8.jpeg?width=1200&height=1200&fit=bounds&quality=70&format=jpg&auto=webp',
-    createdAt: '2023-11-21 15:45:21',
-    updatedAt: '2023-11-21 15:45:21'
-  }
 
   return (
     <>
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <div className='flex flex-col w-[min(100%,800px)]'>
-        <h1 className='text-xl font-semibold'>Laptops</h1>
+        <h1 className='text-xl font-semibold'>{category.name}</h1>
         <br />
-        <FormCategory category={categoryData} />
+        <FormCategory category={category} />
       </div>
     </>
   )

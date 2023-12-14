@@ -15,7 +15,12 @@ const useCart = () => {
   }
 
   const addProductToCart = (item: CartItemWithoutId) => {
-    const alreadyProduct = cart.items.some(itemCart => itemCart.productId === item.productId || itemCart.serialNumber === item.serialNumber)
+    const alreadyProduct = cart.items.some(itemCart => {
+      const isSameProduct = itemCart.productId === item.productId
+      const isProductByNS = !!itemCart.serialNumber
+      const serialNumberDuplicated = itemCart.serialNumber === item.serialNumber
+      return isProductByNS ? serialNumberDuplicated : isSameProduct
+    })
     if (alreadyProduct) {
       return {
         ok: false,

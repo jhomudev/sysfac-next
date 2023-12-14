@@ -2,11 +2,17 @@
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { Supplier, TableHeaderColumns } from '@/types'
-import formatDate from '@/utils/formatDate'
+import { ApiResponseWithReturn, Supplier, SupplierFromDB, TableHeaderColumns } from '@/types'
+import formatDate from '@/types/utils/formatDate'
 import NextLink from 'next/link'
-import { Button, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Input, Link, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
+import { Button, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Input, Link, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner } from '@nextui-org/react'
 import React from 'react'
+import { fetcher } from '@/libs/swr'
+import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import useSWR from 'swr'
+import { formatSupplier } from '@/adapters'
+import { getURLWithParams } from '@/types/utils'
+import { useDebouncedCallback } from 'use-debounce'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -36,53 +42,106 @@ const headerColumns: TableHeaderColumns[] = [
   }
 ]
 
-type Props = {
-  suppliers: Supplier[]
-}
-
-function TableSuppliers ({ suppliers }: Props) {
+function TableSuppliers () {
+  const { replace } = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const url = `/api/suppliers?${searchParams?.toString()}`
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SupplierFromDB[]>>(url, fetcher, {
+    keepPreviousData: true
+  })
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [supplierToDelete, setSupplierToDelete] = React.useState<Supplier>({} as Supplier)
+
+  if (error) console.log('ocurrió un error:', error)
+  const suppliers = React.useMemo(() => data?.data?.map(sup => formatSupplier(sup)) || [], [data])
+
+  const handleChangePage = React.useCallback((page: number) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { page }
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeRowsPerPage = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { rowsPerPage: value },
+      paramsDelete: ['page']
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeSearch = useDebouncedCallback((value) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { q: value },
+      paramsDelete: !value ? ['q', 'page'] : ['page']
+    })
+    replace(url)
+  }, 600)
 
   const topContent = React.useMemo(() => {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar proveedor' startContent={<Yesicon icon={ICONS.search} />} />
+          <Input
+            isClearable
+            className='w-[min(100%,400px)]'
+            placeholder='Buscar proveedor'
+            startContent={<Yesicon icon={ICONS.search} />}
+            onValueChange={handleChangeSearch}
+          />
           <Button as={Link} href={`${ROUTES.suppliers}/create`} color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo proveedor</Button>
         </div>
-        <div className='flex items-center justify-between'>
-          <p>Total de proveedores <span className='font-medium'>12</span></p>
-          <div className='flex items-center gap-2'>
-            <span>Resultados por página</span>
-            <select>
-              <option value='5'>5</option>
-              <option value='10'>10</option>
-              <option value='15'>15</option>
-            </select>
-          </div>
-        </div>
+        {
+          data &&
+            <div className='flex items-center justify-between'>
+              <p><span className='font-medium text-secondary'>{data.meta?.rowsObtained}</span> resultados de un total de <span className='font-medium text-secondary'>{data.meta?.totalRows}</span> proveedores </p>
+              <div className='flex items-center gap-2'>
+                <span>Resultados por página</span>
+                <select defaultValue={data.meta?.rowsPerPage} onChange={handleChangeRowsPerPage}>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div>
+            </div>
+        }
       </>
     )
-  }, [])
+  }, [data, handleChangeRowsPerPage, handleChangeSearch])
 
   const bottomContent = React.useMemo(() => {
+    if (!data?.meta) return
+    const { page, rowsObtained, rowsPerPage } = data.meta
+    const totalPages = Math.ceil(rowsObtained / rowsPerPage)
+
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de 20 seleccionadas` : 'Todos las filas seleccionadas'}</p>
-          <Pagination showControls total={10} initialPage={1} />
+          <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de ${data.meta.rowsObtained} seleccionadas` : 'Todos las filas seleccionadas'}</p>
+          <Pagination showControls total={totalPages} page={page} onChange={handleChangePage} />
         </div>
       </>
     )
-  }, [selectedKeys])
+  }, [selectedKeys, data, handleChangePage])
 
   return (
     <>
       <Table
         isHeaderSticky
-        aria-label='Tabla de usuarios'
+        aria-label='Tabla de proveedores'
+        classNames={{
+          wrapper: 'max-h-[1000px]',
+          table: 'min-h-[20rem]'
+        }}
         bottomContentPlacement='outside'
         selectedKeys={selectedKeys}
         selectionMode='multiple'
@@ -103,11 +162,18 @@ function TableSuppliers ({ suppliers }: Props) {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron proveedores' items={suppliers}>
+        <TableBody
+          emptyContent={!isLoading && 'No se econtraron proveedores'}
+          items={suppliers}
+          isLoading={isLoading}
+          loadingContent={
+            <Spinner>Cargando datos...</Spinner>
+          }
+        >
           {(item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.name}</TableCell>
               <TableCell>{item.ruc}</TableCell>
+              <TableCell>{item.name}</TableCell>
               <TableCell>{item.address}</TableCell>
               <TableCell>{item.phone}</TableCell>
               <TableCell>{item.createdAt && formatDate(item.createdAt).dateLetter}</TableCell>
@@ -142,9 +208,8 @@ function TableSuppliers ({ suppliers }: Props) {
             <>
               <ModalHeader className='flex flex-col gap-1'>Confirmación</ModalHeader>
               <ModalBody>
-                <p>¿Estás seguro de eliminar este proveedor?</p>
+                <p>¿Estás seguro de eliminar el proveedor <b>{supplierToDelete?.name}</b>?</p>
                 <small className='text-danger'><em>OJO: Esta acción es irreversible.</em></small>
-                <p>{supplierToDelete?.name}</p>
               </ModalBody>
               <ModalFooter>
                 <Button color='default' variant='light' onPress={onClose}>

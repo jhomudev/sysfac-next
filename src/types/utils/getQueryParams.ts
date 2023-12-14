@@ -46,7 +46,9 @@ function getQueryParams ({ URLSearchParams, paramsCols = [], likeColumn, orderBy
 
   return {
     queryParamsComplete,
-    queryParamsNoLimit
+    queryParamsNoLimit,
+    page,
+    rowsPerPage
   }
 }
 

@@ -15,6 +15,8 @@ export interface ApiResponseWithReturn<T> extends ApiResponse {
   data: T,
   meta?: {
     rowsObtained: number,
-    totalRows: number
+    totalRows: number,
+    page: number,
+    rowsPerPage: number
   }
 }

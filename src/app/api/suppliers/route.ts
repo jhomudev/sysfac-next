@@ -1,13 +1,13 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, SupplierFromDB, SupplierToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'name',
       orderByColumn: 'supplierId',
       paramsCols: [],
@@ -24,7 +24,9 @@ export const GET = async (req: NextRequest) => {
         data: suppliers,
         meta: {
           rowsObtained: suppliersNoLimit.length,
-          totalRows: totalSuppliers.length
+          totalRows: totalSuppliers.length,
+          page,
+          rowsPerPage
         }
       })
     }

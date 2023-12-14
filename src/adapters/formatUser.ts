@@ -1,20 +1,21 @@
-import { User, UserResponse } from '@/types'
+import { User, UserFromDB } from '@/types'
 
-export const formatUser = (userResponse: UserResponse) => {
-  const { data } = userResponse
+const formatUser = (user: UserFromDB) => {
   const formatedUser: User = {
-    id: data.userId,
-    username: data.username,
-    names: data.names,
-    lastnames: data.lastnames,
-    email: data.email,
-    phone: data.phone,
-    type: data.type,
-    state: data.state,
-    password: data.password,
-    createdAt: data.createdAt,
-    updatedAt: data.updatedAt
+    id: user.userId,
+    username: user.username,
+    names: user.names,
+    lastnames: user.lastnames,
+    email: user.email,
+    phone: user.phone,
+    type: user.type,
+    state: user.state,
+    password: user.password,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt
   }
 
   return formatedUser
 }
+
+export default formatUser

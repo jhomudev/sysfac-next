@@ -1,88 +1,17 @@
+import { formatUser } from '@/adapters'
 import ROUTES from '@/app/routes'
-// import { Chip } from '@nextui-org/chip'
-// import { Link } from '@nextui-org/link'
-// import { Card, CardBody, CardHeader } from '@nextui-org/card'
-// import { Button, Tooltip } from '@nextui-org/react'
-import { Card, CardBody, CardHeader, Chip, Link, Button, Tooltip } from '@nextui-org/react'
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
-import { EOperationType, EProofType, EUserState, EUserType, Transaction, User } from '@/types'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import Yesicon from '@/components/Yesicon'
-import { COLORS_ENT, ICONS } from '@/contants'
+import { API_URL, COLORS_ENT, ICONS } from '@/contants'
 import TableTransactionsPerUser from '@/pages/Users/components/TableTransactionsPerUser'
+import { ApiResponseWithReturn, EUserState, EUserType, UserFromDB } from '@/types'
+import { formatDate } from '@/types/utils'
+import { Button, Card, CardBody, CardHeader, Chip, Link, Tooltip } from '@nextui-org/react'
+import axios from 'axios'
+import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {
   params: Params
-}
-
-const data:Partial<Transaction>[] = [
-  {
-    id: 1,
-    operationType: EOperationType.sell,
-    proofType: EProofType.invoice,
-    totalImport: 100,
-    discount: 10,
-    totalPay: 90,
-    supplier: {
-      id: 1,
-      name: 'Proveedor 1'
-    },
-    client: {
-      id: 1,
-      names: 'Jose',
-      lastnames: 'de la Fuente',
-      dni: '71728342'
-    }
-  },
-  {
-    id: 2,
-    operationType: EOperationType.sell,
-    proofType: EProofType.invoice,
-    totalImport: 100,
-    discount: 10,
-    totalPay: 90,
-    supplier: {
-      id: 1,
-      name: 'Proveedor 1'
-    },
-    client: {
-      id: 2,
-      names: 'Yessica',
-      lastnames: 'Morales',
-      dni: '71728342'
-    }
-  },
-  {
-    id: 3,
-    operationType: EOperationType.buy,
-    proofType: EProofType.invoice,
-    totalImport: 100,
-    discount: 10,
-    totalPay: 90,
-    supplier: {
-      id: 2,
-      name: 'Proveedor 2'
-    },
-    client: {
-      id: 1,
-      names: 'Jose',
-      lastnames: 'de la Fuente',
-      dni: '71728342'
-    }
-  }
-]
-const user:User = {
-  id: 1,
-  username: 'usuario1',
-  names: 'Juan',
-  lastnames: 'Perez',
-  type: EUserType.admin,
-  email: 'juan.perez@email.com',
-  phone: '123456789',
-  password: 'asdfsdf',
-  state: EUserState.active,
-  createdAt: '',
-  updatedAt: ''
 }
 
 async function UserPage ({ params }: Props) {
@@ -100,20 +29,26 @@ async function UserPage ({ params }: Props) {
       label: username
     }
   ]
+  const res = await axios<ApiResponseWithReturn<UserFromDB>>(`${API_URL}/users/${username}`)
+  const data = res.data.data
+  const user = formatUser(data)
+
   const colorUserType = user.type === EUserType.admin
     ? COLORS_ENT.userType.admin.nextui
     : user.type === EUserType.seller ? COLORS_ENT.userType.seller.nextui : COLORS_ENT.userType.superadmin.nextui
+  const colorUserState = user.state === EUserState.active ? COLORS_ENT.userState.active.nextui : COLORS_ENT.userState.inactive.nextui
 
   return (
     <div>
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
       <div className='flex items-center justify-between'>
-        <h1 className='title-main'>Jhonan Caleb Muñoz Carrillo</h1>
-        <Chip color={colorUserType} variant='shadow'>Administrador</Chip>
+        <h1 className='title-main'>{user.names} {user.lastnames}</h1>
+        <Chip color={colorUserType} variant='shadow'>{user.type}</Chip>
       </div>
-      <small>{username}</small>
-      <br /> <br />
+      <p className='text'>Creado el {formatDate(user.createdAt).dateLetter}</p>
+      <p className='text'>Ultima edición : {user.updatedAt === user.createdAt ? 'Sin modificaciones' : formatDate(user.updatedAt).dateLetter}</p>
+      <br />
       <div className='flex gap-5 flex-wrap'>
         <Card className='flex-[1_0_300px] p-4'>
           <CardHeader className='flex justify-between items-center'>
@@ -133,19 +68,19 @@ async function UserPage ({ params }: Props) {
           <CardBody>
             <dl className='mb-3'>
               <dt>Nombres</dt>
-              <dd className='text'>Jhonan Muñoz</dd>
+              <dd className='text'>{user.names}</dd>
             </dl>
             <dl className='mb-3'>
               <dt>Apellidos</dt>
-              <dd className='text'>Jhonan Muñoz</dd>
+              <dd className='text'>{user.lastnames}</dd>
             </dl>
             <dl className='mb-3'>
               <dt>Correo</dt>
-              <dd><Link size='sm' href='mailto:jhonna@gmail.com'>jhonna@gmail.com</Link></dd>
+              <dd><Link size='sm' href='mailto:jhonna@gmail.com'>{user.email}</Link></dd>
             </dl>
             <dl className='mb-3'>
               <dt>Teléfono</dt>
-              <dd className='text'><Link size='sm' href='tel:+51993884118'>993884118</Link></dd>
+              <dd className='text'><Link size='sm' href={`tel:+51${user.phone}`}>{user.phone}</Link></dd>
             </dl>
           </CardBody>
         </Card>
@@ -167,15 +102,15 @@ async function UserPage ({ params }: Props) {
           <CardBody>
             <dl className='mb-3'>
               <dt>Nombre de usuario</dt>
-              <dd className='text'>jhonanmuñoz</dd>
+              <dd className='text'>{user.username}</dd>
             </dl>
             <dl className='mb-3'>
               <dt>Tipo de usuario</dt>
-              <dd className='text'><Chip size='sm'>Admin</Chip></dd>
+              <dd className='text'><Chip size='sm' color={colorUserType}>{user.type}</Chip></dd>
             </dl>
             <dl className='mb-3'>
               <dt>Estado</dt>
-              <dd className='text'><Chip size='sm'>Activo</Chip></dd>
+              <dd className='text'><Chip size='sm' variant='dot' color={colorUserState}>{user.state}</Chip></dd>
             </dl>
             <dl className='mb-3'>
               <dt>Contraseña de cuenta</dt>
@@ -187,7 +122,7 @@ async function UserPage ({ params }: Props) {
       <br />
       <h2 className='title'>Movimientos</h2>
       <p className='text'>Observe los movimientos que realizó el usuario hast ala fecha actual dentro del sistema.</p><br />
-      <TableTransactionsPerUser data={data} />
+      <TableTransactionsPerUser data={[]} />
     </div>
   )
 }

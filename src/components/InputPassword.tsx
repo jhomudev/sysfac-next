@@ -22,7 +22,6 @@ function InputPassword (props: InputPasswordProps) {
     <Input
       type={isVisible ? 'text' : 'password'}
       endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? ICONS.show : ICONS.hidden} /></button>}
-      placeholder='Password'
       {...props}
       {...props.registerUseForm}
     />

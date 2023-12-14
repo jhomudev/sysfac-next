@@ -30,9 +30,8 @@ function FormUserChangePassword ({ user }:Props) {
           <InputPassword
             className='w-full md:w-[min(100%,400px)]'
             variant='underlined'
-            placeholder='Escriba el la contraseña'
+            placeholder='Escriba la contraseña'
             label='Contraseña'
-            defaultValue={user.password}
             isInvalid={!!errors.password}
             color={errors.password ? 'danger' : 'default'}
             errorMessage={!!errors.password && 'Campo requerido'}

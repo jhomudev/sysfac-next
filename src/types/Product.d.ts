@@ -63,3 +63,35 @@ export interface ProductToDB {
   isActive: boolean,
   categoryId: number
 }
+
+export type ProductWithOpsFromDB = {
+  product: string
+  totalOperations: number
+}
+
+export type BestProductsRes = {
+  bestPerpurchases: ProductWithOpsFromDB[]
+  bestPersales: ProductWithOpsFromDB[]
+}
+export type ProductWithOps = {
+  product: string
+  totalOperations: number
+}
+
+export type BestProducts = {
+  bestPerpurchases: ProductWithOps[]
+  bestPersales: ProductWithOps[]
+}
+
+export type ProductWithQuantity = {
+  id: number,
+  name: string,
+  inventaryMin: number,
+  quantity: number
+}
+export type ProductWithQuantityFromDB = {
+  productId: number,
+  name: string,
+  inventaryMin: number,
+  quantity: number
+}

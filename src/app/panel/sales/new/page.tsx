@@ -4,7 +4,6 @@ import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
 import FiltersProductsPerSale from '@/pages/Transactions/components/FilterProductsPerSale'
 import ListProductsPerSale from '@/pages/Transactions/components/ListProductsPerSale'
-import { Product, ESaleFor } from '@/types'
 import { Divider, Input } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [
@@ -18,145 +17,6 @@ const breadcrumbItems: MyBreadcrumbItemProps[] = [
   },
   {
     label: 'Nueva venta'
-  }
-]
-
-const products:Product[] = [
-  {
-    id: 1,
-    name: 'Pc Hp',
-    image: 'https://unavatar.io/pikachu',
-    inventaryMin: 5,
-    priceSale: 12.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.unit,
-    isActive: true,
-    category: {
-      id: 1,
-      slug: 'pc',
-      name: 'Pc'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 2,
-    name: 'Laptop Hp',
-    image: 'https://unavatar.io/pikachu',
-    inventaryMin: 5,
-    priceSale: 1200.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.unit,
-    isActive: true,
-    category: {
-      id: 1,
-      slug: 'laptop',
-      name: 'Laptop'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 3,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 4,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 5,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 6,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 7,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  },
-  {
-    id: 8,
-    name: 'Mouse Avatar',
-    image: 'https://unavatar.io/spirit',
-    inventaryMin: 5,
-    priceSale: 60.50,
-    unit: 'Unidad',
-    saleFor: ESaleFor.quantity,
-    isActive: false,
-    category: {
-      id: 1,
-      slug: 'mouse',
-      name: 'Mouse'
-    },
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
   }
 ]
 
@@ -177,7 +37,7 @@ function NewSalePage () {
       <br />
       <FiltersProductsPerSale />
       <br />
-      <ListProductsPerSale products={products} />
+      <ListProductsPerSale />
     </>
   )
 }

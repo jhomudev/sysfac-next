@@ -1,6 +1,6 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, PurchaseFromDB, PurchaseResponse, PurchaseToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 import { formatPurchaseResponse } from '@/adapters'
@@ -8,7 +8,7 @@ import { formatPurchaseResponse } from '@/adapters'
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'CONCAT(us.names," ", us.lastnames)',
       orderByColumn: 'transactionId',
       paramsCols: ['operationType'],
@@ -41,7 +41,9 @@ export const GET = async (req: NextRequest) => {
         data: purchasesFormated,
         meta: {
           rowsObtained: purchasesNoLimit.length,
-          totalRows: totalPurchases.length
+          totalRows: totalPurchases.length,
+          page,
+          rowsPerPage
         }
       })
     }

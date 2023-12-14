@@ -1,19 +1,24 @@
 'use client'
+import { formatSupplier } from '@/adapters'
 import { useCartPurchase } from '@/hooks'
-import { Supplier } from '@/types'
-import { Button, Select, SelectItem, Textarea, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
+import { fetcher } from '@/libs/swr'
+import { ApiResponseWithReturn, SupplierFromDB } from '@/types'
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import useSWR from 'swr'
 
 type FormData= {
   supplierId: number,
   comments:string,
 }
-type Props = {
-  suppliers: Supplier[]
-}
-function FormPurchaseConfirm ({ suppliers }: Props) {
+
+function FormPurchaseConfirm () {
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SupplierFromDB[]>>('/api/suppliers?rowsPerPage=100', fetcher)
+  if (error) console.log('ocurrió un error:', error)
+  const suppliers = React.useMemo(() => data?.data?.map(sup => formatSupplier(sup)) || [], [data])
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const { cartPurchase: { items } } = useCartPurchase()
@@ -44,6 +49,7 @@ function FormPurchaseConfirm ({ suppliers }: Props) {
           className='w-full md:max-w-sm'
           items={suppliers}
           color={errors.supplierId ? 'danger' : 'default'}
+          isLoading={isLoading}
           isInvalid={!!errors.supplierId}
           errorMessage={errors.supplierId && 'Elija un proveedor'}
           {...register('supplierId', {

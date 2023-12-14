@@ -1,9 +1,12 @@
 /* eslint-disable react/jsx-closing-tag-location */
 'use client'
-import { Category, ESaleFor, EStateProduct, Product } from '@/types'
+import { formatCategory } from '@/adapters'
+import { fetcher } from '@/libs/swr'
+import { ApiResponseWithReturn, Category, CategoryFromDB, ESaleFor, EStateProduct, Product } from '@/types'
 import { AutocompleteItem, Autocomplete, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import useSWR from 'swr'
 
 type FormData = {
   name: string,
@@ -18,14 +21,17 @@ type FormData = {
 
 type Props = {
   product: Product,
-  categoriesPerSelect: Category[]
 }
 
-function FormProductEdit ({ product, categoriesPerSelect }: Props) {
+function FormProductEdit ({ product }: Props) {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState(false)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState(product.image || '')
   const [categorySelected, setCategorySelected] = React.useState<Category>({} as Category)
+
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<CategoryFromDB[]>>('/api/categories', fetcher)
+  if (error) console.error(error)
+  const categories = React.useMemo(() => data?.data?.map(cat => formatCategory(cat)) || [], [data])
 
   const handleSubmitForm = handleSubmit((data) => {
     // data = { ...data, isActive: data.isActive === EStateProduct.active }
@@ -83,7 +89,7 @@ function FormProductEdit ({ product, categoriesPerSelect }: Props) {
             className='w-full md:max-w-sm'
             label='Mínimo en inventario'
             placeholder='Cantidad mínima'
-            defaultValue={product.inventaryMin.toFixed(2)}
+            defaultValue={product.inventaryMin.toString()}
             color={errors.inventaryMin ? 'danger' : 'default'}
             errorMessage={errors.inventaryMin?.message}
             {...register('inventaryMin', {
@@ -161,10 +167,11 @@ function FormProductEdit ({ product, categoriesPerSelect }: Props) {
             placeholder='Seleccione la categoría'
             color={errors.categoryId ? 'danger' : 'default'}
             errorMessage={errors.categoryId?.message}
-            defaultItems={categoriesPerSelect}
+            defaultItems={categories}
             defaultSelectedKey={product.category.id.toString()}
+            isLoading={isLoading}
             onSelectionChange={(key) => {
-              const cat = categoriesPerSelect.find(cat => cat.id === Number(key))
+              const cat = categories.find(cat => cat.id === Number(key))
               setCategorySelected(prev => cat ?? prev)
             }}
             {...register('categoryId', {
@@ -173,7 +180,7 @@ function FormProductEdit ({ product, categoriesPerSelect }: Props) {
                 message: 'Seleccione una opcíon'
               },
               validate: (v) => {
-                const isOptionCategory = categoriesPerSelect.some(cat => cat.id === categorySelected.id)
+                const isOptionCategory = categories.some(cat => cat.id === categorySelected.id)
                 return isOptionCategory ? true : 'Entrada inválida'
               },
               setValueAs: () => categorySelected.id

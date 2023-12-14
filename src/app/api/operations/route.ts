@@ -1,13 +1,13 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, OperationFromDB, OperationToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: '',
       orderByColumn: 'operationId',
       paramsCols: ['transactionId'],
@@ -15,9 +15,8 @@ export const GET = async (req: NextRequest) => {
     })
     const operations = await conn.query<OperationFromDB[]>(`
     SELECT operationId, description, serialNumber, unitCost, quantity, importSale, details, productId, transactionId FROM OPERATIONS
-    ${queryParamsComplete}`)
-    const operationsNoLimit = await conn.query<OperationFromDB[]>(`SELECT operationId FROM OPERATIONS ${queryParamsNoLimit}`)
-    const totalTransactions = await conn.query<OperationFromDB[]>('SELECT operationId FROM OPERATIONS')
+    ${queryParamsNoLimit}`)
+    const totalOps = await conn.query<OperationFromDB[]>('SELECT operationId FROM OPERATIONS')
 
     if (operations) {
       return NextResponse.json<ApiResponseWithReturn<OperationFromDB[]>>({
@@ -25,8 +24,10 @@ export const GET = async (req: NextRequest) => {
         message: 'Operaciones encontradas',
         data: operations,
         meta: {
-          rowsObtained: operationsNoLimit.length,
-          totalRows: totalTransactions.length
+          rowsObtained: operations.length,
+          totalRows: totalOps.length,
+          page,
+          rowsPerPage
         }
       })
     }

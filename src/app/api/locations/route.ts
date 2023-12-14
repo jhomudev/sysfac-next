@@ -1,13 +1,13 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, LocationFromDB, LocationToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'name',
       orderByColumn: 'localId',
       paramsCols: ['type', 'canStoreMore'],
@@ -24,7 +24,9 @@ export const GET = async (req: NextRequest) => {
         data: locations,
         meta: {
           rowsObtained: locationsNoLimit.length,
-          totalRows: totalLocals.length
+          totalRows: totalLocals.length,
+          page,
+          rowsPerPage
         }
       })
     }

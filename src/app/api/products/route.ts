@@ -1,14 +1,14 @@
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, ProductFromDB, ProductResponse, ProductToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
-import formatProductResponse from '@/adapters/formatProductResponse'
+import { formatProductResponse } from '@/adapters'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       URLSearchParams: searchParams,
       likeColumn: 'prod.name',
       orderByColumn: 'prod.productId',
@@ -37,7 +37,9 @@ export const GET = async (req: NextRequest) => {
         data: productsFormated,
         meta: {
           rowsObtained: productsNoLimit.length,
-          totalRows: totalProducts.length
+          totalRows: totalProducts.length,
+          page,
+          rowsPerPage
         }
       })
     }

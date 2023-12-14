@@ -7,7 +7,24 @@ const useCartPurchase = () => {
   const { items } = useAppSelector(state => state.cartPurchase)
 
   const addProductToCart = (item: CartPurchaseItemWhithoutId) => {
+    const alreadyProduct = items.some(itemCart => {
+      const isSameProduct = itemCart.productId === item.productId
+      const isProductByNS = !!itemCart.serialNumber
+      const serialNumberDuplicated = itemCart.serialNumber === item.serialNumber
+      return isProductByNS ? serialNumberDuplicated : isSameProduct
+    })
+    if (alreadyProduct) {
+      return {
+        ok: false,
+        message: 'El producto ya esta en el carrito'
+      }
+    }
+
     dispatch(addItem({ itemId: crypto.randomUUID(), ...item }))
+    return {
+      ok: true,
+      message: 'Producto agregado al carrito'
+    }
   }
 
   const removeProductFromCart = (itemId: CartPurchaseItemId) => {

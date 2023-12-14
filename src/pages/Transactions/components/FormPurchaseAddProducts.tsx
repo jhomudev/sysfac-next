@@ -1,10 +1,13 @@
 'use client'
+import { formatProduct } from '@/adapters'
 import { useCartPurchase } from '@/hooks'
-import { ESaleFor, Product } from '@/types'
+import { fetcher } from '@/libs/swr'
+import { ApiResponseWithReturn, ESaleFor, Product, ProductResponse } from '@/types'
 import { Autocomplete, AutocompleteItem, Button, Checkbox, Input } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import useSWR from 'swr'
 
 type FormPurchaseAddProductsFields = {
   productId: number,
@@ -15,16 +18,17 @@ type FormPurchaseAddProductsFields = {
   serialNumber: string
 }
 
-type Props = {
-  products: Product[]
-}
+function FormPurchaseAddProducts () {
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<ProductResponse[]>>('/api/products?rowsPerPage=1000', fetcher)
 
-function FormPurchaseAddProducts ({ products }: Props) {
-  const { addProductToCart, cartPurchase: { items } } = useCartPurchase()
+  const { addProductToCart } = useCartPurchase()
   const { register, reset, resetField, getValues, setValue, handleSubmit, formState: { errors } } = useForm<FormPurchaseAddProductsFields>()
   const [isPerProfit, setIsPerProfit] = React.useState<boolean>(false)
   const [isPurchasePerQuantity, setIsPurchasePerQuantity] = React.useState<boolean>(true)
   const [productToAdd, setProductToAdd] = React.useState<Product>({} as Product)
+
+  if (error) console.log('Error al solicitar productos: ' + error)
+  const products = React.useMemo(() => data?.data.map(prod => formatProduct(prod)) || [], [data])
 
   const toggleIsPerGanance = () => {
     setIsPerProfit(prev => !prev)
@@ -32,21 +36,10 @@ function FormPurchaseAddProducts ({ products }: Props) {
   }
 
   const handleSubmitForm = handleSubmit((data) => {
-    console.log(data)
-    const alreadyInCart = items.some(item => {
-      if (isPurchasePerQuantity) return item.productId === productToAdd.id
-      return item.productId === productToAdd.id && item.serialNumber === data.serialNumber
-    })
-    if (alreadyInCart) {
-      toast('Producto ya en carrito.', {
-        icon: '⚠️'
-      })
-      return
-    }
     const quantity = isPurchasePerQuantity ? data.quantity : 1
     const cost = data.costPerUnit
     const priceSale = isPerProfit ? getValues('priceSale') : productToAdd.priceSale
-    addProductToCart({
+    const { ok, message } = addProductToCart({
       productId: productToAdd.id,
       product: productToAdd.name,
       cost,
@@ -55,8 +48,12 @@ function FormPurchaseAddProducts ({ products }: Props) {
       serialNumber: data.serialNumber || '',
       total: quantity * cost
     })
-    reset()
-    toast.success('Añadido al carrito.')
+    if (ok) {
+      reset()
+      toast.success(message)
+      return
+    }
+    toast(message, { icon: '⚠️' })
   })
 
   const handleChangeGanance = () => {
@@ -70,7 +67,7 @@ function FormPurchaseAddProducts ({ products }: Props) {
     if (productToAdd.saleFor === ESaleFor.quantity) setIsPurchasePerQuantity(true)
     else if (productToAdd.saleFor === ESaleFor.unit) setIsPurchasePerQuantity(false)
     reset()
-  }, [productToAdd])
+  }, [productToAdd, reset])
 
   return (
     <>
@@ -83,6 +80,7 @@ function FormPurchaseAddProducts ({ products }: Props) {
             placeholder='Elija el producto'
             className='w-full md:max-w-sm'
             color={errors.productId ? 'danger' : 'default'}
+            isLoading={isLoading}
             isInvalid={!!errors.productId}
             errorMessage={errors.productId?.message}
             {...register('productId', {
@@ -92,7 +90,7 @@ function FormPurchaseAddProducts ({ products }: Props) {
               }
             })}
           >
-            {(item) => <AutocompleteItem key={item.id} value={item.id} onPress={() => setProductToAdd(item)}>{item.name}</AutocompleteItem>}
+            {(product) => <AutocompleteItem key={product.id} value={product.id} onPress={() => setProductToAdd(product)}>{product.name}</AutocompleteItem>}
           </Autocomplete>
           <Input
             className={`w-full md:max-w-sm ${isPurchasePerQuantity && 'hidden'}`}

@@ -40,8 +40,6 @@ export interface UserToDB {
   phone: `${number}` | null,
 }
 
-export type UserResponse = ApiResponseWithReturn<UserFromDB>
-
 export type UserCredentials = {
   username: string,
   password: string

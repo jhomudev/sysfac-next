@@ -3,12 +3,12 @@ import { ApiResponse, ApiResponseError, ApiResponseWithReturn, UserFromDB, UserT
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
-export const GET = async (_req: NextRequest, { params }: { params: { id: string}}) => {
+export const GET = async (_req: NextRequest, { params }: { params: { username: string}}) => {
   try {
-    const { id } = params
+    const { username } = params
     const [user] = await conn.query<UserFromDB[]>(`
     SELECT userId, username, password, type, state, names, lastnames, email, phone, createdAt, updatedAt
-    FROM USERS WHERE userId = ?`, id)
+    FROM USERS WHERE username = ?`, username)
 
     if (user) {
       return NextResponse.json<ApiResponseWithReturn<UserFromDB>>({
@@ -30,18 +30,18 @@ export const GET = async (_req: NextRequest, { params }: { params: { id: string}
   }
 }
 
-export const PUT = async (req: NextRequest, { params }: { params: { id: string}}) => {
+export const PUT = async (req: NextRequest, { params }: { params: { username: string}}) => {
   try {
-    const { id } = params
+    const { username: _username } = params
     const { username, password, names, lastnames, type, state, email, phone }: UserToDB = await req.json()
-    const resDB = await conn.query<OkPacket>('UPDATE USERS SET ? WHERE userId = ?', [{ username, password, names, lastnames, type, state, email, phone }, id])
+    const resDB = await conn.query<OkPacket>('UPDATE USERS SET ? WHERE username = ?', [{ username, password, names, lastnames, type, state, email, phone }, _username])
 
     if (resDB.affectedRows > 0) {
       return NextResponse.json<ApiResponse>({
         ok: true,
         message: 'Usuario actualizado',
         data: {
-          id,
+          _username,
           username,
           password,
           names,

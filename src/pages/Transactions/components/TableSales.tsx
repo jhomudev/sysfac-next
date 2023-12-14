@@ -1,14 +1,22 @@
 'use client'
+import { formatSale } from '@/adapters'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { EProofType, Sale, TableHeaderColumns } from '@/types'
+import { fetcher } from '@/libs/swr'
+import { ApiResponseWithReturn, EProofType, SaleResponse, TableHeaderColumns } from '@/types'
+import { getURLWithParams } from '@/types/utils'
 import {
   Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,
+  Spinner,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
 import NextLink from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
+import useSWR from 'swr'
+import { useDebouncedCallback } from 'use-debounce'
+import FilterSales from './FilterSales'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -22,23 +30,19 @@ const headerColumns: TableHeaderColumns[] = [
 
   {
     id: crypto.randomUUID(),
-    name: 'Importe',
-    sortable: true
+    name: 'Importe'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Descuento',
-    sortable: true
+    name: 'Descuento'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Total',
-    sortable: true
+    name: 'Total'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Comprobante',
-    sortable: true
+    name: 'Comprobante'
   },
   {
     id: crypto.randomUUID(),
@@ -46,52 +50,108 @@ const headerColumns: TableHeaderColumns[] = [
   }
 ]
 
-type Props = {
-  sales: Sale[]
-}
-
-function TableSales ({ sales }:Props) {
+function TableSales () {
+  const { replace } = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const url = `/api/sales?${searchParams?.toString()}`
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SaleResponse[]>>(url, fetcher, {
+    keepPreviousData: true
+  })
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
+
+  if (error) console.log('ocurrió un error:', error)
+  const sales = React.useMemo(() => data?.data?.map(sale => formatSale(sale)) || [], [data])
+
+  const handleChangePage = React.useCallback((page: number) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { page }
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeRowsPerPage = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { rowsPerPage: value },
+      paramsDelete: ['page']
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeSearch = useDebouncedCallback((value) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { q: value, page: 1 },
+      paramsDelete: !value ? ['q', 'page'] : ['page']
+    })
+    replace(url)
+  }, 600)
 
   const topContent = React.useMemo(() => {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)] mr-auto' placeholder='Buscar por cliente' startContent={<Yesicon icon={ICONS.search} />} />
+          <Input
+            className='w-[min(100%,400px)] mr-auto'
+            placeholder='Buscar por cliente'
+            isClearable
+            defaultValue={searchParams?.get('q') || ''}
+            startContent={<Yesicon icon={ICONS.search} />}
+            onValueChange={handleChangeSearch}
+          />
           <Button as={Link} href={`${ROUTES.purchases}/new`} color={COLORS_ENT.operationType.buy.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo compra</Button>
           <Button as={Link} href={`${ROUTES.sales}/new`} color={COLORS_ENT.operationType.sell.nextui} startContent={<Yesicon icon={ICONS.plus} />}>Nuevo venta</Button>
         </div>
-        <div className='flex items-center justify-between'>
-          <p>Total de ventas <span className='font-medium'>12</span></p>
-          <div className='flex items-center gap-2'>
-            <span>Resultados por página</span>
-            <select>
-              <option value='5'>5</option>
-              <option value='10'>10</option>
-              <option value='15'>15</option>
-            </select>
-          </div>
-        </div>
+        <FilterSales />
+        {
+          data &&
+            <div className='flex items-center justify-between'>
+              <p><span className='font-medium text-secondary'>{data.meta?.rowsObtained}</span> resultados de un total de <span className='font-medium text-secondary'>{data.meta?.totalRows}</span> ventas </p>
+              <div className='flex items-center gap-2'>
+                <span>Resultados por página</span>
+                <select defaultValue={data.meta?.rowsPerPage} onChange={handleChangeRowsPerPage}>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={30}>30</option>
+                </select>
+              </div>
+            </div>
+        }
       </>
     )
-  }, [])
+  }, [data, handleChangeRowsPerPage, handleChangeSearch, searchParams])
 
   const bottomContent = React.useMemo(() => {
+    if (!data?.meta || !(data.data.length > 0)) return
+    const { page, rowsObtained, rowsPerPage } = data.meta
+    const totalPages = Math.ceil(rowsObtained / rowsPerPage)
+
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de 20 seleccionadas` : 'Todos las filas seleccionadas'}</p>
-          <Pagination showControls total={10} initialPage={1} />
+          <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de ${data.meta.rowsObtained} seleccionadas` : 'Todos las filas seleccionadas'}</p>
+          <Pagination showControls total={totalPages} page={page} onChange={handleChangePage} />
         </div>
       </>
     )
-  }, [selectedKeys])
+  }, [selectedKeys, data, handleChangePage])
 
   return (
     <>
       <Table
         isHeaderSticky
-        aria-label='Tabla de transacciones'
+        aria-label='Tabla de ventas'
+        classNames={{
+          wrapper: 'flex-1 max-h-[1000px]',
+          table: 'min-h-[20rem]'
+        }}
         bottomContentPlacement='outside'
         selectedKeys={selectedKeys}
         selectionMode='multiple'
@@ -112,10 +172,16 @@ function TableSales ({ sales }:Props) {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron ventas' items={sales}>
+        <TableBody
+          emptyContent={!isLoading && 'No se encontraron ventas'}
+          items={sales}
+          isLoading={isLoading}
+          loadingContent={
+            <Spinner>Cargando datos...</Spinner>
+          }
+        >
           {(item) => {
             const isProofTicket = item.proofType === EProofType.ticket
-
             return (
               <TableRow key={item.id}>
                 <TableCell>{item.user.fullname}</TableCell>
@@ -135,8 +201,8 @@ function TableSales ({ sales }:Props) {
                       aria-label='actions'
                       variant='flat'
                     >
-                      <DropdownItem as={NextLink} key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.transactions}/sales/${item.id}`}>Ver detalles</DropdownItem>
-                      <DropdownItem key='ticket' startContent={<Yesicon icon={ICONS.ticket} />} href={`${ROUTES.transactions}/sales/${item.id}`} target='_blank'>Ver comprobante</DropdownItem>
+                      <DropdownItem as={NextLink} key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.sales}/${item.id}`}>Ver detalles</DropdownItem>
+                      <DropdownItem key='ticket' startContent={<Yesicon icon={ICONS.ticket} />} href={`${ROUTES.sales}/${item.id}`} target='_blank'>Ver comprobante</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </TableCell>

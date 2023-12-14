@@ -6,7 +6,6 @@ import ChartTransactions from '@/features/ChartTransactions'
 import ListTransactions from '@/features/ListTransactions'
 import CardsTransactions from '@/pages/Transactions/components/CardsTransactions'
 import TabTransactions from '@/pages/Transactions/components/TabTransactions'
-import { EOperationType, Transaction } from '@/types'
 import { Divider } from '@nextui-org/react'
 import React from 'react'
 
@@ -22,65 +21,6 @@ const itemsTransactions: CardEntityDashboardProps[] = [
     quantity: 200,
     color: COLORS_ENT.operationType.buy.hex,
     icon: ICONS.purchases
-  }
-]
-
-const transactions: Transaction[] = [
-  {
-    id: 1,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 2,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 3,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 4,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 5,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 6,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 7,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
   }
 ]
 
@@ -121,8 +61,8 @@ function TransactionsLayout ({ children }: Props) {
       <h2 className='title'>Transacciones realizadas</h2>
       <p className='text'>Gestiona las transacciones realizadas por los usuarios.</p>
       <br />
-      <div className='flex flex-col md:flex-row md:flex-start gap-10'>
-        <ListTransactions transactions={transactions} />
+      <div className='flex flex-col lg:flex-row lg:items-start gap-10'>
+        <ListTransactions />
         <div className='w-full flex flex-col gap-2 items-center'>
           <TabTransactions />
           <br />

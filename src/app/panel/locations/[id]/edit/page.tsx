@@ -1,7 +1,7 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import FormLocationEdit from '@/pages/Locations/components/FormLocationEdit'
-import { ELocationType, Location } from '@/types'
+import getLocationById from '@/pages/Locations/services/getLocationById'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 const breadcrumbItems:MyBreadcrumbItemProps[] = [
@@ -22,18 +22,10 @@ type Props = {
   params: Params
 }
 
-function EditLocationPage ({ params }: Props) {
+async function EditLocationPage ({ params }: Props) {
   const { id } = params
-
-  const location: Location = {
-    id,
-    name: 'Local 1',
-    type: ELocationType.warehouse,
-    address: 'Jr. Libertad',
-    canStoreMore: true,
-    createdAt: '2023-11-09 10:03:07',
-    updatedAt: '2023-11-09 10:03:07'
-  }
+  const location = await getLocationById(id)
+  if (!location) return <p className='text-danger'>Local no encontrado</p>
 
   return (
     <>

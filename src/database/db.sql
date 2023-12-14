@@ -63,8 +63,8 @@ CREATE TABLE
   PRODUCTS (
     productId INT NOT NULL AUTO_INCREMENT,
     -- product data
-    name VARCHAR(100) NOT NULL UNIQUE,
-    image VARCHAR(1000) NOT NULL,
+    name VARCHAR(500) NOT NULL UNIQUE,
+    image VARCHAR(1000),
     inventaryMin SMALLINT NOT NULL,
     priceSale DECIMAL(6, 2) NOT NULL,
     unit VARCHAR(50) NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE
   INVENTARY (
     unitId INT NOT NULL AUTO_INCREMENT,
     -- item data
-    serialNumber VARCHAR(100) NOT NULL,
+    serialNumber VARCHAR(100) NOT NULL UNIQUE,
     state ENUM('En stock', 'Vendido', 'Dañado') NOT NULL DEFAULT 'En stock',
     -- relations
     productId INT NOT NULL,
@@ -181,10 +181,10 @@ CREATE TABLE
     -- transaction data
     operationType ENUM('Compra', 'Venta') NOT NULL DEFAULT 'Venta',
     proofType ENUM('Factura', 'Boleta de venta'),
-    proofCode VARCHAR(50),
-    totalImport DECIMAL(6, 2),
-    discount DECIMAL(6, 2),
-    totalPay DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
+    proofCode VARCHAR(50) UNIQUE,
+    totalImport DECIMAL(7, 2),
+    discount DECIMAL(7, 2),
+    totalPay DECIMAL(7, 2) NOT NULL DEFAULT 0.00,
     comments VARCHAR(1000),
     -- relations
     supplierId INT,
@@ -209,7 +209,7 @@ CREATE TABLE
   OPERATIONS (
     -- operation data
     operationType ENUM('Venta', 'Compra') NOT NULL,
-    description VARCHAR(500)NOT NULL,
+    description VARCHAR(500) NOT NULL,
     serialNumber VARCHAR(100),
     unitCost DECIMAL(6, 2) NOT NULL DEFAULT 0.00,
     quantity SMALLINT NOT NULL,
@@ -226,11 +226,10 @@ CREATE TABLE
     FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
   );
 
+
 -- ? SALES
 -- DROP TABLE
 --   IF EXISTS SALES;
-
-
 -- CREATE TABLE
 --   SALES (
 --     saleId INT NOT NULL AUTO_INCREMENT,
@@ -251,12 +250,9 @@ CREATE TABLE
 --     FOREIGN KEY(clientId) REFERENCES CLIENTS(clientId),
 --     FOREIGN KEY(userId) REFERENCES USERS(userId)
 --   );
-
-
 -- -- ? PURCHASES
 -- DROP TABLE
 --   IF EXISTS PURCHASES;
-
 -- CREATE TABLE
 --   PURCHASES (
 --     purchaseId INT NOT NULL AUTO_INCREMENT,
@@ -273,12 +269,9 @@ CREATE TABLE
 --     FOREIGN KEY(supplierId) REFERENCES SUPPLIERS(supplierId),
 --     FOREIGN KEY(userId) REFERENCES USERS(userId)
 --   );
-
-
 -- -- ? OPERATIONS_SALE
 -- DROP TABLE
 --   IF EXISTS OPERATIONS_SALE;
-
 -- CREATE TABLE
 --   OPERATIONS_SALE (
 --     operationId INT NOT NULL AUTO_INCREMENT,
@@ -299,12 +292,9 @@ CREATE TABLE
 --     FOREIGN KEY(saleId) REFERENCES SALES(saleId),
 --     FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
 --   );
-
-
 -- -- ? OPERATIONS_PURCHASE
 -- DROP TABLE
 --   IF EXISTS OPERATIONS_PURCHASE;
-
 -- CREATE TABLE
 --   OPERATIONS_PURCHASE (
 --     operationId INT NOT NULL AUTO_INCREMENT,

@@ -2,99 +2,154 @@
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { User, EUserType, EUserState } from '@/types'
+import { User, EUserType, EUserState, ApiResponseWithReturn, UserFromDB } from '@/types'
 import NextLink from 'next/link'
 import {
   Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
   Chip, Input, Button, Pagination, Selection,
-  Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Link
+  Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Link, Spinner
 } from '@nextui-org/react'
 import React from 'react'
-
-type Props = {
-  users: User[]
-}
+import useSWR from 'swr'
+import { formatUser } from '@/adapters'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useDebouncedCallback } from 'use-debounce'
+import { fetcher } from '@/libs/swr'
+import { getURLWithParams } from '@/types/utils'
 
 const headerColumns = [
   {
     id: crypto.randomUUID(),
-    name: 'Nombre de usuario',
-    sortable: false
+    name: 'Nombre de usuario'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Nombres',
-    sortable: false
+    name: 'Nombres'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Apellidos',
-    sortable: false
+    name: 'Apellidos'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Tipo',
-    sortable: true
+    name: 'Tipo'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Estado',
-    sortable: true
+    name: 'Estado'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Correo',
-    sortable: false
+    name: 'Correo'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Teléfono',
-    sortable: false
+    name: 'Teléfono'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Acciones',
-    sortable: false
+    name: 'Acciones'
   }
 ]
 
-function TableUsers ({ users }: Props) {
+function TableUsers () {
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const { replace } = useRouter()
+  const url = searchParams ? `/api/users?${searchParams.toString()}` : '/api/users'
+  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<UserFromDB[]>>(url, fetcher, {
+    keepPreviousData: true
+  })
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [isOpenModal, setIsOpenModal] = React.useState<boolean>(false)
   const [userToDelete, setUserToDelete] = React.useState<User>({} as User)
+
+  if (error) console.log('ocurrió un error:', error)
+  const users = React.useMemo(() => data?.data?.map(user => formatUser(user)) || [], [data])
+
+  const handleChangePage = React.useCallback((page: number) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { page }
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeRowsPerPage = React.useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { rowsPerPage: value },
+      paramsDelete: ['page']
+    })
+    replace(url)
+  }, [searchParams, pathname, replace])
+
+  const handleChangeSearch = useDebouncedCallback((value) => {
+    const url = getURLWithParams({
+      pathname,
+      searchParams,
+      newParams: { q: value, page: 1 },
+      paramsDelete: !value ? ['q', 'page'] : ['page']
+    })
+    replace(url)
+  }, 600)
 
   const topContent = React.useMemo(() => {
     return (
       <>
         <div className='flex gap-3 items-center justify-between'>
-          <Input isClearable className='w-[min(100%,400px)]' placeholder='Buscar usuario' startContent={<Yesicon icon={ICONS.search} />} />
+          <Input
+            className='w-[min(100%,400px)]'
+            placeholder='Buscar usuario'
+            isClearable
+            defaultValue={searchParams?.get('q') ?? ''}
+            startContent={<Yesicon icon={ICONS.search} />}
+            onValueChange={handleChangeSearch}
+          />
           <Button as={Link} href={`${ROUTES.users}/create`} color='primary' startContent={<Yesicon icon={ICONS.plus} />}>Nuevo usuario</Button>
         </div>
         <div className='flex items-center justify-between'>
-          <p>Total de usuarios <span className='font-medium'>12</span></p>
-          <div className='flex items-center gap-2'>
-            <span>Resultados por página</span>
-            <select>
-              <option value='5'>5</option>
-              <option value='10'>10</option>
-              <option value='15'>15</option>
-            </select>
-          </div>
+          {data && <p>Total de usuarios <span className='font-medium'>{data.meta?.totalRows}</span></p>}
+          {
+            data?.meta?.rowsPerPage &&
+              <div className='flex items-center gap-2'>
+                <span>Resultados por página</span>
+                <select onChange={handleChangeRowsPerPage} defaultValue={data?.meta?.rowsPerPage}>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div>
+          }
         </div>
       </>
     )
-  }, [])
+  }, [data, searchParams, handleChangeRowsPerPage, handleChangeSearch])
 
   const bottomContent = React.useMemo(() => {
+    if (!data?.meta) return
+    const { page, rowsObtained, rowsPerPage } = data.meta
+    const totalPages = Math.ceil(rowsObtained / rowsPerPage)
     return (
       <>
-        <div className='flex gap-3 items-center justify-between'>
-          <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de 20 seleccionadas` : 'Todos las filas seleccionadas'}</p>
-          <Pagination showControls total={10} initialPage={1} />
-        </div>
+        {
+          data &&
+            <div className='flex gap-3 items-center justify-between'>
+              <p>{selectedKeys instanceof Set ? `${selectedKeys.size} filas de 20 seleccionadas` : 'Todos las filas seleccionadas'}</p>
+              <Pagination
+                showControls
+                total={totalPages}
+                page={page}
+                onChange={handleChangePage}
+              />
+            </div>
+        }
       </>
     )
-  }, [selectedKeys])
+  }, [data, selectedKeys, handleChangePage])
 
   return (
     <>
@@ -103,16 +158,15 @@ function TableUsers ({ users }: Props) {
         aria-label='Tabla de usuarios'
         bottomContentPlacement='outside'
         classNames={{
-          wrapper: 'max-h-[382px]'
+          wrapper: 'flex-1 max-h-[1000px]',
+          table: 'min-h-[20rem]'
         }}
         selectedKeys={selectedKeys}
         selectionMode='multiple'
-        // sortDescriptor={sortDescriptor}
         topContent={topContent}
         bottomContent={bottomContent}
         topContentPlacement='outside'
         onSelectionChange={setSelectedKeys}
-        // onSortChange={() = >{}}
       >
         <TableHeader columns={headerColumns}>
           {(column) => (
@@ -120,13 +174,19 @@ function TableUsers ({ users }: Props) {
               className='uppercase'
               key={column.id}
               align={column.id === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
             >
               {column.name}
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent='No se econtraron usuarios' items={users}>
+        <TableBody
+          emptyContent={!isLoading && 'No se econtraron usuarios'}
+          items={users}
+          isLoading={isLoading}
+          loadingContent={
+            <Spinner>Cargando datos...</Spinner>
+          }
+        >
           {(user) => {
             const colorUserState = user.state === EUserState.active ? COLORS_ENT.userState.active.nextui : COLORS_ENT.userState.inactive.nextui
             const colorUserType = user.type === EUserType.admin
@@ -174,9 +234,8 @@ function TableUsers ({ users }: Props) {
             <>
               <ModalHeader className='flex flex-col gap-1'>Confirmación</ModalHeader>
               <ModalBody>
-                <p>¿Estás seguro de eliminar este usuario?</p>
-                <small className='text-danger'><em>OJO: Esta acción es irreversible.</em></small>
-                <p>{userToDelete?.names}</p>
+                <p>¿Estás seguro de eliminar el usuario <b>{userToDelete?.names} {userToDelete?.lastnames}</b>?</p>
+                <em className='text-danger text-small'>OJO: Esta acción es irreversible.</em>
               </ModalBody>
               <ModalFooter>
                 <Button color='default' variant='light' onPress={onClose}>

@@ -6,28 +6,17 @@ import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs
 import FormUserEditData from '@/pages/Users/components/FormUserEditData'
 import FormUserEditAccount from '@/pages/Users/components/FormUserEditAccount'
 import FormUserChangePassword from '@/pages/Users/components/FormUserChangePassword'
-import { EUserState, EUserType, User } from '@/types'
+import { ApiResponseWithReturn, UserFromDB } from '@/types'
+import { formatUser } from '@/adapters'
+import axios from 'axios'
+import { API_URL } from '@/contants'
 
 type Props = {
   params: Params
 }
 
-function EditUserPage ({ params }: Props) {
+async function EditUserPage ({ params }: Props) {
   const { username } = params
-  const user:User = {
-    id: 1,
-    username: 'usuario1',
-    names: 'Juan',
-    lastnames: 'Perez',
-    type: EUserType.admin,
-    email: 'juan.perez@email.com',
-    phone: '123456789',
-    password: 'asdfsdf',
-    state: EUserState.active,
-    createdAt: '',
-    updatedAt: ''
-  }
-
   const breadcrumbItems:MyBreadcrumbItemProps[] = [
     {
       label: 'Home',
@@ -45,6 +34,10 @@ function EditUserPage ({ params }: Props) {
       label: 'Editar información'
     }
   ]
+
+  const res = await axios<ApiResponseWithReturn<UserFromDB>>(`${API_URL}/users/${username}`)
+  const data = res.data.data
+  const user = formatUser(data)
 
   return (
     <div className='w-[min(100%,900px)]'>

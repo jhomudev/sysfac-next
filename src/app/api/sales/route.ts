@@ -1,17 +1,17 @@
 import { formatSaleResponse } from '@/adapters'
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, SaleFromDB, SaleResponse, SaleToDB } from '@/types'
-import { getQueryParams } from '@/utils'
+import { getQueryParams } from '@/types/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
 
 export const GET = async (req: NextRequest) => {
   try {
     const { searchParams: URLSearchParams } = req.nextUrl
-    const { queryParamsComplete, queryParamsNoLimit } = getQueryParams({
+    const { queryParamsComplete, queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: 'CONCAT(cli.names," ", cli.lastnames)',
       orderByColumn: 'transactionId',
-      paramsCols: ['operationType', 'proofType'],
+      paramsCols: ['us.username', 'operationType', 'proofType'],
       URLSearchParams
     })
     const sales = await conn.query<SaleFromDB[]>(`
@@ -41,7 +41,9 @@ export const GET = async (req: NextRequest) => {
         data: salesFormated,
         meta: {
           rowsObtained: salesNoLimit.length,
-          totalRows: totalSales.length
+          totalRows: totalSales.length,
+          page,
+          rowsPerPage
         }
       })
     }

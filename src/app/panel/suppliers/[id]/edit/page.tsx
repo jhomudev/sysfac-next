@@ -1,21 +1,11 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import FormSupplierEdit from '@/pages/Suppliers/components/FormSupplierEdit'
-import { Supplier } from '@/types'
-import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
+import getSupplierById from '@/pages/Suppliers/services/getSupplierById'
 
 type Props = {
-  params: Params
-}
-
-const supplier: Supplier = {
-  id: 4,
-  ruc: '1345656767898',
-  name: 'Proveedor 4',
-  address: 'Jr. Peresz de Regollar',
-  phone: '968230122',
-  createdAt: '2023-11-09 10:03:07',
-  updatedAt: '2023-11-09 10:03:07'
+  params: { id: `${number}`}
 }
 
 const breadcrumbItems:MyBreadcrumbItemProps[] = [
@@ -32,19 +22,25 @@ const breadcrumbItems:MyBreadcrumbItemProps[] = [
   }
 ]
 
-function EditSupplierPage ({ params }: Props) {
+async function EditSupplierPage ({ params }: Props) {
   const { id } = params
+
+  const supplier = await getSupplierById(id)
 
   return (
     <>
       <MyBreadcrumbs items={breadcrumbItems} />
       <br />
-      <div className='flex flex-col w-[min(100%,800px)]'>
-        <h1 className='text-xl font-semibold'>Editar proveedor</h1>
-        <p className='text'>Modifique la iformación del proveedor.{id}</p>
-        <br />
-        <FormSupplierEdit supplier={supplier} />
-      </div>
+      {
+        supplier
+          ? <div className='flex flex-col w-[min(100%,800px)]'>
+            <h1 className='text-xl font-semibold'>Editar proveedor</h1>
+            <p className='text'>Modifique la información del proveedor.</p>
+            <br />
+            <FormSupplierEdit supplier={supplier} />
+          </div>
+          : <p className='text-danger'>Proveedor no encontrado</p>
+      }
     </>
   )
 }

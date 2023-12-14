@@ -43,8 +43,9 @@ function FormLogin () {
         errorMessage={errors.username && 'Este campo es requerido'}
         color='success'
         variant='underlined'
+        autoFocus
         startContent={<Yesicon className='text-mySoftLight' icon={ICONS.user} />}
-        placeholder='username'
+        label='username'
         {...register('username', { required: true })}
       />
       <Input
@@ -55,7 +56,7 @@ function FormLogin () {
         color='success'
         variant='underlined'
         startContent={<Yesicon className='text-mySoftLight' icon={ICONS.password} />}
-        placeholder='Password'
+        label='Password'
         {...register('password', { required: true })}
       />
       <Button

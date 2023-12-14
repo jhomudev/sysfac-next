@@ -27,5 +27,3 @@ export interface LocationToDB {
   type: ELocationType,
   canStoreMore: boolean,
 }
-
-export type LocationResponse = ApiResponseWithReturn<LocationFromDB>

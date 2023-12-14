@@ -1,32 +1,6 @@
 import React from 'react'
 import { Divider } from '@nextui-org/react'
-import { Client } from '@/types'
 import TableClients from '@/pages/Clients/components/TableClients'
-
-const data:Client[] = [
-  {
-    id: 1,
-    ruc: null,
-    dni: '71730987',
-    names: 'Juan',
-    lastnames: 'Perez',
-    address: 'Jr. Orquideas',
-    phone: '123456789',
-    createdAt: '2023-11-21 15:45:21',
-    updatedAt: '2023-11-21 15:45:21'
-  },
-  {
-    id: 2,
-    ruc: '123456789123',
-    dni: null,
-    names: 'Carlos',
-    lastnames: 'Ramirez',
-    address: 'Jr. Juan Yucra',
-    phone: '123456780',
-    createdAt: '2023-11-21 15:45:21',
-    updatedAt: '2023-11-21 15:45:21'
-  }
-]
 
 function ClientsPage () {
   return (
@@ -36,7 +10,7 @@ function ClientsPage () {
       <br />
       <Divider />
       <br />
-      <TableClients clients={data} />
+      <TableClients />
     </>
   )
 }

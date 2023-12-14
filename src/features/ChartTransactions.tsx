@@ -2,6 +2,11 @@
 import { Line } from 'react-chartjs-2'
 import { Chart as ChartJs, Filler, LineElement, LinearScale, PointElement, Title, Tooltip, Legend, CategoryScale, ChartData } from 'chart.js'
 import { COLORS_ENT } from '@/contants'
+import { formatTransactionsMonth } from '@/adapters'
+import { ApiResponseWithReturn, TransactionsMonthRes } from '@/types'
+import { fetcher } from '@/libs/swr'
+import useSWR from 'swr'
+import { Skeleton } from '@nextui-org/react'
 
 ChartJs.register(
   CategoryScale,
@@ -14,13 +19,22 @@ ChartJs.register(
   Filler
 )
 
+const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
 function ChartTransactions () {
+  const { data: _data, error, isLoading } = useSWR<ApiResponseWithReturn<TransactionsMonthRes>>('/api/transactions/months', fetcher)
+
+  if (error) console.log('Error al obtener datos chartTransactions')
+  const dataRes = _data ? formatTransactionsMonth(_data.data) : null
+  const sales = dataRes ? months.map((_month, i) => dataRes.sales[i + 1] ? dataRes.sales[i + 1].quantity : 0) : []
+  const purchases = dataRes ? months.map((_month, i) => dataRes.purchases[i + 1] ? dataRes.purchases[i + 1].quantity : 0) : []
+
   const data: ChartData<'line'> = {
-    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    labels: months,
     datasets: [
       {
         label: 'Ventas',
-        data: [123, 100, 145, 156, 156, 112, 134, 145],
+        data: sales,
         backgroundColor: `${COLORS_ENT.operationType.sell.hex}30`,
         borderColor: COLORS_ENT.operationType.sell.hex,
         borderWidth: 2,
@@ -30,7 +44,7 @@ function ChartTransactions () {
       },
       {
         label: 'Compras',
-        data: [23, 34, 55, 56, 76, 12, 34, 45],
+        data: purchases,
         backgroundColor: `${COLORS_ENT.operationType.buy.hex}30`,
         borderColor: COLORS_ENT.operationType.buy.hex,
         borderWidth: 2,
@@ -46,12 +60,12 @@ function ChartTransactions () {
     maintainsAspectRatio: false
   }
 
-  return (
-    <Line
-      className='!w-full !h-full'
-      data={data}
-      options={options}
-    />
-  )
+  return !isLoading
+    ? <Line
+        className='!w-full !h-full'
+        data={data}
+        options={options}
+      />
+    : <Skeleton className='!w-full !h-full rounded-md' />
 }
 export default ChartTransactions

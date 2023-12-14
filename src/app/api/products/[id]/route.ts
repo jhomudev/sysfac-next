@@ -1,8 +1,8 @@
-import formatProductResponse from '@/adapters/formatProductResponse'
 import { conn } from '@/libs/mysql'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, ProductFromDB, ProductResponse, ProductToDB } from '@/types'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
+import { formatProductResponse } from '@/adapters'
 
 export const GET = async (_req: NextRequest, { params }: {params: { id: string}}) => {
   try {
