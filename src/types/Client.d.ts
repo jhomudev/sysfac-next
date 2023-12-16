@@ -1,6 +1,6 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 
-export interface Client {
+export type Client = {
   id: number,
   ruc: `${number}` | null,
   dni: `${number}` | null,
@@ -12,7 +12,7 @@ export interface Client {
   updatedAt: string
 }
 
-export interface ClientFromDB {
+export type ClientFromDB = {
   clientId: number,
   ruc: `${number}` | null,
   dni: `${number}` | null,
@@ -24,7 +24,7 @@ export interface ClientFromDB {
   updatedAt: string
 }
 
-export interface ClientToDB {
+export type ClientToDB = {
   ruc: `${number}` | undefined,
   dni: `${number}` | undefined,
   names: string,
@@ -32,5 +32,3 @@ export interface ClientToDB {
   address: string | null,
   phone: `${number}` | null,
 }
-
-export type ClientResponse = ApiResponseWithReturn<ClientFromDB>

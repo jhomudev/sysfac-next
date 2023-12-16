@@ -1,7 +1,7 @@
 import { EOperationType } from '.'
 import { ApiResponseWithReturn } from './ApiResponse'
 
-export interface Operation {
+export type Operation = {
   id: number,
   description: string,
   serialNumber: string,
@@ -14,7 +14,7 @@ export interface Operation {
   createdAt: string
 }
 
-export interface OperationFromDB {
+export type OperationFromDB = {
   operationId: number,
   description: string,
   serialNumber: string,
@@ -27,7 +27,7 @@ export interface OperationFromDB {
   createdAt: string
 }
 
-export interface OperationToDB {
+export type OperationToDB = {
   operationType: EOperationType
   description: string,
   serialNumber: string,

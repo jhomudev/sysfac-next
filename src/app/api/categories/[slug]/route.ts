@@ -63,6 +63,18 @@ export const PUT = async (req: NextRequest, { params }: { params: { slug: string
 export const DELETE = async (_req: NextRequest, { params }: { params: { slug: string}}) => {
   try {
     const { slug } = params
+    // validate that user has transactions
+    const [res] = await conn.query<any[]>(`SELECT COUNT(*) AS totalProducts FROM PRODUCTS pro
+    INNER JOIN CATEGORIES cat ON cat.categoryId = pro.categoryId
+    WHERE cat.slug = ?`, slug)
+    const { totalProducts } = res
+
+    if (totalProducts > 0) {
+      return NextResponse.json<ApiResponse>({
+        ok: false,
+        message: 'No se puede eliminar una categoría con productos'
+      })
+    }
     const resDB = await conn.query<OkPacket>('DELETE FROM CATEGORIES WHERE slug = ?', slug)
 
     if (resDB.affectedRows > 0) {

@@ -1,7 +1,7 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 import { EUserState, EUserType } from './enums'
 
-export interface User {
+export type User = {
   id: number,
   username: string,
   password: string,
@@ -15,7 +15,7 @@ export interface User {
   updatedAt: string
 }
 
-export interface UserFromDB {
+export type UserFromDB = {
   userId: number,
   username: string,
   password: string,
@@ -29,7 +29,7 @@ export interface UserFromDB {
   updatedAt: string
 }
 
-export interface UserToDB {
+export type UserToDB = {
   username: string,
   password: string,
   type: EUserType,

@@ -1,7 +1,7 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 import { ESaleFor } from './enums'
 
-export interface Product {
+export type Product = {
   id: number,
   name: string,
   image: string,
@@ -19,7 +19,7 @@ export interface Product {
   updatedAt: string
 }
 
-export interface ProductResponse {
+export type ProductResponse = {
   productId: number,
   name: string,
   image: string,
@@ -37,7 +37,7 @@ export interface ProductResponse {
   updatedAt: string
 }
 
-export interface ProductFromDB {
+export type ProductFromDB = {
   productId: number,
   name: string,
   image: string,
@@ -53,7 +53,7 @@ export interface ProductFromDB {
   categoryName: string,
 }
 
-export interface ProductToDB {
+export type ProductToDB = {
   name: string,
   image: string,
   inventaryMin: number,

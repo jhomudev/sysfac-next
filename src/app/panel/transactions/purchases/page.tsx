@@ -1,4 +1,4 @@
-import TablePurchases from '@/pages/Transactions/components/TablePurchases'
+import TablePurchases from '@/modules/Transactions/components/TablePurchases'
 
 function PurchasesPage () {
   return (

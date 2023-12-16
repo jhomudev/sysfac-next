@@ -1,7 +1,7 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormCategory from '@/pages/Categories/components/FormCategory'
-import { getCategoryBySlug } from '@/pages/Categories/services'
+import FormCategory from '@/modules/Categories/components/FormCategory'
+import { getCategoryBySlug } from '@/modules/Categories/services'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 type Props = {

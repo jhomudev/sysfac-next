@@ -1,7 +1,7 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 import { ELocationType } from './enums'
 
-export interface Location {
+export type Location ={
   id: number,
   name: string,
   address: string,
@@ -11,7 +11,7 @@ export interface Location {
   updatedAt: string
 }
 
-export interface LocationFromDB {
+export type LocationFromDB ={
   localId: number,
   name: string,
   address: string,
@@ -21,7 +21,7 @@ export interface LocationFromDB {
   updatedAt: string
 }
 
-export interface LocationToDB {
+export type LocationToDB = {
   name: string,
   address: string,
   type: ELocationType,

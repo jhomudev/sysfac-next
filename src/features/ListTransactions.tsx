@@ -5,7 +5,7 @@ import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
 import { fetcher } from '@/libs/swr'
-import ListTransactionsSkeleton from '@/pages/Transactions/components/ListTransactionsSkeleton'
+import ListTransactionsSkeleton from '@/modules/Transactions/components/ListTransactionsSkeleton'
 import { ApiResponseWithReturn, EOperationType, TransactionResponse } from '@/types'
 import getLeftTime from '@/utils/getLeftTime'
 import { Card, CardHeader, Link, Listbox, ListboxItem } from '@nextui-org/react'
@@ -38,7 +38,7 @@ function ListTransactions ({ showRedirect = false }: Props) {
                 aria-label='transacciones recientes'
                 emptyContent='No hay movimientos'
                 classNames={{
-                  list: 'max-h-[500px] overflow-auto'
+                  list: 'max-h-[300px] 2xl:max-h-[500px] overflow-auto'
                 }}
                 variant='bordered'
                 items={transactions}

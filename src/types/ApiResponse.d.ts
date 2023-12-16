@@ -1,15 +1,15 @@
-export interface ApiResponse {
+export type ApiResponse = {
   ok: boolean,
   message: string,
   data?: unknown
 }
 
-export interface ApiResponseError {
+export type ApiResponseError = {
   error: unknown,
   message: string,
 }
 
-export interface ApiResponseWithReturn<T> extends ApiResponse {
+export type ApiResponseWithReturn<T> = {
   ok: boolean,
   message: string,
   data: T,

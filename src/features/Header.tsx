@@ -99,7 +99,7 @@ function Header () {
             </Button>
           </Badge>
           <Dropdown
-            placement='bottom-end' className='max-w-sm'
+            placement='bottom-end' className='max-w-sm md:min-w-[300px] '
           >
             <Badge content={notifications.length} shape='circle' color='danger' isInvisible={!hasNotifications}>
               <DropdownTrigger>
@@ -120,20 +120,23 @@ function Header () {
               variant='faded'
               aria-label='notifications'
               items={notifications}
+              disabledKeys={['empty']}
               emptyContent='No hay notificaiones'
             >
               <DropdownSection title='Notificaciones'>
                 {
-                  notifications.map((item) => (
-                    <DropdownItem
-                      key={item.key}
-                      onPress={() => item.handle()}
-                      description={<p className='line-clamp-2'>{item.description}</p>}
-                      startContent={<Image width={30} height={30} src={item.image} alt='image' />}
-                    >
-                      {item.label}
-                    </DropdownItem>
-                  ))
+                  hasNotifications
+                    ? notifications.map((item) => (
+                      <DropdownItem
+                        key={item.key}
+                        onPress={() => item.handle()}
+                        description={<p className='line-clamp-2'>{item.description}</p>}
+                        startContent={<Image width={30} height={30} src={item.image} alt='image' />}
+                      >
+                        {item.label}
+                      </DropdownItem>
+                    ))
+                    : <DropdownItem key='empty' description='No hay notificaciones' />
                 }
               </DropdownSection>
             </DropdownMenu>

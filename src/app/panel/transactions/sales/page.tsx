@@ -1,4 +1,4 @@
-import TableSales from '@/pages/Transactions/components/TableSales'
+import TableSales from '@/modules/Transactions/components/TableSales'
 
 function SalesPage () {
   return (

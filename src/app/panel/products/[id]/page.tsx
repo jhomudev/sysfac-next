@@ -1,7 +1,7 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import { COLORS_ENT } from '@/contants'
-import { getProductById } from '@/pages/Productos/services'
+import { getProductById } from '@/modules/Productos/services'
 import { ESaleFor, EStateProduct } from '@/types'
 import { formatDate } from '@/utils'
 import { Button, Chip, Image, Link } from '@nextui-org/react'

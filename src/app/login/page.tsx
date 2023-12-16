@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { redirect } from 'next/navigation'
-import FormLogin from '@/pages/Login/components/FormLogin'
+import FormLogin from '@/modules/Login/components/FormLogin'
 import Footer from '@/features/Footer'
 
 async function LoginPage () {

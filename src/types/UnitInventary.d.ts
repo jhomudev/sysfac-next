@@ -1,6 +1,6 @@
 import { EStateProductUnit } from '.'
 
-export interface UnitInventary {
+export type UnitInventary = {
   id: number
   serialNumber: string
   state: EStateProductUnit
@@ -16,7 +16,7 @@ export interface UnitInventary {
   updatedAt: string
 }
 
-export interface UnitInventaryFromDB {
+export type UnitInventaryFromDB = {
   unitId: number
   serialNumber: string
   state: EStateProductUnit
@@ -28,14 +28,14 @@ export interface UnitInventaryFromDB {
   updatedAt: string
 }
 
-export interface UnitInventaryToDB {
+export type UnitInventaryToDB = {
   serialNumber: string
   state: EStateProductUnit
   productId: number
   localId: number
 }
 
-export interface UnitInventaryResponse {
+export type UnitInventaryResponse = {
   unitId: number
   serialNumber: string
   state: EStateProductUnit

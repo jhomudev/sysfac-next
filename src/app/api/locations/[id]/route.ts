@@ -64,6 +64,19 @@ export const PUT = async (req: NextRequest, { params }: { params: { id: string}}
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string}}) => {
   try {
     const { id } = params
+
+    // validate that location has unit products
+    const [res] = await conn.query<any[]>(`SELECT COUNT(unitId) AS totalUnits FROM INVENTARY inv
+    INNER JOIN LOCATIONS loc ON loc.localId=inv.localId
+    WHERE inv.localId = ?`, id)
+    const { totalUnits } = res
+
+    if (totalUnits > 0) {
+      return NextResponse.json<ApiResponse>({
+        ok: false,
+        message: 'No se puede eliminar un local con unidades en inventario'
+      })
+    }
     const resDB = await conn.query<OkPacket>('DELETE FROM LOCATIONS WHERE localId = ?', id)
 
     if (resDB.affectedRows > 0) {

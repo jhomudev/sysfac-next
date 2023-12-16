@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-closing-tag-location */
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormSupplierEdit from '@/pages/Suppliers/components/FormSupplierEdit'
-import getSupplierById from '@/pages/Suppliers/services/getSupplierById'
+import FormSupplierEdit from '@/modules/Suppliers/components/FormSupplierEdit'
+import getSupplierById from '@/modules/Suppliers/services/getSupplierById'
 
 type Props = {
   params: { id: `${number}`}

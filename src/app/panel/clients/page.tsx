@@ -1,6 +1,6 @@
 import React from 'react'
 import { Divider } from '@nextui-org/react'
-import TableClients from '@/pages/Clients/components/TableClients'
+import TableClients from '@/modules/Clients/components/TableClients'
 
 function ClientsPage () {
   return (

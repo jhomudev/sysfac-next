@@ -1,6 +1,6 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormCategoryCreate from '@/pages/Categories/components/FormCategoryCreate'
+import FormCategoryCreate from '@/modules/Categories/components/FormCategoryCreate'
 
 const breadcrumbItems:MyBreadcrumbItemProps[] = [
   {

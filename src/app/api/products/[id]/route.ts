@@ -72,6 +72,21 @@ export const PUT = async (req: NextRequest, { params }:{ params: {id: number}}) 
 export const DELETE = async (_req: NextRequest, { params }: { params: { id: string}}) => {
   try {
     const { id } = params
+
+    // validate that product has transactions
+    const [res] = await conn.query<any[]>(`SELECT COUNT(*) AS totalOps FROM OPERATIONS op
+    INNER JOIN PRODUCTS pro ON pro.productId = op.productId
+    WHERE op.productId = ?`, id)
+    const { totalOps } = res
+
+    if (totalOps > 0) {
+      return NextResponse.json<ApiResponse>({
+        ok: false,
+        message: 'No se puede eliminar un producto que tenga transacciones'
+      })
+    }
+
+    // delete product
     const resDB = await conn.query<OkPacket>('DELETE FROM PRODUCTS WHERE productId = ?', id)
 
     if (resDB.affectedRows > 0) {

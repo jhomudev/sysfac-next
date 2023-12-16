@@ -65,10 +65,23 @@ export const PUT = async (req: NextRequest, { params }: { params: { username: st
   }
 }
 
-export const DELETE = async (_req: NextRequest, { params }: { params: { id: string}}) => {
+export const DELETE = async (_req: NextRequest, { params }: { params: { username: string}}) => {
   try {
-    const { id } = params
-    const resDB = await conn.query<OkPacket>('DELETE FROM USERS WHERE userId = ?', id)
+    const { username } = params
+    // validate that user has transactions
+    const [res] = await conn.query<any[]>(`SELECT COUNT(transactionId) AS totalTransactions FROM TRANSACTIONS tra
+    INNER JOIN USERS us ON us.userId=tra.userId
+    WHERE us.username = ?`, username)
+    const { totalTransactions } = res
+
+    if (totalTransactions > 0) {
+      return NextResponse.json<ApiResponse>({
+        ok: false,
+        message: 'No se puede eliminar un usuario que tenga transacciones'
+      })
+    }
+    // delte user
+    const resDB = await conn.query<OkPacket>('DELETE FROM USERS WHERE username = ?', username)
 
     if (resDB.affectedRows > 0) {
       return NextResponse.json<ApiResponse>({

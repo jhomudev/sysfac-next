@@ -2,8 +2,8 @@ import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import FiltersProductsPerSale from '@/pages/Transactions/components/FilterProductsPerSale'
-import ListProductsPerSale from '@/pages/Transactions/components/ListProductsPerSale'
+import FiltersProductsPerSale from '@/modules/Transactions/components/FilterProductsPerSale'
+import ListProductsPerSale from '@/modules/Transactions/components/ListProductsPerSale'
 import { Divider, Input } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [

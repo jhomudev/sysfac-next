@@ -1,7 +1,7 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormLocationEdit from '@/pages/Locations/components/FormLocationEdit'
-import getLocationById from '@/pages/Locations/services/getLocationById'
+import FormLocationEdit from '@/modules/Locations/components/FormLocationEdit'
+import getLocationById from '@/modules/Locations/services/getLocationById'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 const breadcrumbItems:MyBreadcrumbItemProps[] = [

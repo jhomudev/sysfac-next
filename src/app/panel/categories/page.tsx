@@ -1,4 +1,4 @@
-import ListCategories from '@/pages/Categories/components/ListCategories'
+import ListCategories from '@/modules/Categories/components/ListCategories'
 
 function CategoriesPage () {
   return (

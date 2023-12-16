@@ -3,13 +3,15 @@ import React from 'react'
 import InputPassword from '@/components/InputPassword'
 import { Button, Input, Select, SelectItem, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
+import { EUserState, EUserType, UserToDB } from '@/types'
+import { useUser } from '../hooks'
 
 type Formdata= {
   username: string,
   password: string,
   confirmPassword: string,
-  type: string,
-  state: string,
+  type: EUserType,
+  state: EUserState,
   names: string,
   lastnames: string,
   email: string | null,
@@ -18,15 +20,22 @@ type Formdata= {
 
 function FormUserCreate () {
   const [showModal, setShowModal] = React.useState<boolean>(false)
+  const { addUser } = useUser()
   const {
-    register, handleSubmit, getValues, formState: {
+    register, handleSubmit, getValues, watch, formState: {
       errors
     }
   } = useForm<Formdata>()
 
-  const handleSubmitForm = handleSubmit(data => {
+  const handleSubmitForm = handleSubmit((_data) => {
     setShowModal(true)
   })
+
+  const handleConfirm = async () => {
+    const data: UserToDB = watch()
+    console.log(data)
+    addUser(data)
+  }
 
   return (
     <>
@@ -97,11 +106,15 @@ function FormUserCreate () {
               isInvalid={!!errors.type}
               errorMessage={!!errors.type && 'Campo requerido'}
               color={errors.type ? 'danger' : 'default'}
+              items={Object.entries(EUserType)}
               {...register('type', { required: true })}
             >
-              <SelectItem key='admin' value='admin'>Admin</SelectItem>
+              {
+                ([_, value]) => <SelectItem key={value} value={value}>{value}</SelectItem>
+              }
+              {/* <SelectItem key='admin' value='admin'>Admin</SelectItem>
               <SelectItem key='superadmin' value='superadmin'>SuperAdmin</SelectItem>
-              <SelectItem key='vendedor' value='vendedor'>vendedor</SelectItem>
+              <SelectItem key='vendedor' value='vendedor'>vendedor</SelectItem> */}
             </Select>
             <Select
               className='w-full md:w-[min(100%,400px)]'
@@ -163,7 +176,7 @@ function FormUserCreate () {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={onClose}>
+                <Button color='primary' onPress={handleConfirm}>
                   Crear
                 </Button>
               </ModalFooter>

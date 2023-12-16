@@ -1,4 +1,4 @@
-import TableProducts from '@/pages/Productos/componentes/TableProducts'
+import TableProducts from '@/modules/Productos/componentes/TableProducts'
 
 function ProductsPage () {
   return (

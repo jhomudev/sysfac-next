@@ -1,4 +1,4 @@
-import TableInventary from '@/pages/Inventary/components/TableInventary'
+import TableInventary from '@/modules/Inventary/components/TableInventary'
 import { Divider } from '@nextui-org/divider'
 
 function InventaryPage () {

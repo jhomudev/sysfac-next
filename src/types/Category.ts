@@ -1,6 +1,6 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 
-export interface Category {
+export type Category = {
   id: number,
   slug: string,
   name: string,
@@ -9,7 +9,7 @@ export interface Category {
   updatedAt: string
 }
 
-export interface CategoryFromDB {
+export type CategoryFromDB = {
   categoryId: number,
   slug: string,
   name: string,
@@ -18,10 +18,8 @@ export interface CategoryFromDB {
   updatedAt: string
 }
 
-export interface CategoryToDB {
+export type CategoryToDB = {
   slug: string,
   name: string,
   image: string
 }
-
-export type CategoryResponse = ApiResponseWithReturn<CategoryFromDB>

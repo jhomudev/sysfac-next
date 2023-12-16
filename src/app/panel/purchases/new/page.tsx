@@ -1,8 +1,8 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
-import FormPurchaseAddProducts from '@/pages/Transactions/components/FormPurchaseAddProducts'
-import FormPurchaseConfirm from '@/pages/Transactions/components/FormPurchaseConfirm'
-import TablePurchaseProducts from '@/pages/Transactions/components/TablePurchaseProducts'
+import FormPurchaseAddProducts from '@/modules/Transactions/components/FormPurchaseAddProducts'
+import FormPurchaseConfirm from '@/modules/Transactions/components/FormPurchaseConfirm'
+import TablePurchaseProducts from '@/modules/Transactions/components/TablePurchaseProducts'
 import { Divider } from '@nextui-org/react'
 
 const breadcrumbItems: MyBreadcrumbItemProps[] = [

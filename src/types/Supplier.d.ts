@@ -1,6 +1,6 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 
-export interface Supplier {
+export type Supplier = {
   id: number,
   ruc: `${number}`,
   name: string,
@@ -10,7 +10,7 @@ export interface Supplier {
   updatedAt: string
 }
 
-export interface SupplierFromDB {
+export type SupplierFromDB = {
   supplierId: number,
   ruc: `${number}`,
   name: string,
@@ -20,7 +20,7 @@ export interface SupplierFromDB {
   updatedAt: string
 }
 
-export interface SupplierToDB {
+export type SupplierToDB = {
   ruc: `${number}`,
   name: string,
   address: string,

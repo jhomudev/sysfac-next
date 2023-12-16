@@ -1,4 +1,4 @@
-import TableSuppliers from '@/pages/Suppliers/components/TableSuppliers'
+import TableSuppliers from '@/modules/Suppliers/components/TableSuppliers'
 
 function Supplierspage () {
   return (

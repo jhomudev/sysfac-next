@@ -1,7 +1,7 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 import { EOperationType, EProofType } from './enums'
 
-export interface Transaction {
+export type Transaction = {
   id: number,
   operationType: EOperationType,
   totalPay: number,
@@ -14,7 +14,7 @@ export interface Transaction {
   createdAt: string,
 }
 
-export interface TransactionFromDB {
+export type TransactionFromDB = {
   transactionId: number,
   operationType: EOperationType,
   totalPay: number,

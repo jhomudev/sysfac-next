@@ -1,7 +1,7 @@
 import { ApiResponseWithReturn } from './ApiResponse'
 import { EOperationType, EProofType } from './enums'
 
-export interface Purchase {
+export type Purchase = {
   id: number,
   totalPay: number,
   comments: string,
@@ -17,7 +17,7 @@ export interface Purchase {
   createdAt: string,
 }
 
-export interface PurchaseFromDB {
+export type PurchaseFromDB = {
   purchaseId: number,
   totalPay: number,
   comments: string,
@@ -29,7 +29,7 @@ export interface PurchaseFromDB {
   createdAt: string,
 }
 
-export interface PurchaseToDB {
+export type PurchaseToDB = {
   totalPay: number,
   comments: string,
   supplierId: number,

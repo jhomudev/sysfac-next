@@ -1,4 +1,4 @@
-import TableLocations from '@/pages/Locations/components/TableLocations'
+import TableLocations from '@/modules/Locations/components/TableLocations'
 
 function LocationsPage () {
   return (

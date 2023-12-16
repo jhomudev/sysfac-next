@@ -30,7 +30,7 @@ function ListProductsPerSale () {
 
   return (
     <>
-      <motion.ul className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))]'>
+      <motion.ul className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))]'>
         {
           isLoading
             ? <ListProductsPerSaleSkeleton />

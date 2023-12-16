@@ -1,4 +1,4 @@
-import TableUsers from '@/pages/Users/components/TableUsers'
+import TableUsers from '@/modules/Users/components/TableUsers'
 import React from 'react'
 
 function UsersPage () {
