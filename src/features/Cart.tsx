@@ -1,8 +1,12 @@
-import { Modal, ModalHeader, ModalBody, ModalContent/* ,ModalFooter, Button  */ } from '@nextui-org/modal'
 import React from 'react'
+import { Modal, ModalHeader, ModalBody, ModalContent/* ,ModalFooter, Button  */ } from '@nextui-org/modal'
+import { Link, Button } from '@nextui-org/react'
 import CartTableItems from './CartTableItems'
 import CartForm from './CartForm'
 import CartTableInfo from './CartTableInfo'
+import ROUTES from '@/app/routes'
+import Yesicon from '@/components/Yesicon'
+import { ICONS } from '@/contants'
 
 type CartProps ={
   isOpen:boolean,
@@ -15,7 +19,18 @@ function Cart ({ isOpen, toggleOpen }: CartProps) {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='text-center'>Carrito de venta</ModalHeader>
+            <ModalHeader className='flex items-center gap-4'>
+              <strong>Carrito de venta</strong>
+              <Button
+                as={Link}
+                href={`${ROUTES.sales}/new`}
+                color='primary'
+                size='sm'
+                variant='bordered'
+                startContent={<Yesicon icon={ICONS.plus} />}
+              >Agregar
+              </Button>
+            </ModalHeader>
             <ModalBody className='gap-3'>
               <div className='flex flex-col md:flex-row gap-5'>
                 <CartTableItems />
