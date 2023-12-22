@@ -108,8 +108,7 @@ function FormPurchaseAddProducts () {
               disabled: isPurchasePerQuantity,
               validate: (v) => {
                 const length = v.length
-                if (length <= 17 && length >= 8) return true
-                return 'De 8 a 17 carácteres'
+                return (length <= 17 && length >= 8) || 'De 8 a 17 carácteres'
               }
             })}
           />
@@ -131,10 +130,7 @@ function FormPurchaseAddProducts () {
                 message: 'Cantidad requerida'
               },
               disabled: !isPurchasePerQuantity,
-              validate: (v) => {
-                if (v >= 1 && v <= 100) return true
-                return 'Min. 1 , max. 100'
-              },
+              validate: (v) => (v >= 1 && v <= 100) || 'Min. 1 , max. 100',
               setValueAs: (v) => parseInt(v)
             })}
           />

@@ -49,7 +49,7 @@ function TableOperationsPerPurchase ({ items }: Props) {
       </TableHeader>
       <TableBody emptyContent='No se econtraron operaciones' items={items}>
         {(item) => (
-          <TableRow key={item.id}>
+          <TableRow key={`${item.description} ${item.serialNumber}`}>
             <TableCell>{item.description}</TableCell>
             <TableCell>{item.serialNumber || 'N.A.'}</TableCell>
             <TableCell>S/{item.unitCost}</TableCell>

@@ -36,9 +36,12 @@ const cartSlice = createSlice({
     makeDiscount: (state, action: PayloadAction<number>) => {
       const discount = action.payload
       state.discount = discount
+    },
+    clearItems: () => {
+      return defaultState
     }
   }
 })
 
 export default cartSlice.reducer
-export const { addItem, deleteItem, gratifyItem, makeDiscount, setCart } = cartSlice.actions
+export const { addItem, deleteItem, gratifyItem, makeDiscount, setCart, clearItems } = cartSlice.actions

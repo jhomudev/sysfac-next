@@ -1,7 +1,7 @@
 export type ApiResponse = {
   ok: boolean,
   message: string,
-  data?: unknown
+  data?: any
 }
 
 export type ApiResponseError = {

@@ -9,14 +9,14 @@ export const GET = async (req: NextRequest) => {
     const { searchParams: URLSearchParams } = req.nextUrl
     const { queryParamsNoLimit, page, rowsPerPage } = getQueryParams({
       likeColumn: '',
-      orderByColumn: 'operationId',
+      orderByColumn: 'createdAt',
       paramsCols: ['transactionId'],
       URLSearchParams
     })
     const operations = await conn.query<OperationFromDB[]>(`
-    SELECT operationId, description, serialNumber, unitCost, quantity, importSale, details, productId, transactionId FROM OPERATIONS
+    SELECT description, serialNumber, unitCost, quantity, importSale, details, productId, transactionId FROM OPERATIONS
     ${queryParamsNoLimit}`)
-    const totalOps = await conn.query<OperationFromDB[]>('SELECT operationId FROM OPERATIONS')
+    const totalOps = await conn.query<OperationFromDB[]>('SELECT description FROM OPERATIONS')
 
     if (operations) {
       return NextResponse.json<ApiResponseWithReturn<OperationFromDB[]>>({

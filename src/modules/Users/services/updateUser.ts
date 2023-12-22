@@ -1,10 +1,9 @@
-import { API_URL } from '@/contants'
 import { ApiResponse, UserToDB } from '@/types'
 import axios from 'axios'
 
-const updateUser = async (userId: number, data: UserToDB) => {
+const updateUser = async (username: string, data: Partial<UserToDB>) => {
   try {
-    const res = await axios.put<ApiResponse>(`${API_URL}/users/${userId}`, data)
+    const res = await axios.put<ApiResponse>(`${process.env.NEXT_PUBLIC_API_URL}/users/${username}`, data)
     return res.data
   } catch (error) {
     console.error(error)

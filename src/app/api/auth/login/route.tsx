@@ -6,7 +6,7 @@ export const POST = async (req:NextRequest) => {
   try {
     const { username, password }: UserCredentials = await req.json()
     // Validate user exist
-    const [user] = await conn.query<UserFromDB[]>('SELECT username, type, state, names, lastnames, email FROM users WHERE username = ? AND password = ?', [username, password])
+    const [user] = await conn.query<UserFromDB[]>('SELECT userId, username, type, state, names, lastnames, email FROM users WHERE username = ? AND password = ?', [username, password])
     if (user.state === EUserState.active) {
       return NextResponse.json<ApiResponseWithReturn<UserFromDB>>({
         ok: true,

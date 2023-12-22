@@ -6,13 +6,16 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
 } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { Supplier } from '@/types'
+import { Supplier, SupplierToDB } from '@/types'
+import { useRouter } from 'next/navigation'
+import { useSupplier } from '../hooks'
+import toast from 'react-hot-toast'
 
 type FormData = {
-  ruc: number | `${number}`,
+  ruc: `${number}`,
   name: string,
   address: string,
-  phone: number | `${number}`
+  phone: `${number}`
 }
 
 type Props = {
@@ -20,12 +23,27 @@ type Props = {
 }
 
 function FormSupplierEdit ({ supplier }: Props) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
-  const [showModal, setShowModal] = React.useState<boolean>(false)
-  const handleSubmitForm = handleSubmit((data) => {
-    setShowModal(true)
-    console.log(data)
-  })
+  const { refresh } = useRouter()
+  const { modifySupplier, dataSuppliers: { mutate } } = useSupplier()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
+  const [showModal, setShowModal] = React.useState(false)
+  const [isLoadingEdit, setIsLoadingEdit] = React.useState(false)
+
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
+
+  const handleConfirmEdit = async () => {
+    const data:SupplierToDB = watch()
+    setIsLoadingEdit(true)
+    const res = await modifySupplier(supplier.id, data)
+    setIsLoadingEdit(false)
+    if (!res?.ok) {
+      toast.error(res?.message || 'No permitido')
+      return
+    }
+    setShowModal(false)
+    mutate()
+    refresh()
+  }
 
   return (
     <>
@@ -93,9 +111,7 @@ function FormSupplierEdit ({ supplier }: Props) {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button
-                  color='primary' onPress={onClose}
-                >
+                <Button isLoading={isLoadingEdit} color='primary' onPress={handleConfirmEdit}>
                   Actualizar
                 </Button>
               </ModalFooter>

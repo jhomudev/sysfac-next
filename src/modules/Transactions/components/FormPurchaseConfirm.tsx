@@ -2,12 +2,16 @@
 import { formatSupplier } from '@/adapters'
 import { useCartPurchase } from '@/hooks'
 import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, SupplierFromDB } from '@/types'
+import { ApiResponseWithReturn, EOperationType, OperationToDB, SupplierFromDB } from '@/types'
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Textarea } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import useSWR from 'swr'
+import { usePurchase } from '../hooks'
+import { useRouter } from 'next/navigation'
+import ROUTES from '@/app/routes'
+import { useSession } from 'next-auth/react'
 
 type FormData= {
   supplierId: number,
@@ -15,28 +19,58 @@ type FormData= {
 }
 
 function FormPurchaseConfirm () {
+  const { push } = useRouter()
   const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SupplierFromDB[]>>('/api/suppliers?rowsPerPage=100', fetcher)
-  if (error) console.log('ocurrió un error:', error)
+  if (error) console.log('Erro al solicitar proveedores', error)
   const suppliers = React.useMemo(() => data?.data?.map(sup => formatSupplier(sup)) || [], [data])
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
-  const { cartPurchase: { items } } = useCartPurchase()
+  const [isLoadingShop, setIsLoadingShop] = React.useState(false)
+
+  const { data: session } = useSession()
+  const { cartPurchase: { items, totalImport }, clearCart } = useCartPurchase()
+  const { doPurchase, addOperations } = usePurchase()
   const hasCartItems = items.length > 0
 
-  const handleSubmitForm = handleSubmit((data) => {
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
+
+  const handleMakeShopping = async () => {
+    setIsLoadingShop(true)
+    const data = watch()
     if (!hasCartItems) {
-      toast('Carrito de compras vacio', {
-        icon: '⚠️'
-      })
+      toast.error('No hay productos en carrito')
       return
     }
-    setShowModal(true)
-    console.log(data)
-  })
 
-  const handleMakeShopping = () => {
-
+    const resDoPurchase = await doPurchase({
+      supplierId: data.supplierId,
+      totalPay: totalImport,
+      userId: session?.user.id ?? 0,
+      comments: data.comments
+    })
+    if (!resDoPurchase?.ok) {
+      toast.error(resDoPurchase?.message || 'Error al realizar la compra')
+      setIsLoadingShop(false)
+      return
+    }
+    const operations: OperationToDB[] = items.map((item): OperationToDB => ({
+      operationType: EOperationType.buy,
+      description: item.product,
+      serialNumber: item?.serialNumber ?? '',
+      unitCost: item.cost,
+      quantity: item.quantity,
+      importSale: item.cost * item.quantity,
+      details: item?.serialNumber ?? '',
+      productId: item.productId,
+      transactionId: resDoPurchase.data.insertId
+    }))
+    const resAddOperations = await addOperations(operations)
+    setIsLoadingShop(false)
+    if (!resAddOperations?.ok) return
+    clearCart()
+    setShowModal(false)
+    push(ROUTES.transactions + '/purchases')
   }
 
   return (
@@ -59,8 +93,7 @@ function FormPurchaseConfirm () {
             },
             validate: (v) => {
               const isSupplier = suppliers.some(supplier => supplier.id === Number(v))
-              if (isSupplier) return true
-              return 'Elija un proveedor'
+              return isSupplier || 'Elija un proveedor'
             },
             setValueAs: (v) => parseInt(v)
           })}
@@ -92,7 +125,7 @@ function FormPurchaseConfirm () {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={handleMakeShopping}>
+                <Button isLoading={isLoadingShop} color='primary' onPress={handleMakeShopping}>
                   Hacer compra
                 </Button>
               </ModalFooter>

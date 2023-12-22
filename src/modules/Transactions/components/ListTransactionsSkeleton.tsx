@@ -10,8 +10,8 @@ function ListTransactionsSkeleton () {
           <div key={i} className='w-full flex gap-2'>
             <Skeleton className='w-12 h-10 rounded-md' />
             <div className='w-full flex flex-col gap-1 pt-1'>
-              <Skeleton className='w-[30%] h-2 rounded-full' />
-              <Skeleton className='w-full h-3 rounded-full' />
+              <Skeleton className='w-[40%] h-4 rounded-full' />
+              <Skeleton className='w-full h-4 rounded-full' />
             </div>
           </div>
         ))

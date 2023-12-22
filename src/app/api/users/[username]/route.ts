@@ -33,8 +33,8 @@ export const GET = async (_req: NextRequest, { params }: { params: { username: s
 export const PUT = async (req: NextRequest, { params }: { params: { username: string}}) => {
   try {
     const { username: _username } = params
-    const { username, password, names, lastnames, type, state, email, phone }: UserToDB = await req.json()
-    const resDB = await conn.query<OkPacket>('UPDATE USERS SET ? WHERE username = ?', [{ username, password, names, lastnames, type, state, email, phone }, _username])
+    const data: UserToDB = await req.json()
+    const resDB = await conn.query<OkPacket>('UPDATE USERS SET ? WHERE username = ?', [data, _username])
 
     if (resDB.affectedRows > 0) {
       return NextResponse.json<ApiResponse>({
@@ -42,14 +42,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { username: st
         message: 'Usuario actualizado',
         data: {
           _username,
-          username,
-          password,
-          names,
-          lastnames,
-          type,
-          state,
-          email,
-          phone
+          ...data
         }
       })
     }
@@ -73,6 +66,7 @@ export const DELETE = async (_req: NextRequest, { params }: { params: { username
     INNER JOIN USERS us ON us.userId=tra.userId
     WHERE us.username = ?`, username)
     const { totalTransactions } = res
+    // TODO: validation for superadmin, dont delete this role
 
     if (totalTransactions > 0) {
       return NextResponse.json<ApiResponse>({

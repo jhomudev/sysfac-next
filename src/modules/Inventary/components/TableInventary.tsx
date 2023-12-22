@@ -53,7 +53,7 @@ function TableInventary () {
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [unitToDelete, setUnitToDelete] = React.useState<UnitInventary>({} as UnitInventary)
 
-  if (error) console.log('ocurrió un error:', error)
+  if (error) console.log('Error al solicitar inventario:', error)
   const inventary = React.useMemo(() => data?.data?.map(unit => formatUnitInventary(unit)) || [], [data])
 
   const [showModal, setShowModal] = React.useState<boolean>(false)

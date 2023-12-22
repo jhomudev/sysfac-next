@@ -1,6 +1,6 @@
 export enum EUserType {
   admin = 'Admin',
-  superadmin = 'SupérAdmin',
+  superadmin = 'SuperAdmin',
   seller = 'Vendedor'
 }
 

@@ -6,24 +6,43 @@ import {
   Modal, ModalHeader, ModalBody, ModalFooter, ModalContent, Select, SelectItem
 } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { ELocationType, Location } from '@/types'
+import { ELocationType, Location, LocationToDB } from '@/types'
+import { useLocation } from '../hooks'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 type FormData = {
   name: string,
   address: string,
-  type: string,
-  canStore: boolean
+  type: ELocationType,
+  canStoreMore: string
 }
 type Props= {
   location: Location
 }
 function FormLocationEdit ({ location }:Props) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
-  const [showModal, setShowModal] = React.useState<boolean>(false)
-  const handleSubmitForm = handleSubmit((data) => {
-    setShowModal(true)
-    console.log(data)
-  })
+  const { dataLocations: { mutate }, modifyLocation } = useLocation()
+  const { refresh } = useRouter()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
+  const [showModal, setShowModal] = React.useState(false)
+  const [isLoadingEdit, setIsLoadingEdit] = React.useState(false)
+
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
+
+  const handleConfirmEdit = async () => {
+    const { name, address, type, canStoreMore } = watch()
+    const data: LocationToDB = { name, address, type, canStoreMore: canStoreMore === 'true' }
+    setIsLoadingEdit(true)
+    const res = await modifyLocation(location.id, data)
+    setIsLoadingEdit(false)
+    if (!res?.ok) {
+      toast.error(res?.message || 'No permitido')
+      return
+    }
+    setShowModal(false)
+    mutate()
+    refresh()
+  }
 
   return (
     <>
@@ -46,13 +65,13 @@ function FormLocationEdit ({ location }:Props) {
           label='CanStore'
           placeholder='Puede almacenar?'
           defaultSelectedKeys={[location.canStoreMore ? 'true' : 'false']}
-          color={errors.canStore ? 'danger' : 'default'}
-          isInvalid={!!errors.canStore}
-          errorMessage={errors.canStore && 'Seleccione una opción'}
-          {...register('canStore', { required: true })}
+          color={errors.canStoreMore ? 'danger' : 'default'}
+          isInvalid={!!errors.canStoreMore}
+          errorMessage={errors.canStoreMore && 'Seleccione una opción'}
+          {...register('canStoreMore', { required: true })}
         >
-          <SelectItem key='true' value={1}>Sí</SelectItem>
-          <SelectItem key='false' value={0}>No</SelectItem>
+          <SelectItem key='true'>Sí</SelectItem>
+          <SelectItem key='false'>No</SelectItem>
         </Select>
         <Select
           variant='underlined'
@@ -61,11 +80,13 @@ function FormLocationEdit ({ location }:Props) {
           defaultSelectedKeys={[location.type]}
           color={errors.type ? 'danger' : 'default'}
           isInvalid={!!errors.type}
+          items={Object.entries(ELocationType)}
           errorMessage={errors.type && 'Seleccione un tipo'}
           {...register('type', { required: true })}
         >
-          <SelectItem key={ELocationType.store} value={ELocationType.store}>{ELocationType.store}</SelectItem>
-          <SelectItem key={ELocationType.warehouse} value={ELocationType.warehouse}>{ELocationType.warehouse}</SelectItem>
+          {
+            ([_, type]) => <SelectItem key={type}>{type}</SelectItem>
+          }
         </Select>
         <Input
           variant='underlined'
@@ -93,9 +114,7 @@ function FormLocationEdit ({ location }:Props) {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button
-                  color='primary' onPress={onClose}
-                >
+                <Button isLoading={isLoadingEdit} color='primary' onPress={handleConfirmEdit}>
                   Actualizar
                 </Button>
               </ModalFooter>

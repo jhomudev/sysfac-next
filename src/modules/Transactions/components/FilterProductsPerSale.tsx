@@ -13,7 +13,7 @@ function FiltersProductsPerSale () {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { data, error, isLoading } = useSWR<ApiResponseWithReturn<CategoryFromDB[]>>('/api/categories?rowsPerPage=1000', fetcher)
-  if (error) console.log(error)
+  if (error) console.log('Error al solicitar categorias', error)
   const categories = React.useMemo(() => data?.data.map(cat => formatCategory(cat)) || [], [data])
 
   const handleChangeCategory = (value: React.Key) => {
@@ -38,7 +38,7 @@ function FiltersProductsPerSale () {
         color='success'
         isLoading={isLoading}
         defaultItems={categories}
-        defaultSelectedKey={!isLoading ? (searchParams?.get('cat.slug') ? searchParams.get('cat.slug')! : undefined) : undefined}
+        defaultSelectedKey={searchParams.get('cat.slug') ?? undefined}
         onSelectionChange={handleChangeCategory}
       >
         {

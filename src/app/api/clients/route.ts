@@ -45,20 +45,15 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { ruc, dni, names, lastnames, address, phone }: ClientToDB = await req.json()
-    const resDB = await conn.query<OkPacket>('INSERT INTO CLIENTS SET ?', { ruc, dni, names, lastnames, address, phone })
+    const data: ClientToDB = await req.json()
+    const resDB = await conn.query<OkPacket>('INSERT INTO CLIENTS SET ?', data)
     if (resDB.affectedRows > 0) {
       return NextResponse.json<ApiResponse>({
         ok: true,
         message: 'Cliente creado',
         data: {
           insertId: resDB.insertId,
-          ruc,
-          dni,
-          names,
-          lastnames,
-          address,
-          phone
+          ...data
         }
       })
     }

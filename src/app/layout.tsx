@@ -25,7 +25,7 @@ export default function RootLayout ({
 }) {
   return (
     <html lang='en'>
-      <body className='font-ptSans'>
+      <body className='font-ptSans scroll-smooth'>
         <Providers>
           <NextTopLoader color={NEXTUI_COLORS.primary} height={5} zIndex={10} />
           <div className='w-full min-h-screen flex flex-col bg-mySoftLight'>

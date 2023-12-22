@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-closing-tag-location */
 'use client'
-import { formatCategory } from '@/adapters'
-import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, Category, CategoryFromDB, ESaleFor, EStateProduct, Product } from '@/types'
-import { AutocompleteItem, Autocomplete, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from '@nextui-org/react'
+import { useCategory } from '@/modules/Categories/hooks'
+import { Category, ESaleFor, EStateProduct, Product, ProductToDB } from '@/types'
+import { Autocomplete, AutocompleteItem, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import useSWR from 'swr'
+import { useProduct } from '../hooks'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 type FormData = {
   name: string,
@@ -14,7 +15,7 @@ type FormData = {
   inventaryMin: string,
   priceSale: string,
   unit: string,
-  saleFor: string,
+  saleFor: ESaleFor,
   isActive: string,
   categoryId: string
 }
@@ -24,23 +25,36 @@ type Props = {
 }
 
 function FormProductEdit ({ product }: Props) {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
+  const { refresh } = useRouter()
+  const { modifyProduct } = useProduct()
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState(false)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState(product.image || '')
+  const [isLoadingDelete, setIsLoadingDelete] = React.useState(false)
   const [categorySelected, setCategorySelected] = React.useState<Category>({} as Category)
 
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<CategoryFromDB[]>>('/api/categories', fetcher)
-  if (error) console.error(error)
-  const categories = React.useMemo(() => data?.data?.map(cat => formatCategory(cat)) || [], [data])
+  const { dataCategories: { categories, isLoading } } = useCategory()
 
-  const handleSubmitForm = handleSubmit((data) => {
-    // data = { ...data, isActive: data.isActive === EStateProduct.active }
-    console.log(data)
-    setShowModal(true)
-  })
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
 
-  const handleCreate = () => {
-    setShowModal(false)
+  const handleConfirmEdit = async () => {
+    const { name, inventaryMin, priceSale, unit, saleFor, isActive } = watch()
+    const data: ProductToDB = {
+      name,
+      categoryId: categorySelected.id,
+      inventaryMin: parseInt(inventaryMin),
+      priceSale: parseFloat(priceSale),
+      unit,
+      saleFor,
+      isActive: isActive === EStateProduct.active
+    }
+    setIsLoadingDelete(true)
+    const res = await modifyProduct(product.id, data)
+    setIsLoadingDelete(false)
+    if (res?.ok) {
+      setShowModal(false)
+      refresh()
+    } else toast.error(res?.message ?? '')
   }
 
   return (
@@ -63,7 +77,6 @@ function FormProductEdit ({ product }: Props) {
             })}
           />
           <Input
-            type='number'
             variant='underlined'
             className='w-full md:max-w-sm'
             label='Precio de venta S/'
@@ -79,12 +92,10 @@ function FormProductEdit ({ product }: Props) {
               pattern: {
                 value: /^(\d+)(\.\d{1,2})?$/,
                 message: 'Costo inválido'
-              },
-              setValueAs: (v) => parseFloat(v)
+              }
             })}
           />
           <Input
-            type='number'
             variant='underlined'
             className='w-full md:max-w-sm'
             label='Mínimo en inventario'
@@ -97,7 +108,10 @@ function FormProductEdit ({ product }: Props) {
                 value: true,
                 message: 'Mínimo requerido'
               },
-              valueAsNumber: true
+              pattern: {
+                value: /^[1-9]\d*$/,
+                message: 'Ingrese un número entero válido'
+              }
             })}
           />
           <Input
@@ -113,7 +127,7 @@ function FormProductEdit ({ product }: Props) {
                 value: true,
                 message: 'Unidad requerida'
               },
-              validate: (v) => isNaN(Number(v)) ? true : 'Unidad inválida'
+              validate: (v) => isNaN(Number(v)) || 'Unidad inválida'
             })}
           />
           <Select
@@ -123,6 +137,7 @@ function FormProductEdit ({ product }: Props) {
             placeholder='Venta por'
             color={errors.saleFor ? 'danger' : 'default'}
             errorMessage={errors.saleFor?.message}
+            items={Object.entries(ESaleFor)}
             defaultSelectedKeys={[product.saleFor]}
             {...register('saleFor', {
               required: {
@@ -131,12 +146,13 @@ function FormProductEdit ({ product }: Props) {
               },
               validate: (v) => {
                 const isOptionSaleFor = v === ESaleFor.quantity || v === ESaleFor.unit
-                return isOptionSaleFor ? true : 'Entrada inválida'
+                return isOptionSaleFor || 'Entrada inválida'
               }
             })}
           >
-            <SelectItem key={ESaleFor.quantity} value={ESaleFor.quantity}>{ESaleFor.quantity}</SelectItem>
-            <SelectItem key={ESaleFor.unit} value={ESaleFor.unit}>{ESaleFor.unit}</SelectItem>
+            {
+              ([_, item]) => <SelectItem key={item} value={item}>{item}</SelectItem>
+            }
           </Select>
           <Select
             className='w-full md:max-w-sm'
@@ -145,6 +161,7 @@ function FormProductEdit ({ product }: Props) {
             placeholder='Indique el estado'
             color={errors.isActive ? 'danger' : 'default'}
             errorMessage={errors.isActive?.message}
+            items={Object.entries(EStateProduct)}
             defaultSelectedKeys={[product.isActive ? EStateProduct.active : EStateProduct.inactive]}
             {...register('isActive', {
               required: {
@@ -153,12 +170,13 @@ function FormProductEdit ({ product }: Props) {
               },
               validate: (v) => {
                 const isOptionStateProduct = Object.values(EStateProduct).includes(v as EStateProduct)
-                return isOptionStateProduct ? true : 'Entrada inválida'
+                return isOptionStateProduct || 'Entrada inválida'
               }
             })}
           >
-            <SelectItem key={EStateProduct.active} value={EStateProduct.active}>{EStateProduct.active}</SelectItem>
-            <SelectItem key={EStateProduct.inactive} value={EStateProduct.inactive}>{EStateProduct.inactive}</SelectItem>
+            {
+              ([_, state]) => <SelectItem key={state} value={state}>{state}</SelectItem>
+            }
           </Select>
           <Autocomplete
             className='w-full md:max-w-sm'
@@ -181,7 +199,7 @@ function FormProductEdit ({ product }: Props) {
               },
               validate: (v) => {
                 const isOptionCategory = categories.some(cat => cat.id === categorySelected.id)
-                return isOptionCategory ? true : 'Entrada inválida'
+                return isOptionCategory || 'Entrada inválida'
               },
               setValueAs: () => categorySelected.id
             })}
@@ -247,7 +265,7 @@ function FormProductEdit ({ product }: Props) {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={handleCreate}>
+                <Button isLoading={isLoadingDelete} color='primary' onPress={handleConfirmEdit}>
                   Actualizar
                 </Button>
               </ModalFooter>

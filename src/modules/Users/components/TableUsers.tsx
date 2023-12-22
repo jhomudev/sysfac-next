@@ -2,20 +2,20 @@
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { User, EUserType, EUserState, ApiResponseWithReturn, UserFromDB } from '@/types'
-import NextLink from 'next/link'
-import {
-  Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
-  Chip, Input, Button, Pagination, Selection,
-  Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Link, Spinner
-} from '@nextui-org/react'
-import React from 'react'
-import useSWR from 'swr'
-import { formatUser } from '@/adapters'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { useDebouncedCallback } from 'use-debounce'
-import { fetcher } from '@/libs/swr'
+import { EUserState, EUserType, User } from '@/types'
 import { getURLWithParams } from '@/utils'
+import {
+  Button, Chip, Input, Link, Pagination, Selection, Spinner,
+  Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,
+  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
+  Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
+} from '@nextui-org/react'
+import NextLink from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
+import toast from 'react-hot-toast'
+import { useDebouncedCallback } from 'use-debounce'
+import { useUser } from '../hooks'
 
 const headerColumns = [
   {
@@ -53,19 +53,26 @@ const headerColumns = [
 ]
 
 function TableUsers () {
+  const { removeUser, dataUsers: { data, isLoading: isLoadingUsers, users } } = useUser()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { replace } = useRouter()
-  const url = searchParams ? `/api/users?${searchParams.toString()}` : '/api/users'
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<UserFromDB[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
+  const { replace, refresh } = useRouter()
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-  const [isOpenModal, setIsOpenModal] = React.useState<boolean>(false)
+  const [showModal, setShowModal] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState(false) // this loading state for delete
   const [userToDelete, setUserToDelete] = React.useState<User>({} as User)
 
-  if (error) console.log('ocurrió un error:', error)
-  const users = React.useMemo(() => data?.data?.map(user => formatUser(user)) || [], [data])
+  const handleConfirmDelete = async () => {
+    setIsLoading(true)
+    const res = await removeUser(userToDelete.username)
+    setIsLoading(false)
+    if (!res?.ok) {
+      toast.error(res?.message ?? 'No permitido')
+      return
+    }
+    setShowModal(false)
+    refresh()
+  }
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({
@@ -180,9 +187,9 @@ function TableUsers () {
           )}
         </TableHeader>
         <TableBody
-          emptyContent={!isLoading && 'No se econtraron usuarios'}
+          emptyContent={!isLoadingUsers && 'No se econtraron usuarios'}
           items={users}
-          isLoading={isLoading}
+          isLoading={isLoadingUsers}
           loadingContent={
             <Spinner>Cargando datos...</Spinner>
           }
@@ -213,7 +220,7 @@ function TableUsers () {
                       variant='flat' onAction={(key) => {
                         if (key === 'delete') {
                           setUserToDelete(user)
-                          setIsOpenModal(true)
+                          setShowModal(true)
                         }
                       }}
                     >
@@ -228,7 +235,7 @@ function TableUsers () {
           }}
         </TableBody>
       </Table>
-      <Modal placement='top' isOpen={isOpenModal} onOpenChange={setIsOpenModal}>
+      <Modal placement='top' isOpen={showModal} onOpenChange={setShowModal}>
         <ModalContent>
           {(onClose) => (
             <>
@@ -241,7 +248,7 @@ function TableUsers () {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='danger' onPress={onClose}>
+                <Button isLoading={isLoading} color='danger' onPress={handleConfirmDelete}>
                   Confirmar
                 </Button>
               </ModalFooter>

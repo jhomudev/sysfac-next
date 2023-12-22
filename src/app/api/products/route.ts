@@ -58,8 +58,8 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { name, image, inventaryMin, priceSale, unit, saleFor, isActive, categoryId }: ProductToDB = await req.json()
-    const resDB = await conn.query<OkPacket>('INSERT INTO PRODUCTS SET ?', { name, image, inventaryMin, priceSale, unit, saleFor, isActive, categoryId })
+    const data: ProductToDB = await req.json()
+    const resDB = await conn.query<OkPacket>('INSERT INTO PRODUCTS SET ?', data)
 
     if (resDB.affectedRows > 0) {
       return NextResponse.json<ApiResponse>({
@@ -67,14 +67,7 @@ export const POST = async (req: NextRequest) => {
         message: 'Producto creado',
         data: {
           insertId: resDB.insertId,
-          name,
-          image,
-          inventaryMin,
-          priceSale,
-          unit,
-          saleFor,
-          isActive,
-          categoryId
+          ...data
         }
       })
     }

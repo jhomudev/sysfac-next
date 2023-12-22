@@ -2,7 +2,6 @@ import { EOperationType } from '.'
 import { ApiResponseWithReturn } from './ApiResponse'
 
 export type Operation = {
-  id: number,
   description: string,
   serialNumber: string,
   unitCost: number,
@@ -15,7 +14,6 @@ export type Operation = {
 }
 
 export type OperationFromDB = {
-  operationId: number,
   description: string,
   serialNumber: string,
   unitCost: number,

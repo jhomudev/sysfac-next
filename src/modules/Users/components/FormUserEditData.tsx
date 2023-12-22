@@ -1,8 +1,10 @@
 'use client'
-import { User } from '@/types'
+import { User, UserToDB } from '@/types'
 import { Input, Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useUser } from '../hooks'
 
 type FormUserEditDataFields= {
   names: string,
@@ -16,13 +18,23 @@ type Props = {
 }
 
 function FormUserEditData ({ user }: Props) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormUserEditDataFields>()
-  const [showModal, setShowModal] = React.useState<boolean>(false)
+  const { refresh } = useRouter()
+  const { modifyUser } = useUser()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormUserEditDataFields>()
+  const [showModal, setShowModal] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmitFormPersonalData = handleSubmit((data) => {
-    setShowModal(true)
-    console.log(data)
-  })
+  const handleSubmitFormPersonalData = handleSubmit(() => setShowModal(true))
+  const handleConfirm = async () => {
+    const data: Partial<UserToDB> = watch()
+    setIsLoading(true)
+    const res = await modifyUser(user.username, data)
+    setIsLoading(false)
+    if (res?.ok) {
+      setShowModal(false)
+      refresh()
+    }
+  }
 
   return (
     <section id='personal'>
@@ -92,7 +104,7 @@ function FormUserEditData ({ user }: Props) {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={onClose}>
+                <Button isLoading={isLoading} color='primary' onPress={handleConfirm}>
                   Actualizar
                 </Button>
               </ModalFooter>

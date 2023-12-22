@@ -7,16 +7,12 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
+import InputPassword from '@/components/InputPassword'
 
 function FormLogin () {
   const router = useRouter()
   const { handleSubmit, register, formState: { errors } } = useForm()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isVisible, setIsVisible] = React.useState<boolean>(false)
-
-  const toggleShowPassword = () => {
-    setIsVisible(isVisible => !isVisible)
-  }
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const handleSubmitForm = handleSubmit(async (data) => {
     setIsLoading(true)
@@ -40,24 +36,22 @@ function FormLogin () {
     >
       <Input
         isInvalid={!!errors.username}
-        errorMessage={errors.username && 'Este campo es requerido'}
+        errorMessage={errors.username && 'Escriba su usuario'}
         color='success'
         variant='underlined'
         autoFocus
         startContent={<Yesicon className='text-mySoftLight' icon={ICONS.user} />}
-        label='username'
+        label='Nombre de usuario'
         {...register('username', { required: true })}
       />
-      <Input
-        type={isVisible ? 'text' : 'password'}
-        endContent={<button type='button' onClick={toggleShowPassword}><Yesicon fontSize={20} icon={!isVisible ? ICONS.show : ICONS.hidden} /></button>}
+      <InputPassword
         isInvalid={!!errors.password}
-        errorMessage={!!errors.password && 'Este campo es requerido'}
+        errorMessage={!!errors.password && 'Introdusca la contraseña'}
         color='success'
         variant='underlined'
         startContent={<Yesicon className='text-mySoftLight' icon={ICONS.password} />}
         label='Password'
-        {...register('password', { required: true })}
+        registerUseForm={register('password', { required: true })}
       />
       <Button
         variant='ghost'

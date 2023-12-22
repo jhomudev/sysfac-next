@@ -29,6 +29,6 @@ export type ClientToDB = {
   dni: `${number}` | undefined,
   names: string,
   lastnames: string,
-  address: string | null,
-  phone: `${number}` | null,
+  address?: string | null,
+  phone?: `${number}` | null,
 }

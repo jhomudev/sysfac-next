@@ -2,12 +2,15 @@
 import React from 'react'
 import { Input, Select, SelectItem, Button, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
-import { EUserState, EUserType, User } from '@/types'
+import { EUserState, EUserType, User, UserToDB } from '@/types'
+import { useUser } from '../hooks'
+import { useRouter } from 'next/navigation'
+import ROUTES from '@/app/routes'
 
 type FormUserEditAccountFields= {
   username: string,
-  type: string,
-  state: string,
+  type: EUserType,
+  state: EUserState,
 }
 
 type Props = {
@@ -15,12 +18,24 @@ type Props = {
 }
 
 function FormUserEditAccount ({ user }: Props) {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormUserEditAccountFields>()
+  const { push } = useRouter()
+  const { modifyUser } = useUser()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormUserEditAccountFields>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmitFormAccount = handleSubmit((data) => {
-    setShowModal(true)
-  })
+  const handleSubmitFormAccount = handleSubmit(() => setShowModal(true))
+
+  const handleConfirm = async () => {
+    const data: Partial<UserToDB> = watch()
+    setIsLoading(true)
+    const res = await modifyUser(user.username, data)
+    setIsLoading(false)
+    if (res?.ok) {
+      setShowModal(false)
+      push(`${ROUTES.users}/${data.username}/edit`)
+    }
+  }
 
   return (
     <section id='account'>
@@ -47,11 +62,12 @@ function FormUserEditAccount ({ user }: Props) {
             isInvalid={!!errors.type}
             color={errors.type ? 'danger' : 'default'}
             errorMessage={!!errors.type && 'Campo requerido'}
+            items={Object.entries(EUserType)}
             {...register('type', { required: true })}
           >
-            <SelectItem key={EUserType.admin} value='admin'>Admin</SelectItem>
-            <SelectItem key={EUserType.superadmin} value='superadmin'>SuperAdmin</SelectItem>
-            <SelectItem key={EUserType.seller} value='vendedor'>vendedor</SelectItem>
+            {
+                ([_, value]) => <SelectItem key={value} value={value}>{value}</SelectItem>
+              }
           </Select>
           <Select
             className='w-full md:w-[min(100%,400px)]'
@@ -62,10 +78,12 @@ function FormUserEditAccount ({ user }: Props) {
             isInvalid={!!errors.state}
             color={errors.state ? 'danger' : 'default'}
             errorMessage={!!errors.state && 'Campo requerido'}
+            items={Object.entries(EUserState)}
             {...register('state', { required: true })}
           >
-            <SelectItem key={EUserState.active} value='activo'>Activo</SelectItem>
-            <SelectItem key={EUserState.inactive} value='inactivco'>Inactivo</SelectItem>
+            {
+                ([_, value]) => <SelectItem key={value} value={value}>{value}</SelectItem>
+              }
           </Select>
         </div>
         <Button type='submit' className='w-full md:w-auto mt-4' color='primary'>Actualizar</Button>
@@ -84,7 +102,7 @@ function FormUserEditAccount ({ user }: Props) {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={onClose}>
+                <Button isLoading={isLoading} color='primary' onPress={handleConfirm}>
                   Actualizar
                 </Button>
               </ModalFooter>

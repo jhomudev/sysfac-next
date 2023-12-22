@@ -1,24 +1,24 @@
 'use client'
-import formatLocation from '@/adapters/formatLocation'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, ELocationType, Location, LocationFromDB, TableHeaderColumns } from '@/types'
+import { ELocationType, Location, TableHeaderColumns } from '@/types'
 import { getURLWithParams } from '@/utils'
 import formatDate from '@/utils/formatDate'
 import {
-  Button, Chip, Input, Link,
-  Pagination, Selection, Spinner,
+  Button, Chip,
   Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,
+  Input, Link,
   Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
+  Pagination, Selection, Spinner,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import useSWR from 'swr'
+import toast from 'react-hot-toast'
 import { useDebouncedCallback } from 'use-debounce'
+import { useLocation } from '../hooks'
 import FilterLocations from './FilterLocations'
 
 const headerColumns: TableHeaderColumns[] = [
@@ -52,17 +52,23 @@ function TableLocations () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/locations?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<LocationFromDB[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
+  const { dataLocations: { data, isLoading, locations, mutate }, removeLocation } = useLocation()
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [locationToDelete, setLocationToDelete] = React.useState<Location>({} as Location)
-
-  if (error) console.log('ocurrió un error:', error)
-  const locations = React.useMemo(() => data?.data?.map(local => formatLocation(local)) || [], [data])
-
   const [showModal, setShowModal] = React.useState<boolean>(false)
+  const [isLoadingDelete, setIsLoadingDelete] = React.useState(false)
+
+  const handleConfirmDelete = async () => {
+    setIsLoadingDelete(true)
+    const res = await removeLocation(locationToDelete.id)
+    setIsLoadingDelete(false)
+    if (!res?.ok) {
+      toast.error(res?.message || 'No permitido')
+      return
+    }
+    setShowModal(false)
+    mutate()
+  }
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({
@@ -224,7 +230,7 @@ function TableLocations () {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='danger' onPress={onClose}>
+                <Button isLoading={isLoadingDelete} color='danger' onPress={handleConfirmDelete}>
                   Confirmar
                 </Button>
               </ModalFooter>

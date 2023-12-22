@@ -1,6 +1,6 @@
 import { IGV } from '@/contants'
 import { CartModalContext } from '@/context/CartModalContext'
-import { setCart, addItem, deleteItem, gratifyItem, makeDiscount } from '@/store/slices/cartSlice'
+import { setCart, addItem, deleteItem, gratifyItem, makeDiscount, clearItems } from '@/store/slices/cartSlice'
 import { useAppDispatch, useAppSelector } from '@/store/storeActions'
 import { Cart, CartItemId, CartItemWithoutId } from '@/types'
 import { useContext } from 'react'
@@ -46,6 +46,10 @@ const useCart = () => {
     dispatch(makeDiscount(discount))
   }
 
+  const clearCart = () => {
+    dispatch(clearItems())
+  }
+
   const _import = cart.items.reduce((total, item) => total + item.total, 0)
 
   const discount = cart.discount
@@ -71,7 +75,8 @@ const useCart = () => {
     addProductToCart,
     removeProductFromCart,
     gratifyProduct,
-    addDiscount
+    addDiscount,
+    clearCart
   }
 }
 export default useCart

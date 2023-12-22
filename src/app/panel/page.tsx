@@ -1,13 +1,12 @@
-import ROUTES from '../routes'
-import ChartTransactions from '@/features/ChartTransactions'
-import ListTransactions from '@/features/ListTransactions'
-import ChartStates from '@/features/ChartStates'
-import ChartMoreSales from '@/features/ChartMoreSales'
-import ListCardEntity from '@/components/ListCardEntity'
-import CardGraphic from '@/components/CardGraphic'
 import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
+import CardGraphic from '@/components/CardGraphic'
+import ListCardEntity from '@/components/ListCardEntity'
 import { NEXTUI_COLORS } from '@/contants'
-import { EOperationType, Transaction } from '@/types'
+import ChartMoreSales from '@/features/ChartMoreSales'
+import ChartStates from '@/features/ChartStates'
+import ChartTransactions from '@/features/ChartTransactions'
+import ListTransactions from '@/modules/Transactions/components/ListTransactions'
+import ROUTES from '../routes'
 
 const dashboardItems: CardEntityDashboardProps[] = [
   {
@@ -40,65 +39,6 @@ const dashboardItems: CardEntityDashboardProps[] = [
   }
 ]
 
-const transactions: Transaction[] = [
-  {
-    id: 1,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 2,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 3,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 4,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 5,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 6,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  },
-  {
-    id: 7,
-    operationType: EOperationType.buy,
-    totalPay: 90.0,
-    comments: 'A sample transaction',
-    user: { id: 1, username: 'user1', fullname: 'Alice johnson' },
-    createdAt: '2023-11-05 12:00:00'
-  }
-]
-
 function DashboardPage () {
   return (
     <>
@@ -115,7 +55,7 @@ function DashboardPage () {
           >
             <ChartTransactions />
           </CardGraphic>
-          <ListTransactions transactions={transactions} showRedirect />
+          <ListTransactions showRedirect />
         </div>
         <div className='flex flex-col lg:flex-row gap-5'>
           <CardGraphic

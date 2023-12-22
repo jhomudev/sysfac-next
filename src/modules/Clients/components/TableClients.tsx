@@ -1,46 +1,38 @@
 'use client'
-import React from 'react'
-import { Table, TableBody, TableColumn, TableHeader, TableCell, TableRow, Input, Pagination, Selection, Spinner } from '@nextui-org/react'
-import { ApiResponseWithReturn, ClientFromDB, TableHeaderColumns } from '@/types'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import useSWR from 'swr'
-import { fetcher } from '@/libs/swr'
-import formatClient from '@/adapters/formatClient'
-import { useDebouncedCallback } from 'use-debounce'
+import { TableHeaderColumns } from '@/types'
 import { getURLWithParams } from '@/utils'
+import { Input, Pagination, Selection, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import React from 'react'
+import { useDebouncedCallback } from 'use-debounce'
+import { useClient } from '../hooks'
 
 const headerColumns:TableHeaderColumns[] = [
   {
     id: crypto.randomUUID(),
-    name: 'RUC',
-    sortable: false
+    name: 'RUC'
   },
   {
     id: crypto.randomUUID(),
-    name: 'DNI',
-    sortable: false
+    name: 'DNI'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Nombres',
-    sortable: false
+    name: 'Nombres'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Apellidos',
-    sortable: true
+    name: 'Apellidos'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Dirección',
-    sortable: false
+    name: 'Dirección'
   },
   {
     id: crypto.randomUUID(),
-    name: 'Teléfono',
-    sortable: false
+    name: 'Teléfono'
   }
 ]
 
@@ -48,15 +40,10 @@ function TableClients () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/clients?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<ClientFromDB[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
+
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
 
-  if (error) console.log(error)
-
-  const clients = React.useMemo(() => data?.data?.map(client => formatClient(client)) || [], [data])
+  const { dataProducts: { clients, data, isLoading } } = useClient()
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({
@@ -111,6 +98,8 @@ function TableClients () {
                   <option value={5}>5</option>
                   <option value={10}>10</option>
                   <option value={15}>15</option>
+                  <option value={30}>30</option>
+                  <option value={50}>50</option>
                 </select>
               </div>
             </div>

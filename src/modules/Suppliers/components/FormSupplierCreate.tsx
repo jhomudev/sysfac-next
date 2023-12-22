@@ -1,26 +1,39 @@
 'use client'
 
-import React from 'react'
+import ROUTES from '@/app/routes'
+import { SupplierToDB } from '@/types'
 import {
   Button, Input,
-  Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
+  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader
 } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useSupplier } from '../hooks'
 
 type FormData = {
-  ruc: number | `${number}`,
+  ruc: `${number}`,
   name: string,
   address: string,
-  phone: number | `${number}`
+  phone: `${number}`
 }
 
 function FormSupplierCreate () {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
-  const [showModal, setShowModal] = React.useState<boolean>(false)
-  const handleSubmitForm = handleSubmit((data) => {
-    setShowModal(true)
-    console.log(data)
-  })
+  const { push } = useRouter()
+  const { addSupplier } = useSupplier()
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
+  const [showModal, setShowModal] = React.useState(false)
+  const [isLoadingCreate, setIsLoadingCreate] = React.useState(false)
+
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
+
+  const handleConfirmCreate = async () => {
+    const data:SupplierToDB = watch()
+    setIsLoadingCreate(true)
+    const res = await addSupplier(data)
+    setIsLoadingCreate(false)
+    if (res?.ok) push(ROUTES.suppliers)
+  }
 
   return (
     <>
@@ -84,9 +97,7 @@ function FormSupplierCreate () {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button
-                  color='primary' onPress={onClose}
-                >
+                <Button isLoading={isLoadingCreate} color='primary' onPress={handleConfirmCreate}>
                   Agregar
                 </Button>
               </ModalFooter>

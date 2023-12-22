@@ -88,7 +88,7 @@ function FilterProducts () {
           color='success'
           isLoading={isLoading}
           defaultItems={categories}
-          defaultSelectedKey={!isLoading ? (searchParams?.get('cat.slug') ? searchParams.get('cat.slug')! : undefined) : undefined}
+          defaultSelectedKey={searchParams.get('cat.slug') ?? undefined}
           onSelectionChange={handleChangeCategory}
         >
           {

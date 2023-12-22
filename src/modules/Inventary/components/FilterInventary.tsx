@@ -87,7 +87,7 @@ function FilterInventary () {
           color='success'
           isLoading={resProducts.isLoading}
           defaultItems={products}
-          defaultSelectedKey={!resProducts.isLoading ? (searchParams?.get('inv.productId') ? searchParams.get('inv.productId')! : undefined) : undefined}
+          defaultSelectedKey={searchParams.get('inv.productId') ?? undefined}
           onSelectionChange={handleChangeProduct}
         >
           {
@@ -105,7 +105,7 @@ function FilterInventary () {
           color='success'
           isLoading={resLocations.isLoading}
           defaultItems={locations}
-          defaultSelectedKey={!resProducts.isLoading ? (searchParams?.get('inv.localId') ? searchParams.get('inv.localId')! : undefined) : undefined}
+          defaultSelectedKey={searchParams.get('inv.localId') ?? undefined}
           onSelectionChange={handleChangeLocal}
         >
           {

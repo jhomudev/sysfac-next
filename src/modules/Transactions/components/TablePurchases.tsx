@@ -1,10 +1,8 @@
 'use client'
-import formatPurchase from '@/adapters/formatPurchase'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, PurchaseResponse, TableHeaderColumns } from '@/types'
+import { TableHeaderColumns } from '@/types'
 import { getURLWithParams } from '@/utils'
 import {
   Button,
@@ -15,8 +13,8 @@ import {
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import useSWR from 'swr'
 import { useDebouncedCallback } from 'use-debounce'
+import { usePurchase } from '../hooks'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -42,15 +40,8 @@ function TablePurchases () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/purchases?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<PurchaseResponse[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
-
+  const { dataPurchases: { data, isLoading, purchases } } = usePurchase()
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-
-  if (error) console.log('ocurrió un error:', error)
-  const purchases = React.useMemo(() => data?.data?.map(purchase => formatPurchase(purchase)) || [], [data])
 
   const handleChangeSearch = useDebouncedCallback((value) => {
     const url = getURLWithParams({

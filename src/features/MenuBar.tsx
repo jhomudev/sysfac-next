@@ -25,14 +25,14 @@ const menuItems = [
     icon: ICONS.clients
   },
   {
-    label: 'Productos',
-    route: ROUTES.products,
-    icon: ICONS.products
-  },
-  {
     label: 'Categorias',
     route: ROUTES.categories,
     icon: ICONS.categories
+  },
+  {
+    label: 'Productos',
+    route: ROUTES.products,
+    icon: ICONS.products
   },
   {
     label: 'Transacciones',

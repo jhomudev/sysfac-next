@@ -3,7 +3,7 @@ import { API_URL } from '@/contants'
 import { ApiResponseWithReturn, Operation, OperationFromDB } from '@/types'
 import axios from 'axios'
 
-const getOperationsByTransactionId = async (id: `${number}` | number): Promise<Operation[] | void> => {
+const getOperationsByTransactionId = async (id: number): Promise<Operation[] | void> => {
   try {
     const res = await axios<ApiResponseWithReturn<OperationFromDB[]>>(`${API_URL}/operations?transactionId=${id}`)
     const { data } = res

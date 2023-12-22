@@ -1,24 +1,18 @@
 'use client'
 /* eslint-disable react/jsx-indent */
 import { motion } from 'framer-motion'
+import { useCategory } from '../hooks'
 import CardCategory from './CardCategory'
-import useSWR from 'swr'
-import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, CategoryFromDB } from '@/types'
-import { formatCategory } from '@/adapters'
-import React from 'react'
-import CategoriesSkeleton from './CategoriesSkeleton'
+import ListCategoriesSkeleton from './ListCategoriesSkeleton'
 
 function ListCategories () {
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<CategoryFromDB[]>>('/api/categories', fetcher)
-  if (error) console.log(error)
-  const categories = React.useMemo(() => data?.data.map(cat => formatCategory(cat)) || [], [data])
+  const { dataCategories: { categories, isLoading } } = useCategory()
   const hasCategories = categories.length > 0
 
   if (isLoading) {
     return (
     <div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
-      <CategoriesSkeleton />
+      <ListCategoriesSkeleton />
     </div>
     )
   }
@@ -28,7 +22,7 @@ function ListCategories () {
       {
         !hasCategories
           ? <p>No hay categorias aún.</p>
-          : <motion.div className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
+          : <motion.ul className='grid gap-5 grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))]'>
               {
                 categories.map((cat, i) => (
                   <CardCategory
@@ -40,7 +34,7 @@ function ListCategories () {
                   />
                 ))
               }
-            </motion.div>
+            </motion.ul>
 
       }
     </>

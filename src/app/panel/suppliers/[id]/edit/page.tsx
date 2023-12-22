@@ -2,7 +2,7 @@
 import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import FormSupplierEdit from '@/modules/Suppliers/components/FormSupplierEdit'
-import getSupplierById from '@/modules/Suppliers/services/getSupplierById'
+import { getSupplierById } from '@/modules/Suppliers/services'
 
 type Props = {
   params: { id: `${number}`}

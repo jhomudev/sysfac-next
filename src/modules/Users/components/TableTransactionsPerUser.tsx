@@ -43,7 +43,7 @@ const headerColumns: TableHeaderColumns[] = [
     sortable: false
   }
 ]
-
+// TODO: data for table
 function TableTransactionsPerUser ({ data }: Props) {
   return (
     <Table

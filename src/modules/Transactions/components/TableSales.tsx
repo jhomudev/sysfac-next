@@ -1,10 +1,8 @@
 'use client'
-import { formatSale } from '@/adapters'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, EProofType, SaleResponse, TableHeaderColumns } from '@/types'
+import { EProofType, TableHeaderColumns } from '@/types'
 import { getURLWithParams } from '@/utils'
 import {
   Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Pagination, Selection,
@@ -14,8 +12,8 @@ import {
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
-import useSWR from 'swr'
 import { useDebouncedCallback } from 'use-debounce'
+import { useSale } from '../hooks'
 import FilterSales from './FilterSales'
 
 const headerColumns: TableHeaderColumns[] = [
@@ -54,14 +52,8 @@ function TableSales () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/sales?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SaleResponse[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
+  const { dataSales: { data, isLoading, sales } } = useSale()
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-
-  if (error) console.log('ocurrió un error:', error)
-  const sales = React.useMemo(() => data?.data?.map(sale => formatSale(sale)) || [], [data])
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({

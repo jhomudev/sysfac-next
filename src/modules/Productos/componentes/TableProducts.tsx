@@ -2,21 +2,22 @@
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { Product, TableHeaderColumns, ESaleFor, EStateProduct, ApiResponseWithReturn, ProductResponse } from '@/types'
+import { ESaleFor, EStateProduct, Product, TableHeaderColumns } from '@/types'
+import { getURLWithParams } from '@/utils'
 import {
-  Table, TableBody, TableColumn, TableHeader, TableCell, TableRow,
-  Chip, Input, Button, Pagination, Selection, Avatar, Link, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,
-  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Spinner
+  Avatar, Button, Chip, Input, Link,
+  Pagination, Selection, Spinner,
+  Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,
+  Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
+  Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
-import React from 'react'
 import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { getURLWithParams } from '@/utils'
-import { fetcher } from '@/libs/swr'
-import useSWR from 'swr'
+import React from 'react'
 import { useDebouncedCallback } from 'use-debounce'
-import { formatProduct } from '@/adapters'
+import { useProduct } from '../hooks'
 import FilterProducts from './FilterProducts'
+import toast from 'react-hot-toast'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -62,16 +63,24 @@ function TableProducts () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/products?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<ProductResponse[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
   const [showModal, setShowModal] = React.useState(false)
   const [productToDelete, setProductToDelete] = React.useState<Product>({} as Product)
+  const [isLoadingDelete, setIsLoadingDelete] = React.useState(false)
 
-  if (error) console.log('ocurrió un error:', error)
-  const products = React.useMemo(() => data?.data?.map(product => formatProduct(product)) || [], [data])
+  const { dataProducts: { data, isLoading, products, mutate }, removeProduct } = useProduct()
+
+  const handleConfirmDelete = async () => {
+    setIsLoadingDelete(true)
+    const res = await removeProduct(productToDelete.id)
+    setIsLoadingDelete(false)
+    if (!res?.ok) {
+      toast.error(res?.message || 'No permitido')
+      return
+    }
+    setShowModal(false)
+    mutate()
+  }
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({
@@ -159,7 +168,7 @@ function TableProducts () {
         isHeaderSticky
         aria-label='Tabla de productos'
         classNames={{
-          wrapper: 'flex-1 max-h-[1000px]',
+          wrapper: 'flex-1 max-h-[2000px]',
           table: 'min-h-[20rem]'
         }}
         bottomContentPlacement='outside'
@@ -243,7 +252,7 @@ function TableProducts () {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='danger' onPress={onClose}>
+                <Button isLoading={isLoadingDelete} color='danger' onPress={handleConfirmDelete}>
                   Confirmar
                 </Button>
               </ModalFooter>

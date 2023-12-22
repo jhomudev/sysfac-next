@@ -1,28 +1,20 @@
 /* eslint-disable react/jsx-indent */
 'use client'
-import { formatTransaction } from '@/adapters'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { COLORS_ENT, ICONS } from '@/contants'
-import { fetcher } from '@/libs/swr'
 import ListTransactionsSkeleton from '@/modules/Transactions/components/ListTransactionsSkeleton'
-import { ApiResponseWithReturn, EOperationType, TransactionResponse } from '@/types'
+import { EOperationType } from '@/types'
 import getLeftTime from '@/utils/getLeftTime'
 import { Card, CardHeader, Link, Listbox, ListboxItem } from '@nextui-org/react'
-import React from 'react'
-import useSWR from 'swr'
+import { useTransaction } from '../hooks'
 
 type Props = {
   showRedirect?: boolean
 }
 
 function ListTransactions ({ showRedirect = false }: Props) {
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<TransactionResponse[]>>('/api/transactions', fetcher, {
-    keepPreviousData: true
-  })
-
-  if (error) console.log('ocurrió un error:', error)
-  const transactions = React.useMemo(() => data?.data?.map(t => formatTransaction(t)) || [], [data])
+  const { dataTransactions: { isLoading, transactions } } = useTransaction({ noSearchParams: true })
 
   return (
     <Card className='w-full lg:w-[min(100%,400px)] lg:min-w-[350px] p-5'>

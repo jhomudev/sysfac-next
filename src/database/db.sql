@@ -132,8 +132,8 @@ CREATE TABLE
   CLIENTS (
     clientId INT NOT NULL AUTO_INCREMENT,
     -- client data
-    ruc VARCHAR(13),
-    dni VARCHAR(8),
+    ruc VARCHAR(13) UNIQUE,
+    dni VARCHAR(8) UNIQUE,
     names VARCHAR(100) NOT NULL,
     lastnames VARCHAR(100) NOT NULL,
     address VARCHAR(100),
@@ -221,7 +221,7 @@ CREATE TABLE
     -- date
     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
     -- definitions
-    PRIMARY KEY (operationType, serialNumber),
+    -- PRIMARY KEY (operationType, serialNumber),
     FOREIGN KEY(transactionId) REFERENCES TRANSACTIONS(transactionId),
     FOREIGN KEY(productId) REFERENCES PRODUCTS(productId)
   );

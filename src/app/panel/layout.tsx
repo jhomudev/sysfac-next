@@ -16,7 +16,7 @@ function PanelLayout ({ children }: Props) {
       </div>
       <div className='flex-1 flex flex-col gap-5 overflow-auto'>
         <Header />
-        <Card as='main' className='flex flex-1 overflow-visible'>
+        <Card as='main' className='relative flex flex-1 overflow-visible'>
           <CardBody className='flex-1 p-5'>{children}</CardBody>
           <CardFooter>
             <Footer />

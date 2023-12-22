@@ -21,5 +21,5 @@ export type CategoryFromDB = {
 export type CategoryToDB = {
   slug: string,
   name: string,
-  image: string
+  image?: string
 }

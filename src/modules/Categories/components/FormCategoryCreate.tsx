@@ -1,11 +1,19 @@
 /* eslint-disable react/jsx-closing-tag-location */
 'use client'
-import React from 'react'
+import ROUTES from '@/app/routes'
 import {
   Button, Input,
-  Modal, ModalHeader, ModalBody, ModalFooter, ModalContent
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader
 } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
+import React from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { useCategory } from '../hooks'
 
 type FormData = {
   name: string,
@@ -14,13 +22,22 @@ type FormData = {
 }
 
 function FormCategoryCreate () {
-  const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>()
+  const { push } = useRouter()
+  const { addCategory } = useCategory()
+  const { register, setValue, watch, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string>('')
+  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmitForm = handleSubmit(data => {
-    setShowModal(true)
-  })
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
+  const handleConfirm = async () => {
+    const { name, slug } = watch()
+    setIsLoading(true)
+    const res = await addCategory({ name, slug })
+    setIsLoading(false)
+    if (res?.ok) push(ROUTES.categories)
+    else toast.error(res?.message ?? '')
+  }
 
   return (
     <>
@@ -99,9 +116,7 @@ function FormCategoryCreate () {
                 <Button color='danger' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button
-                  color='primary' onPress={onClose}
-                >
+                <Button isLoading={isLoading} color='primary' onPress={handleConfirm}>
                   Crear
                 </Button>
               </ModalFooter>

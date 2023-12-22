@@ -55,7 +55,7 @@ export type ProductFromDB = {
 
 export type ProductToDB = {
   name: string,
-  image: string,
+  image?: string,
   inventaryMin: number,
   priceSale: number,
   unit: string,

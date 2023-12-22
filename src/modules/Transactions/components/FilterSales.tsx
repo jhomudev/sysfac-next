@@ -75,7 +75,7 @@ function FilterSales () {
           color='success'
           isLoading={isLoading}
           defaultItems={users}
-          defaultSelectedKey={!isLoading ? (searchParams?.get('us.username') ? searchParams.get('us.username')! : undefined) : undefined}
+          defaultSelectedKey={searchParams.get('us.username') ?? undefined}
           onSelectionChange={handleChangeUser}
         >
           {

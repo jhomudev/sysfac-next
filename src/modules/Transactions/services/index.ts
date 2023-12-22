@@ -1,3 +1,6 @@
+export { default as addOperation } from './addOperation'
 export { default as getOperationsByTransactionId } from './getOperationsByTransactionId'
 export { default as getPurchaseById } from './getPurchaseById'
 export { default as getSaleById } from './getSaleById'
+export { default as makePurchase } from './makePurchase'
+export { default as makeSale } from './makeSale'

@@ -1,18 +1,17 @@
 'use client'
+import React from 'react'
 import ROUTES from '@/app/routes'
 import Yesicon from '@/components/Yesicon'
 import { ICONS } from '@/contants'
-import { ApiResponseWithReturn, Supplier, SupplierFromDB, TableHeaderColumns } from '@/types'
-import formatDate from '@/utils/formatDate'
-import NextLink from 'next/link'
-import { Button, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Input, Link, Pagination, Selection, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Spinner } from '@nextui-org/react'
-import React from 'react'
-import { fetcher } from '@/libs/swr'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
-import useSWR from 'swr'
-import { formatSupplier } from '@/adapters'
+import { Supplier, TableHeaderColumns } from '@/types'
 import { getURLWithParams } from '@/utils'
+import formatDate from '@/utils/formatDate'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Link, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Pagination, Selection, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import NextLink from 'next/link'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useDebouncedCallback } from 'use-debounce'
+import { useSupplier } from './../hooks'
+import toast from 'react-hot-toast'
 
 const headerColumns: TableHeaderColumns[] = [
   {
@@ -46,16 +45,23 @@ function TableSuppliers () {
   const { replace } = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const url = `/api/suppliers?${searchParams?.toString()}`
-  const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SupplierFromDB[]>>(url, fetcher, {
-    keepPreviousData: true
-  })
+  const { dataSuppliers: { suppliers, data, isLoading, mutate }, removeSupplier } = useSupplier()
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-  const [showModal, setShowModal] = React.useState<boolean>(false)
+  const [showModal, setShowModal] = React.useState(false)
+  const [isLoadingDelete, setIsLoadingDelete] = React.useState(false)
   const [supplierToDelete, setSupplierToDelete] = React.useState<Supplier>({} as Supplier)
 
-  if (error) console.log('ocurrió un error:', error)
-  const suppliers = React.useMemo(() => data?.data?.map(sup => formatSupplier(sup)) || [], [data])
+  const handleConfirmDelete = async () => {
+    setIsLoadingDelete(true)
+    const res = await removeSupplier(supplierToDelete.id)
+    setIsLoadingDelete(false)
+    if (!res?.ok) {
+      toast.error(res?.message || 'No permitido')
+      return
+    }
+    setShowModal(false)
+    mutate()
+  }
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({
@@ -215,7 +221,7 @@ function TableSuppliers () {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='danger' onPress={onClose}>
+                <Button isLoading={isLoadingDelete} color='danger' onPress={handleConfirmDelete}>
                   Confirmar
                 </Button>
               </ModalFooter>

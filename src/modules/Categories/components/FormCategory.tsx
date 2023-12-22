@@ -4,6 +4,10 @@ import React from 'react'
 import { Button, Input, Modal, ModalHeader, ModalBody, ModalFooter, ModalContent } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import { Category } from '@/types'
+import toast from 'react-hot-toast'
+import ROUTES from '@/app/routes'
+import { useRouter } from 'next/navigation'
+import { useCategory } from '../hooks'
 
 type Props = {
   category: Category
@@ -17,15 +21,27 @@ type FormData = {
 
 function FormCategory ({ category }:Props) {
   const { name, slug, image } = category
-  const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormData>()
+  const { push } = useRouter()
+  const { modifyCategory, removeCategory } = useCategory()
+  const { register, setValue, watch, handleSubmit, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [action, setAction] = React.useState<'delete' | 'edit'>('edit')
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<string>(image || '')
+  const [isLoading, setIsLoading] = React.useState(false)
 
-  const handleSubmitForm = handleSubmit(data => {
+  const handleSubmitForm = handleSubmit(() => {
     setAction('edit')
     setShowModal(true)
   })
+
+  const handleConfirm = async () => {
+    setIsLoading(true)
+    const { name, slug } = watch()
+    const res = await (action === 'edit' ? modifyCategory(category.slug, { name, slug }) : removeCategory(category.slug))
+    setIsLoading(false)
+    if (res?.ok) push(ROUTES.categories)
+    else toast.error(res?.message ?? '')
+  }
 
   React.useEffect(() => {
     setValue('name', name)
@@ -120,7 +136,7 @@ function FormCategory ({ category }:Props) {
                 <Button color={action === 'edit' ? 'danger' : 'default'} variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color={action === 'edit' ? 'primary' : 'danger'} onPress={onClose}>
+                <Button isLoading={isLoading} color={action === 'edit' ? 'primary' : 'danger'} onPress={handleConfirm}>
                   {action === 'edit' ? 'Actualizar' : 'Eliminar'}
                 </Button>
               </ModalFooter>

@@ -1,9 +1,14 @@
 /* eslint-disable react/jsx-closing-tag-location */
 'use client'
-import { Category, ESaleFor, EStateProduct } from '@/types'
+import { useCategory } from '@/modules/Categories/hooks'
+import { Category, ESaleFor, EStateProduct, ProductToDB } from '@/types'
 import { AutocompleteItem, Autocomplete, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem } from '@nextui-org/react'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useProduct } from '../hooks'
+import { useRouter } from 'next/navigation'
+import ROUTES from '@/app/routes'
+import toast from 'react-hot-toast'
 
 type FormData = {
   name: string,
@@ -11,29 +16,39 @@ type FormData = {
   inventaryMin: string,
   priceSale: string,
   unit: string,
-  saleFor: string,
+  saleFor: ESaleFor,
   isActive: string,
   categoryId: string
 }
 
-type Props = {
-  categoriesPerSelect: Category[]
-}
-
-function FormProductCreate ({ categoriesPerSelect }: Props) {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
+function FormProductCreate () {
+  const { push } = useRouter()
+  const { dataCategories: { categories, isLoading } } = useCategory()
+  const { addProduct } = useProduct()
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>()
   const [showModal, setShowModal] = React.useState(false)
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState('')
+  const [isLoadingDelete, setIsLoadingDelete] = React.useState(false)
   const [categorySelected, setCategorySelected] = React.useState<Category>({} as Category)
 
-  const handleSubmitForm = handleSubmit((data) => {
-    // data = { ...data, isActive: data.isActive === EStateProduct.active }
-    console.log(data)
-    setShowModal(true)
-  })
+  const handleSubmitForm = handleSubmit(() => setShowModal(true))
 
-  const handleCreate = () => {
-    setShowModal(false)
+  const handleConfirm = async () => {
+    const { name, inventaryMin, priceSale, unit, saleFor, isActive } = watch()
+    const data: ProductToDB = {
+      name,
+      categoryId: categorySelected.id,
+      inventaryMin: parseInt(inventaryMin),
+      priceSale: parseFloat(priceSale),
+      unit,
+      saleFor,
+      isActive: isActive === EStateProduct.active
+    }
+    setIsLoadingDelete(true)
+    const res = await addProduct(data)
+    setIsLoadingDelete(false)
+    if (res?.ok) push(ROUTES.products)
+    else toast.error(res?.message ?? '')
   }
 
   return (
@@ -47,15 +62,9 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             className='w-full md:max-w-sm'
             color={errors.name ? 'danger' : 'default'}
             errorMessage={errors.name?.message}
-            {...register('name', {
-              required: {
-                value: true,
-                message: 'Nombre requerido'
-              }
-            })}
+            {...register('name', { required: 'Nombre requerido' })}
           />
           <Input
-            type='number'
             variant='underlined'
             className='w-full md:max-w-sm'
             label='Precio de venta S/'
@@ -63,19 +72,14 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             color={errors.priceSale ? 'danger' : 'default'}
             errorMessage={errors.priceSale?.message}
             {...register('priceSale', {
-              required: {
-                value: true,
-                message: 'Precio requerido'
-              },
+              required: 'Precio requerido',
               pattern: {
                 value: /^(\d+)(\.\d{1,2})?$/,
                 message: 'Costo inválido'
-              },
-              setValueAs: (v) => parseFloat(v)
+              }
             })}
           />
           <Input
-            type='number'
             variant='underlined'
             className='w-full md:max-w-sm'
             label='Mínimo en inventario'
@@ -87,7 +91,10 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
                 value: true,
                 message: 'Mínimo requerido'
               },
-              valueAsNumber: true
+              pattern: {
+                value: /^[1-9]\d*$/,
+                message: 'Ingrese un número entero válido'
+              }
             })}
           />
           <Input
@@ -98,11 +105,8 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             color={errors.unit ? 'danger' : 'default'}
             errorMessage={errors.unit?.message}
             {...register('unit', {
-              required: {
-                value: true,
-                message: 'Unidad requerida'
-              },
-              validate: (v) => isNaN(Number(v)) ? true : 'Unidad inválida'
+              required: 'Unidad requerida',
+              validate: (v) => isNaN(Number(v)) || 'Unidad inválida'
             })}
           />
           <Select
@@ -113,19 +117,18 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             color={errors.saleFor ? 'danger' : 'default'}
             errorMessage={errors.saleFor?.message}
             defaultSelectedKeys={[ESaleFor.quantity]}
+            items={Object.entries(ESaleFor)}
             {...register('saleFor', {
-              required: {
-                value: true,
-                message: 'Seleccione una opcíon'
-              },
+              required: 'Seleccione una opcíon',
               validate: (v) => {
                 const isOptionSaleFor = v === ESaleFor.quantity || v === ESaleFor.unit
-                return isOptionSaleFor ? true : 'Entrada inválida'
+                return isOptionSaleFor || 'Entrada inválida'
               }
             })}
           >
-            <SelectItem key={ESaleFor.quantity} value={ESaleFor.quantity}>{ESaleFor.quantity}</SelectItem>
-            <SelectItem key={ESaleFor.unit} value={ESaleFor.unit}>{ESaleFor.unit}</SelectItem>
+            {
+              ([_, item]) => <SelectItem key={item} value={item}>{item}</SelectItem>
+            }
           </Select>
           <Select
             className='w-full md:max-w-sm'
@@ -134,20 +137,19 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             placeholder='Indique el estado'
             color={errors.isActive ? 'danger' : 'default'}
             errorMessage={errors.isActive?.message}
+            items={Object.entries(EStateProduct)}
             defaultSelectedKeys={[EStateProduct.active]}
             {...register('isActive', {
-              required: {
-                value: true,
-                message: 'Seleccione una opcíon'
-              },
+              required: 'Seleccione una opcíon',
               validate: (v) => {
                 const isOptionStateProduct = Object.values(EStateProduct).includes(v as EStateProduct)
-                return isOptionStateProduct ? true : 'Entrada inválida'
+                return isOptionStateProduct || 'Entrada inválida'
               }
             })}
           >
-            <SelectItem key={EStateProduct.active} value={EStateProduct.active}>{EStateProduct.active}</SelectItem>
-            <SelectItem key={EStateProduct.inactive} value={EStateProduct.inactive}>{EStateProduct.inactive}</SelectItem>
+            {
+              ([_, state]) => <SelectItem key={state} value={state}>{state}</SelectItem>
+            }
           </Select>
           <Autocomplete
             className='w-full md:max-w-sm'
@@ -156,21 +158,18 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
             placeholder='Seleccione la categoría'
             color={errors.categoryId ? 'danger' : 'default'}
             errorMessage={errors.categoryId?.message}
-            defaultItems={categoriesPerSelect}
+            defaultItems={categories}
+            isLoading={isLoading}
             onSelectionChange={(key) => {
-              const cat = categoriesPerSelect.find(cat => cat.id === Number(key))
+              const cat = categories.find(cat => cat.id === Number(key))
               setCategorySelected(prev => cat ?? prev)
             }}
             {...register('categoryId', {
-              required: {
-                value: true,
-                message: 'Seleccione una opcíon'
-              },
+              required: 'Seleccione una opción',
               validate: (v) => {
-                const isOptionCategory = categoriesPerSelect.some(cat => cat.id === categorySelected.id)
-                return isOptionCategory ? true : 'Entrada inválida'
-              },
-              setValueAs: () => categorySelected.id
+                const isOptionCategory = categories.some(cat => cat.id === categorySelected.id)
+                return isOptionCategory || 'Entrada inválida'
+              }
             })}
           >
             {
@@ -234,7 +233,7 @@ function FormProductCreate ({ categoriesPerSelect }: Props) {
                 <Button color='default' variant='light' onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button color='primary' onPress={handleCreate}>
+                <Button isLoading={isLoadingDelete} color='primary' onPress={handleConfirm}>
                   Crear
                 </Button>
               </ModalFooter>
