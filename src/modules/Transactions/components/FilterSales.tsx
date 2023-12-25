@@ -31,7 +31,6 @@ function FilterSales () {
     })
 
     replace(url)
-    console.log({ value })
   }
 
   const handleChangeUser = (value: React.Key) => {

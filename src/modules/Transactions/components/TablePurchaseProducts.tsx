@@ -60,11 +60,10 @@ const headerColumns:TableHeaderColumns[] = [
 function TablePurchaseProducts () {
   const { cartPurchase: { items, totalImport }, removeProductFromCart, clearCart } = useCartPurchase()
   const [showModal, setShowModal] = React.useState<boolean>(false)
-  const hasItemsCart = items.length > 0
 
   const topContent = React.useMemo(() => {
+    const hasItemsCart = items.length > 0
     const handleClick = () => {
-      console.log({ hasItemsCart, items })
       if (!hasItemsCart) {
         toast.success('El carrito ya está vació.')
         return
