@@ -1,4 +1,4 @@
-import { DB_USER, DB_HOST, DB_PASSWORD, DB_PORT, DB_DATABASE } from '@/contants'
+import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_USER } from '@/contants'
 import mysql from 'serverless-mysql'
 
 export const conn = mysql({
@@ -6,7 +6,7 @@ export const conn = mysql({
     host: DB_HOST,
     user: DB_USER,
     password: DB_PASSWORD,
-    port: parseInt(DB_PORT ?? '3307'),
+    // port: parseInt(DB_PORT ?? '3307'),
     database: DB_DATABASE,
     typeCast: function castField (field, putDefaultTypeCasting) {
       // We only want to cast bit fields that have a single-bit in them. If the field
