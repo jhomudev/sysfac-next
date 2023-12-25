@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 export const GET = async () => {
   try {
     const data = Object.values(EStateProductUnit).map(async state => {
-      const [res] = await conn.query<any[]>(`SELECT COUNT(*) AS quantity FROM inventary WHERE state='${state}'`)
+      const [res] = await conn.query<any[]>(`SELECT COUNT(*) AS quantity FROM INVENTARY WHERE state='${state}'`)
       return res
     })
 

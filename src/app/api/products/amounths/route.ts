@@ -7,9 +7,9 @@ export const GET = async () => {
     const products = await conn.query<ProductWithQuantityFromDB[]>(`
     SELECT pro.productId, pro.name , pro.inventaryMin , 
     (SELECT COUNT(inv.productId) FROM INVENTARY inv 
-    INNER JOIN products p ON p.productId=inv.productId 
+    INNER JOIN PRODUCTS p ON p.productId=inv.productId 
     WHERE inv.productId=pro.productId AND inv.state="${EStateProductUnit.stock}") AS quantity
-    FROM products pro WHERE isActive=1 ORDER BY quantity DESC`)
+    FROM PRODUCTS pro WHERE isActive=1 ORDER BY quantity DESC`)
 
     if (products) {
       return NextResponse.json<ApiResponseWithReturn<ProductWithQuantityFromDB[]>>({

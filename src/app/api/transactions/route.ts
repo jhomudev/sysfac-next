@@ -48,29 +48,3 @@ export const GET = async (req: NextRequest) => {
     }, { status: 500 })
   }
 }
-
-// export const POST = async (req: NextRequest) => {
-//   try {
-//     const data: TransactionToDB = await req.json()
-//     const resDB = await conn.query<OkPacket>('INSERT INTO TRANSACTIONS SET ?', data)
-//     if (resDB.affectedRows > 0) {
-//       return NextResponse.json<ApiResponse>({
-//         ok: true,
-//         message: 'Transacción realizada',
-//         data: {
-//           insertId: resDB.insertId,
-//           ...data
-//         }
-//       })
-//     }
-//     return NextResponse.json<ApiResponse>({
-//       ok: false,
-//       message: 'Error en la consulta'
-//     }, { status: 400 })
-//   } catch (error) {
-//     return NextResponse.json<ApiResponseError>({
-//       error,
-//       message: 'Ocurrió un error'
-//     }, { status: 500 })
-//   }
-// }
