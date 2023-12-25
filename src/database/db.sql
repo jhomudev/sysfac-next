@@ -77,7 +77,7 @@ CREATE TABLE
     updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
     -- definitions
     PRIMARY KEY(productId),
-    FOREIGN KEY(categoryId) REFERENCES categories(categoryId)
+    FOREIGN KEY(categoryId) REFERENCES CATEGORIES(categoryId)
   );
 
 

@@ -4,7 +4,7 @@ USE sysfac;
 
 -- insert users
 INSERT INTO
-  users(
+  USERS(
     username,
     password,
     type,
@@ -119,7 +119,7 @@ VALUES
 
 -- insert categories
 INSERT INTO
-  categories(slug, name)
+  CATEGORIES(slug, name)
 VALUES
   ('laptops', 'Laptops'),
   ('pc', 'PC'),
@@ -140,7 +140,7 @@ VALUES
 
 -- insert products
 INSERT INTO
-  products(
+  PRODUCTS(
     name,
     image,
     inventaryMin,
@@ -299,7 +299,7 @@ VALUES
 
 -- insert suppliers
 INSERT INTO
-  suppliers(RUC, name, address, phone)
+  SUPPLIERS(RUC, name, address, phone)
 VALUES
   (
     '20113456789',
