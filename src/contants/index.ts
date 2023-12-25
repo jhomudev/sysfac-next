@@ -2,7 +2,12 @@ export const {
   NEXT_PUBLIC_API_URL,
   API_URL,
   NEXTAUTH_URL,
-  NEXT_PUBLIC_IGV
+  NEXT_PUBLIC_IGV,
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
+  DB_DATABASE
 } = process.env
 
 export const IGV = 18
