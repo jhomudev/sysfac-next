@@ -21,7 +21,6 @@ function FormLogin () {
       redirect: false
     })
     setIsLoading(false)
-    console.log(auth)
     if (auth?.error) {
       toast.error('Acceso denegado.')
       return

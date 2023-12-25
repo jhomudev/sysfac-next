@@ -8,7 +8,6 @@ export const validateUserCredentials = async (credentials: UserCredentials) => {
     const res = await axios.post<ApiResponseWithReturn<UserFromDB>>(`${API_URL}/auth/login`, credentials)
     if (!res.data.ok) return
     const user = formatUser(res.data.data)
-
     return {
       access: !!user,
       isActive: user.state === EUserState.active,
