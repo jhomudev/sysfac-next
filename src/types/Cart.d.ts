@@ -16,6 +16,4 @@ export type CartItem = {
 export type Cart = {
   items: CartItem[],
   discount: number,
-  // import: number,
-  // totalImport: number
 }

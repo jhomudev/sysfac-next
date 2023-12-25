@@ -7,6 +7,12 @@ export const POST = async (req:NextRequest) => {
     const { username, password }: UserCredentials = await req.json()
     // Validate user exist
     const [user] = await conn.query<UserFromDB[]>('SELECT userId, username, type, state, names, lastnames, email FROM USERS WHERE username = ? AND password = ?', [username, password])
+    if (!user) {
+      return NextResponse.json({
+        ok: false,
+        message: 'Credentials NO pass'
+      })
+    }
     if (user.state === EUserState.active) {
       return NextResponse.json<ApiResponseWithReturn<UserFromDB>>({
         ok: true,
@@ -21,7 +27,7 @@ export const POST = async (req:NextRequest) => {
   } catch (error) {
     return NextResponse.json({
       ok: false,
-      message: 'Erro en nservidor',
+      message: 'Error en el servidor',
       error
     })
   }

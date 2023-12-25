@@ -1,7 +1,6 @@
 import { validateUserCredentials } from '@/interceptors'
 import { UserCredentials } from '@/types'
-import NextAuth, { AuthOptions, Session, User } from 'next-auth'
-import { JWT } from 'next-auth/jwt'
+import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions: AuthOptions = {
@@ -14,7 +13,6 @@ export const authOptions: AuthOptions = {
       },
       async authorize (credentials) {
         const auth = await validateUserCredentials(credentials as UserCredentials)
-
         // If no error and we have user data, return it
         if (auth!.access && auth!.isActive) return auth!.data as any
         // Return null if user data could not be retrieved
@@ -24,12 +22,31 @@ export const authOptions: AuthOptions = {
     })
   ],
   callbacks: {
-    async jwt ({ token, user }:{token: JWT, user: User }) {
-      return { ...token, ...user }
+    async jwt ({ token, user }) {
+      if (user) {
+        token.role = user.type
+        token.id = Number(user.id)
+        token.lastnames = user.lastnames
+        token.names = user.names
+        token.username = user.username
+      }
+      return token
     },
-    async session ({ session, token }: { session: Session, token: JWT }) {
-      session.user = token
-      return session
+    async session ({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          accessToken: token.accessToken as string,
+          refreshToken: token.refreshToken as string,
+          id: token.id,
+          type: token.role,
+          username: token.username,
+          names: token.names,
+          lastnames: token.lastnames
+        },
+        error: token.error
+      }
     }
   },
   pages: {

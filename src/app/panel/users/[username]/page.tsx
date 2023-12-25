@@ -3,7 +3,6 @@ import ROUTES from '@/app/routes'
 import MyBreadcrumbs, { MyBreadcrumbItemProps } from '@/components/MyBreadcrumbs'
 import Yesicon from '@/components/Yesicon'
 import { API_URL, COLORS_ENT, ICONS } from '@/contants'
-import TableTransactionsPerUser from '@/modules/Users/components/TableTransactionsPerUser'
 import { ApiResponseWithReturn, EUserState, EUserType, UserFromDB } from '@/types'
 import { formatDate } from '@/utils'
 import { Button, Card, CardBody, CardHeader, Chip, Link, Tooltip } from '@nextui-org/react'
@@ -119,10 +118,6 @@ async function UserPage ({ params }: Props) {
           </CardBody>
         </Card>
       </div>
-      <br />
-      <h2 className='title'>Movimientos</h2>
-      <p className='text'>Observe los movimientos que realizó el usuario hast ala fecha actual dentro del sistema.</p><br />
-      <TableTransactionsPerUser data={[]} />
     </div>
   )
 }

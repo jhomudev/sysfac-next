@@ -1,36 +1,30 @@
-import NextAuth, { Account, DefaultSession, User } from 'next-auth'
-import JWT from 'next-auth/jwt'
+import 'next-auth/jwt'
 import { EUserType } from './enums'
+import { DefaultSession } from 'next-auth'
 
 declare module 'next-auth' {
-  // eslint-disable-next-line no-unused-vars
-  interface Session {
-    accessToken?: Account.accessToken,
-    user: {
-      id: number,
-      username: string,
-      email: string,
-      type: EUserType,
-      names: string,
-      lastnames: string,
-      iat: number,
-      exp: number,
-      jti: string
-    }
+  interface User {
+    id: number,
+    username: string,
+    email: string,
+    type: EUserType,
+    names: string,
+    lastnames: string
+  }
+  interface Session extends DefaultSession {
+    user: User;
+    expires: string;
+    error: string;
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    accessToken?: Account.accessToken,
     id: number,
-    email: string,
     username: string,
+    email: string,
     type: EUserType,
     names: string,
-    lastnames: string,
-    iat: number,
-    exp: number,
-    jti: string
+    lastnames: string
   }
 }
