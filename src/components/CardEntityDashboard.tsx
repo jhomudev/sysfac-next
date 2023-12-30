@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Yesicon from './Yesicon'
 
 export type CardEntityDashboardProps = {
+  id: 'users' | 'clients' | 'products' | 'transactions' | 'sales' | 'purchases',
   route?: string,
   label: string,
   quantity: number | `${number}`,

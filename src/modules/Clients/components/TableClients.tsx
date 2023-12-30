@@ -43,7 +43,7 @@ function TableClients () {
 
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
 
-  const { dataProducts: { clients, data, isLoading } } = useClient()
+  const { dataClients: { clients, data, isLoading } } = useClient()
 
   const handleChangePage = React.useCallback((page: number) => {
     const url = getURLWithParams({

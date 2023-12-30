@@ -25,7 +25,7 @@ function useClient () {
   }
 
   return {
-    dataProducts: {
+    dataClients: {
       data,
       isLoading,
       error,
