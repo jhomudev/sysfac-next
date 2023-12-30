@@ -6,7 +6,7 @@ import { useCart } from '@/hooks'
 import { useNotification } from '@/modules/Notifications/hooks'
 import { EUserType } from '@/types'
 import { Avatar, Badge, Button, Chip, Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger, Image, Link } from '@nextui-org/react'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import Cart from './Cart'
 
 function Header () {

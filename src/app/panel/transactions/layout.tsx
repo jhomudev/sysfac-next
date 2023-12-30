@@ -1,28 +1,11 @@
-import { CardEntityDashboardProps } from '@/components/CardEntityDashboard'
 import CardGraphic from '@/components/CardGraphic'
 import ListCardEntity from '@/components/ListCardEntity'
-import { COLORS_ENT, ICONS } from '@/contants'
 import ChartTransactions from '@/features/ChartTransactions'
-import ListTransactions from '@/modules/Transactions/components/ListTransactions'
 import CardsTransactions from '@/modules/Transactions/components/CardsTransactions'
+import ListTransactions from '@/modules/Transactions/components/ListTransactions'
 import TabTransactions from '@/modules/Transactions/components/TabTransactions'
 import { Divider } from '@nextui-org/react'
 import React from 'react'
-
-const itemsTransactions: CardEntityDashboardProps[] = [
-  {
-    label: 'Ventas',
-    quantity: 200,
-    color: COLORS_ENT.operationType.sell.hex,
-    icon: ICONS.sales
-  },
-  {
-    label: 'Compras',
-    quantity: 200,
-    color: COLORS_ENT.operationType.buy.hex,
-    icon: ICONS.purchases
-  }
-]
 
 type Props = {
   children: React.ReactNode
@@ -41,7 +24,7 @@ function TransactionsLayout ({ children }: Props) {
       <div className='flex gap-5 flex-col lg:flex-row'>
         <div className='w-full lg:min-w-[300px] lg:w-[min(100%,400px)] flex flex-col gap-5'>
           <div className='flex-1 flex flex-col gap-5'>
-            <ListCardEntity items={itemsTransactions} />
+            <ListCardEntity items={['sales', 'purchases']} />
           </div>
           <div className='flex-1 flex flex-col md:flex-row lg:flex-col gap-5 h-full'>
             <CardsTransactions />
