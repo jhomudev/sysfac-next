@@ -26,8 +26,8 @@ function ChartTransactions () {
 
   if (error) console.log('Error al obtener datos chartTransactions')
   const dataRes = _data ? formatTransactionsMonth(_data.data) : null
-  const sales = dataRes ? months.map((_month, i) => dataRes.sales[i] ? dataRes.sales[i].quantity : 0) : []
-  const purchases = dataRes ? months.map((_month, i) => dataRes.purchases[i] ? dataRes.purchases[i].quantity : 0) : []
+  const sales = dataRes ? months.map((_month, i) => dataRes.sales[i].quantity) : []
+  const purchases = dataRes ? months.map((_month, i) => dataRes.purchases[i].quantity) : []
 
   const data: ChartData<'line'> = {
     labels: months,
@@ -57,7 +57,7 @@ function ChartTransactions () {
 
   const options = {
     responsive: true,
-    maintainsAspectRatio: false
+    maintainAspectRatio: false
   }
 
   return !isLoading

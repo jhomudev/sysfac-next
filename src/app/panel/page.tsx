@@ -49,7 +49,7 @@ function DashboardPage () {
         </div>
         <div className='flex flex-col lg:flex-row gap-5'>
           <CardGraphic
-            className='w-full p-4'
+            className='w-full p-4 max-h-[500px] xl:max-h-[588px]'
             title='Análisis de movimientos'
             description='El gráfico muestra las ventas y compras mensuales a lo largo del tiempo. Puede ver cómo las transacciones han variado mes a mes.'
           >
@@ -59,14 +59,14 @@ function DashboardPage () {
         </div>
         <div className='flex flex-col lg:flex-row gap-5'>
           <CardGraphic
-            className='w-full lg:w-[35%] p-4'
+            className='w-full lg:w-[35%] p-4 max-h-[588px]'
             title='Gráfico por estados'
             description='Observa la cantidad de productos correspondiente a cada estado'
           >
             <ChartStates />
           </CardGraphic>
           <CardGraphic
-            className='w-full lg:w-[65%] p-4'
+            className='w-full lg:w-[65%] p-4 max-h-[588px]'
             title='Productos más vendidos'
             description='Verifique los productos más con más ventas.'
           >

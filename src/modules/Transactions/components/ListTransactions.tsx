@@ -17,7 +17,7 @@ function ListTransactions ({ showRedirect = false }: Props) {
   const { dataTransactions: { isLoading, transactions } } = useTransaction({ noSearchParams: true })
 
   return (
-    <Card className='w-full lg:w-[min(100%,400px)] lg:min-w-[350px] p-5'>
+    <Card className='w-full lg:w-[min(100%,400px)] lg:min-w-[350px] p-5 max-h-[xl:max-h-[588px]'>
       <CardHeader className='flex flex-col items-start'>
         <h2 className='title'>Movimientos recientes</h2>
         <p className='text'>Observe la ventas y compras más recientes realizadas por los usuarios en el sistema.</p>
@@ -30,7 +30,7 @@ function ListTransactions ({ showRedirect = false }: Props) {
                 aria-label='transacciones recientes'
                 emptyContent='No hay movimientos'
                 classNames={{
-                  list: 'max-h-[300px] 2xl:max-h-[500px] overflow-auto'
+                  list: 'overflow-auto max-h-[400px] xl:max-h-auto'
                 }}
                 variant='bordered'
                 items={transactions}

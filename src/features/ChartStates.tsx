@@ -42,7 +42,7 @@ function ChartStates () {
   }
   const options = {
     responsive: true,
-    maintainsAspectRatio: false
+    maintainAspectRatio: false
   }
 
   return !isLoading

@@ -1,17 +1,21 @@
 import { conn } from '@/libs/mysql'
+import { fillMonthsInTransactions } from '@/modules/Transactions/utils'
 import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, TransactionMonthDB, TransactionsMonthRes } from '@/types'
 import { NextResponse } from 'next/server'
 
 export const GET = async () => {
   try {
-    const sales = await conn.query<TransactionMonthDB[]>(`
+    let sales = await conn.query<TransactionMonthDB[]>(`
     SELECT MONTH(createdAt) AS month, COUNT(*) AS quantity FROM TRANSACTIONS
     WHERE operationType="${EOperationType.sell}" GROUP BY month ORDER BY month
     `)
-    const purchases = await conn.query<TransactionMonthDB[]>(`
+    let purchases = await conn.query<TransactionMonthDB[]>(`
     SELECT MONTH(createdAt) AS month, COUNT(*) AS quantity FROM TRANSACTIONS
     WHERE operationType="${EOperationType.buy}" GROUP BY month ORDER BY month
     `)
+
+    sales = fillMonthsInTransactions(sales)
+    purchases = fillMonthsInTransactions(purchases)
 
     if (sales && purchases) {
       return NextResponse.json<ApiResponseWithReturn<TransactionsMonthRes>>({
@@ -28,6 +32,7 @@ export const GET = async () => {
       message: 'Error en la consulta'
     }, { status: 400 })
   } catch (error) {
+    console.log(error)
     return NextResponse.json<ApiResponseError>({
       message: 'Ocurrió un problema',
       error

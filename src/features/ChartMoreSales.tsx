@@ -2,6 +2,10 @@
 import { Bar } from 'react-chartjs-2'
 import { Chart as ChartJs, Filler, LineElement, LinearScale, PointElement, Title, Tooltip, Legend, CategoryScale, BarElement, ChartData } from 'chart.js'
 import { COLORS_ENT } from '@/contants'
+import useSWR from 'swr'
+import { ApiResponseWithReturn, BestProductsRes } from '@/types'
+import { fetcher } from '@/libs/swr'
+import { formatBestProducts } from '@/adapters'
 
 ChartJs.register(
   CategoryScale,
@@ -16,32 +20,47 @@ ChartJs.register(
 )
 
 function ChartMoreSales () {
+  const { data: _data, error } = useSWR<ApiResponseWithReturn<BestProductsRes>>('/api/products/best', fetcher)
+
+  if (error) console.log('Error al obtener datos chartTransactions')
+  const dataRes = _data ? formatBestProducts(_data.data) : null
+  const products: string[] = []
+  const total: number[] = []
+  dataRes?.bestPersales?.forEach((product) => {
+    if (product.totalOperations > 0) {
+      products.push(product.product)
+      total.push(product.totalOperations)
+    }
+  })
+
   const data: ChartData<'bar'> = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    labels: products.map(item => item.slice(0, 17) + '...'),
     datasets: [
       {
-        label: 'Ventas',
-        data: [123, 100, 145, 156, 156, 112, 134, 145],
+        label: 'Mas vendidos',
+        data: total,
         backgroundColor: `${COLORS_ENT.operationType.sell.hex}30`,
         borderColor: COLORS_ENT.operationType.sell.hex,
         borderWidth: 2
-      },
-      {
-        label: 'Compras',
-        data: [23, 34, 55, 56, 76, 12, 34, 45],
-        backgroundColor: `${COLORS_ENT.operationType.buy.hex}30`,
-        borderColor: COLORS_ENT.operationType.buy.hex,
-        borderWidth: 2
       }
+      // {
+      //   label: 'Compras',
+      //   data: [23, 34, 55, 56, 76, 12, 34, 45],
+      //   backgroundColor: `${COLORS_ENT.operationType.buy.hex}30`,
+      //   borderColor: COLORS_ENT.operationType.buy.hex,
+      //   borderWidth: 2
+      // }
     ]
-  }
-  const options = {
-    responsive: true,
-    maintainsAspectRatio: false
   }
 
   return (
-    <Bar className='!w-full !h-full' data={data} options={options} />
+    <Bar
+      className='!w-full !h-full' data={data} options={{
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: 'y'
+      }}
+    />
   )
 }
 export default ChartMoreSales

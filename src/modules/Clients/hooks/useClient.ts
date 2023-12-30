@@ -20,7 +20,7 @@ function useClient () {
   const addClient = async (data: ClientToDB) => {
     const res = await createClient(data)
     if (!res?.ok) toast.error('No se pudo agregar el cliente')
-    else toast.success('CLiente agregado correctamente')
+    else toast.success('Cliente agregado correctamente')
     return res
   }
 

@@ -21,7 +21,7 @@ type FormData= {
 function FormPurchaseConfirm () {
   const { push } = useRouter()
   const { data, error, isLoading } = useSWR<ApiResponseWithReturn<SupplierFromDB[]>>('/api/suppliers?rowsPerPage=100', fetcher)
-  if (error) console.log('Erro al solicitar proveedores', error)
+  if (error) console.log('Error al solicitar proveedores', error)
   const suppliers = React.useMemo(() => data?.data?.map(sup => formatSupplier(sup)) || [], [data])
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>()
