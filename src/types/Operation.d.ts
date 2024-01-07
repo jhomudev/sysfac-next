@@ -1,6 +1,3 @@
-import { EOperationType } from '.'
-import { ApiResponseWithReturn } from './ApiResponse'
-
 export type Operation = {
   description: string,
   serialNumber: string,
@@ -26,7 +23,6 @@ export type OperationFromDB = {
 }
 
 export type OperationToDB = {
-  operationType: EOperationType
   description: string,
   serialNumber: string,
   unitCost: number,
@@ -34,5 +30,4 @@ export type OperationToDB = {
   importSale: number,
   details: string,
   productId: number,
-  transactionId: number,
 }

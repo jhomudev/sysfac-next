@@ -155,11 +155,11 @@ CREATE TABLE
   INVENTARY (
     unitId INT NOT NULL AUTO_INCREMENT,
     -- item data
-    serialNumber VARCHAR(100) NOT NULL UNIQUE,
+    serialNumber VARCHAR(100) UNIQUE,
     state ENUM('En stock', 'Vendido', 'Dañado') NOT NULL DEFAULT 'En stock',
     -- relations
     productId INT NOT NULL,
-    localId INT NOT NULL,
+    localId INT,
     -- date
     createdAt TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedAt TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),

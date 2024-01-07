@@ -29,10 +29,10 @@ export type UnitInventaryFromDB = {
 }
 
 export type UnitInventaryToDB = {
-  serialNumber: string
-  state: EStateProductUnit
+  serialNumber?: string
+  state?: EStateProductUnit
   productId: number
-  localId: number
+  localId?: number
 }
 
 export type UnitInventaryResponse = {

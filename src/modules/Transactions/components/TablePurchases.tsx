@@ -10,7 +10,6 @@ import {
   Spinner,
   Table, TableBody, TableCell, TableColumn, TableHeader, TableRow
 } from '@nextui-org/react'
-import NextLink from 'next/link'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 import { useDebouncedCallback } from 'use-debounce'
@@ -175,7 +174,7 @@ function TablePurchases () {
                     aria-label='actions'
                     variant='flat'
                   >
-                    <DropdownItem as={NextLink} key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.purchases}/${item.id}`}>Ver detalles</DropdownItem>
+                    <DropdownItem key='view' startContent={<Yesicon icon={ICONS.view} />} href={`${ROUTES.purchases}/${item.id}`}>Ver detalles</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </TableCell>

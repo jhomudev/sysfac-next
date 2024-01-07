@@ -45,7 +45,7 @@ function FormPurchaseAddProducts () {
       cost,
       priceSale,
       quantity,
-      serialNumber: data.serialNumber || '',
+      serialNumber: data.serialNumber,
       total: quantity * cost
     })
     if (ok) {

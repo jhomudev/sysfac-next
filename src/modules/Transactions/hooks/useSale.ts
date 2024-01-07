@@ -17,8 +17,8 @@ function useSale () {
   if (error) console.log('Error al solicitar ventas:', error)
   const sales = React.useMemo(() => data?.data?.map(sale => formatSale(sale)) || [], [data])
 
-  const doSale = async (data: SaleToDB) => {
-    const res = await makeSale(data)
+  const doSale = async (data: SaleToDB, ops: OperationToDB[]) => {
+    const res = await makeSale(data, ops)
     if (!res?.ok) {
       toast.error('No se pudo hacer la venta')
       console.error(res)

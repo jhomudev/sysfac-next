@@ -1,15 +1,15 @@
 'use client'
-import React from 'react'
+import ROUTES from '@/app/routes'
 import { useCart } from '@/hooks'
-import { Button, Input, Select, SelectItem } from '@nextui-org/react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
-import { useSale } from '@/modules/Transactions/hooks'
 import { useClient } from '@/modules/Clients/hooks'
-import { ClientToDB, EOperationType, EProofType, OperationToDB } from '@/types'
+import { useSale } from '@/modules/Transactions/hooks'
+import { ClientToDB, EProofType, OperationToDB } from '@/types'
+import { Button, Input, Select, SelectItem } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import ROUTES from '@/app/routes'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 
 type FormDataUser = {
   names: string,
@@ -35,7 +35,7 @@ function CartForm () {
 
   const { data: session } = useSession()
   const { addClient } = useClient()
-  const { doSale, addOperations } = useSale()
+  const { doSale } = useSale()
 
   const handleSubmitForm = handleSubmit(async (data) => {
     if (!hasItems) {
@@ -55,35 +55,31 @@ function CartForm () {
       toast.error(resAddClient?.message || 'Error al crear cliente')
       return
     }
-
-    const resDoSale = await doSale({
-      clientId: resAddClient.data.insertId,
-      discount,
-      totalImport: _import,
-      totalPay: totalImport,
-      userId: session?.user.id ?? 0,
-      comments: '',
-      proofCode: crypto.randomUUID(),
-      proofType: data.dniruc.length === 8 ? EProofType.ticket : EProofType.invoice
-    })
-    setIsLoading(false)
-    if (!resDoSale?.ok) {
-      toast.error(resDoSale?.message || 'Error al hacer venta')
-      return
-    }
-    const operations: OperationToDB[] = items.map((item): OperationToDB => ({
-      operationType: EOperationType.sell,
+    const operations: OperationToDB[] = items.map((item) => ({
       description: item.product,
       serialNumber: item?.serialNumber ?? '',
       unitCost: item.unitPrice,
       quantity: item.quantity,
       importSale: item.unitPrice * item.quantity,
       details: item?.serialNumber ?? '',
-      productId: item.productId,
-      transactionId: resDoSale.data.insertId
+      productId: item.productId
     }))
-    const resAddOperations = await addOperations(operations)
-    if (!resAddOperations?.ok) return
+
+    const resDoSale = await doSale({
+      clientId: resAddClient.data.insertId,
+      discount,
+      totalImport: _import,
+      totalPay: totalImport,
+      userId: Number(session?.user.id) ?? 0,
+      comments: '',
+      proofCode: crypto.randomUUID(),
+      proofType: data.dniruc.length === 8 ? EProofType.ticket : EProofType.invoice
+    }, operations)
+    setIsLoading(false)
+    if (!resDoSale?.ok) {
+      toast.error(resDoSale?.message || 'Error al hacer venta')
+      return
+    }
     clearCart()
     setShowCart(false)
     push(ROUTES.transactions + '/sales')
@@ -139,10 +135,6 @@ function CartForm () {
       </form>
       <div>
         <h2 className='title'>Cliente</h2>
-        {/* <Input
-          variant='bordered'
-          placeholder='Ingrese el DNI o RUC del cliente' endContent={<Yesicon icon={ICONS.search} />}
-        /> */}
       </div>
       <form onSubmit={handleSubmitForm} className='flex flex-col gap-2'>
         <Input

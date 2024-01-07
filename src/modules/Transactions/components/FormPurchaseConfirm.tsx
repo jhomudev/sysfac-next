@@ -1,17 +1,17 @@
 'use client'
 import { formatSupplier } from '@/adapters'
+import ROUTES from '@/app/routes'
 import { useCartPurchase } from '@/hooks'
 import { fetcher } from '@/libs/swr'
-import { ApiResponseWithReturn, EOperationType, OperationToDB, SupplierFromDB } from '@/types'
+import { ApiResponseWithReturn, OperationToDB, SupplierFromDB } from '@/types'
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, Textarea } from '@nextui-org/react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import useSWR from 'swr'
 import { usePurchase } from '../hooks'
-import { useRouter } from 'next/navigation'
-import ROUTES from '@/app/routes'
-import { useSession } from 'next-auth/react'
 
 type FormData= {
   supplierId: number,
@@ -30,7 +30,7 @@ function FormPurchaseConfirm () {
 
   const { data: session } = useSession()
   const { cartPurchase: { items, totalImport }, clearCart } = useCartPurchase()
-  const { doPurchase, addOperations } = usePurchase()
+  const { doPurchase } = usePurchase()
   const hasCartItems = items.length > 0
 
   const handleSubmitForm = handleSubmit(() => setShowModal(true))
@@ -43,31 +43,28 @@ function FormPurchaseConfirm () {
       return
     }
 
-    const resDoPurchase = await doPurchase({
-      supplierId: data.supplierId,
-      totalPay: totalImport,
-      userId: session?.user.id ?? 0,
-      comments: data.comments
-    })
-    if (!resDoPurchase?.ok) {
-      toast.error(resDoPurchase?.message || 'Error al realizar la compra')
-      setIsLoadingShop(false)
-      return
-    }
     const operations: OperationToDB[] = items.map((item): OperationToDB => ({
-      operationType: EOperationType.buy,
       description: item.product,
       serialNumber: item?.serialNumber ?? '',
       unitCost: item.cost,
       quantity: item.quantity,
       importSale: item.cost * item.quantity,
       details: item?.serialNumber ?? '',
-      productId: item.productId,
-      transactionId: resDoPurchase.data.insertId
+      productId: item.productId
     }))
-    const resAddOperations = await addOperations(operations)
+
+    const resDoPurchase = await doPurchase({
+      supplierId: data.supplierId,
+      totalPay: totalImport,
+      userId: Number(session?.user.id) ?? 0,
+      comments: data.comments
+    }, operations)
+
     setIsLoadingShop(false)
-    if (!resAddOperations?.ok) return
+    if (!resDoPurchase?.ok) {
+      toast.error(resDoPurchase?.message || 'Error al realizar la compra')
+      return
+    }
     clearCart()
     setShowModal(false)
     push(ROUTES.transactions + '/purchases')

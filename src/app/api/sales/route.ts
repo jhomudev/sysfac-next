@@ -1,6 +1,6 @@
 import { formatSaleResponse } from '@/adapters'
 import { conn } from '@/libs/mysql'
-import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, SaleFromDB, SaleResponse, SaleToDB } from '@/types'
+import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, OperationToDB, SaleFromDB, SaleResponse, SaleToDB } from '@/types'
 import { getQueryParams } from '@/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { OkPacket } from 'mysql'
@@ -62,21 +62,30 @@ export const GET = async (req: NextRequest) => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const data: SaleToDB = await req.json()
+    const { operations, ...data }: SaleToDB & { operations: OperationToDB[] } = await req.json()
     const resDB = await conn.query<OkPacket>('INSERT INTO TRANSACTIONS SET ?', {
       ...data,
       operationtype: EOperationType.sell
     })
 
     if (resDB.affectedRows > 0) {
-      return NextResponse.json<ApiResponse>({
-        ok: true,
-        message: 'Venta realizada',
-        data: {
-          insertId: resDB.insertId,
-          ...data
-        }
-      })
+      const OperationsPromises = operations.map(async operation => conn.query<OkPacket>('INSERT INTO OPERATIONS SET ?', [{
+        ...operation,
+        operationType: EOperationType.sell,
+        transactionId: resDB.insertId
+      }]))
+      const resOps = await Promise.all(OperationsPromises)
+      const opsInserted = resOps.every(res => res.affectedRows > 0)
+      if (opsInserted) {
+        return NextResponse.json<ApiResponse>({
+          ok: true,
+          message: 'Venta realizada',
+          data: {
+            insertId: resDB.insertId,
+            ...data
+          }
+        })
+      }
     }
     return NextResponse.json<ApiResponse>({
       ok: false,

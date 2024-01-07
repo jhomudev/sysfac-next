@@ -1,1 +1,0 @@
-// const searchDataClient = (second) => { third }

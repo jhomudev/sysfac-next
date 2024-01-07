@@ -4,14 +4,15 @@ import { ApiResponse, ApiResponseError, ApiResponseWithReturn, EOperationType, T
 import { NextResponse } from 'next/server'
 
 export const GET = async () => {
+  const year = new Date().getFullYear()
   try {
     let sales = await conn.query<TransactionMonthDB[]>(`
     SELECT MONTH(createdAt) AS month, COUNT(*) AS quantity FROM TRANSACTIONS
-    WHERE operationType="${EOperationType.sell}" GROUP BY month ORDER BY month
+    WHERE operationType="${EOperationType.sell}" AND YEAR(createdAt)=${year} GROUP BY month ORDER BY month
     `)
     let purchases = await conn.query<TransactionMonthDB[]>(`
     SELECT MONTH(createdAt) AS month, COUNT(*) AS quantity FROM TRANSACTIONS
-    WHERE operationType="${EOperationType.buy}" GROUP BY month ORDER BY month
+    WHERE operationType="${EOperationType.buy}" AND YEAR(createdAt)=${year} GROUP BY month ORDER BY month
     `)
 
     sales = fillMonthsInTransactions(sales)
